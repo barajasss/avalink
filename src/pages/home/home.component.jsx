@@ -8,16 +8,16 @@ export default class HomePage extends Component {
 				<div className='jumbotron jumbotron-fluid'>
 					<h1 className='text-center'>Welcome to Ava</h1>
 				</div>
-				<div class='container'>
-					<div class='row'>
-						<div class='col-md-6'>
+				<div className='container'>
+					<div className='row'>
+						<div className='col-md-6'>
 							<Link
 								className='btn btn-primary m-2 btn-block'
 								to='/register'>
 								Register
 							</Link>
 						</div>
-						<div class='col-md-6'>
+						<div className='col-md-6'>
 							<Link
 								className='btn btn-primary m-2 btn-block'
 								to='/login'>

@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react'
 import { Switch, Route } from 'react-router-dom'
+import Loading from '../loading/loading.component'
 
 const HomePage = React.lazy(() => import('../../pages/home/home.component'))
 
@@ -12,11 +13,18 @@ const ForgotPasswordPage = React.lazy(() =>
 	import('../../pages/forgot-password/forgot-password.component')
 )
 
+const DashboardPage = React.lazy(() =>
+	import('../../pages/dashboard/dashboard.component')
+)
+
+const SettingPage = React.lazy(() =>
+	import('../../pages/setting/setting.component')
+)
+
 class Router extends React.Component {
 	render() {
 		return (
-			<Suspense
-				fallback={<h5 className='text-center m-5'>Loading...</h5>}>
+			<Suspense fallback={<Loading />}>
 				<Switch>
 					<Route exact path='/'>
 						<HomePage />
@@ -29,6 +37,19 @@ class Router extends React.Component {
 					</Route>
 					<Route path='/forgot-password'>
 						<ForgotPasswordPage />
+					</Route>
+
+					{/* DASHBOARD */}
+					<Route path='/dashboard'>
+						<DashboardPage />
+					</Route>
+					<Route path={['/setting', '/settings']}>
+						<SettingPage />
+					</Route>
+
+					{/* 404 Not Found */}
+					<Route path='*' exact={true}>
+						<h4>Route not found.</h4>
 					</Route>
 				</Switch>
 			</Suspense>

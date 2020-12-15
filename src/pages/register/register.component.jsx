@@ -3,6 +3,12 @@ import Input from '../../components/input/input.component'
 import Logo from '../../components/logo/logo.component'
 import { Link } from 'react-router-dom'
 
+import { withRouter } from 'react-router-dom'
+import { registerUser } from '../../redux/user/user.actions'
+import { connect } from 'react-redux'
+
+import { toast } from 'react-toastify'
+
 class RegisterPage extends Component {
 	constructor(props) {
 		super(props)
@@ -10,6 +16,7 @@ class RegisterPage extends Component {
 			name: '',
 			email: '',
 			password: '',
+			registering: false,
 		}
 	}
 	handleChange = e => {
@@ -17,11 +24,42 @@ class RegisterPage extends Component {
 			[e.target.name]: e.target.value,
 		})
 	}
-	handleSubmit = e => {
+	handleSubmit = async e => {
 		e.preventDefault()
-		console.log(this.state)
+		const { registerUser, history } = this.props
+		const { name, email, password, registering } = this.state
+		if (registering) {
+			return
+		}
+		try {
+			this.setState({
+				registering: true,
+			})
+			await registerUser({
+				name,
+				email,
+				password,
+			})
+			toast.success(
+				'Account registered successfully. Please login to your account!',
+				{ hideProgressBar: true }
+			)
+			return history.push({
+				pathname: '/login',
+				state: { from: 'register' },
+			})
+		} catch (err) {
+			console.log(err)
+			toast.error(
+				err.message || 'Error in registering. Please try again later.'
+			)
+		}
+		this.setState({
+			registering: false,
+		})
 	}
 	render() {
+		const { registering } = this.state
 		return (
 			<div className='container py-5'>
 				<div className='row'>
@@ -52,8 +90,13 @@ class RegisterPage extends Component {
 								type='password'
 								onChange={this.handleChange}
 							/>
-							<button className='btn btn-dark btn-block'>
-								Register
+							<button
+								className={`btn btn-dark btn-block ${
+									registering ? 'disabled' : ''
+								}`}>
+								{registering
+									? 'Creating your account...'
+									: 'Register'}{' '}
 							</button>
 						</form>
 						<br />
@@ -69,4 +112,8 @@ class RegisterPage extends Component {
 	}
 }
 
-export default RegisterPage
+const mapDispatchToProps = dispatch => ({
+	registerUser: user => dispatch(registerUser(user)),
+})
+
+export default connect(null, mapDispatchToProps)(withRouter(RegisterPage))

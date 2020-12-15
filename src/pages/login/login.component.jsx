@@ -3,12 +3,19 @@ import Input from '../../components/input/input.component'
 import Logo from '../../components/logo/logo.component'
 import { Link } from 'react-router-dom'
 
+import { withRouter } from 'react-router-dom'
+import { loginUser } from '../../redux/user/user.actions'
+import { connect } from 'react-redux'
+
+import { toast } from 'react-toastify'
+
 class LoginPage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			email: '',
 			password: '',
+			logging: false,
 		}
 	}
 	handleChange = e => {
@@ -16,11 +23,35 @@ class LoginPage extends Component {
 			[e.target.name]: e.target.value,
 		})
 	}
-	handleSubmit = e => {
+	handleSubmit = async e => {
 		e.preventDefault()
-		console.log(this.state)
+		const { loginUser, history } = this.props
+		const { email, password, logging } = this.state
+		if (logging) {
+			return
+		}
+		try {
+			this.setState({
+				logging: true,
+			})
+			await loginUser({
+				email,
+				password,
+			})
+			toast.success('Login Successful', { hideProgressBar: true })
+			return setTimeout(() => history.push('/dashboard'), 1100)
+		} catch (err) {
+			console.log(err)
+			toast.error(
+				err.message || 'Error trying to login. Please try again later.'
+			)
+		}
+		this.setState({
+			logging: false,
+		})
 	}
 	render() {
+		const { logging } = this.state
 		return (
 			<div className='container py-5'>
 				<div className='row'>
@@ -53,8 +84,11 @@ class LoginPage extends Component {
 									</Link>
 								</div>
 								<div className='col-md-6'>
-									<button className='btn btn-dark btn-block'>
-										Login
+									<button
+										className={`btn btn-dark btn-block ${
+											logging ? 'disabled' : ''
+										}`}>
+										{!logging ? 'Login' : 'Please wait...'}
 									</button>
 								</div>
 							</div>
@@ -72,4 +106,8 @@ class LoginPage extends Component {
 	}
 }
 
-export default LoginPage
+const mapDispatchToProps = dispatch => ({
+	loginUser: user => dispatch(loginUser(user)),
+})
+
+export default connect(null, mapDispatchToProps)(withRouter(LoginPage))
