@@ -12,6 +12,8 @@ export default class Input extends Component {
 					placeholder={placeholder}
 					name={name}
 					onChange={onChange}
+					minLength={4}
+					required
 				/>
 			</div>
 		)

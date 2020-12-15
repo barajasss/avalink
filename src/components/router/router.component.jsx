@@ -15,7 +15,8 @@ const ForgotPasswordPage = React.lazy(() =>
 class Router extends React.Component {
 	render() {
 		return (
-			<Suspense fallback={<div>Loading</div>}>
+			<Suspense
+				fallback={<h5 className='text-center m-5'>Loading...</h5>}>
 				<Switch>
 					<Route exact path='/'>
 						<HomePage />

@@ -12,44 +12,53 @@ class RegisterPage extends Component {
 			password: '',
 		}
 	}
-	onChange = e => {
+	handleChange = e => {
 		this.setState({
 			[e.target.name]: e.target.value,
 		})
 	}
+	handleSubmit = e => {
+		e.preventDefault()
+		console.log(this.state)
+	}
 	render() {
 		return (
 			<div className='container py-5'>
-				<div class='row'>
-					<div class='col-md-8 offset-md-2'>
+				<div className='row'>
+					<div className='col-md-8 offset-md-2'>
 						<Logo size='md' />
 						<br />
-						<h1 class='text-center'>Welcome to Ava</h1>
+						<h1 className='text-center'>Welcome to Ava</h1>
 						<br />
-						<h4 class='text-center'>
+						<h4 className='text-center'>
 							Register and easily maintain your profile links.
 						</h4>
 						<br />
-						<Input
-							name='name'
-							placeholder='Full name'
-							onChange={this.onChange}
-						/>
-						<Input
-							name='email'
-							placeholder='Email address'
-							onChange={this.onChange}
-						/>
-						<Input
-							name='password'
-							placeholder='Password'
-							type='password'
-							onChange={this.onChange}
-						/>
-						<button class='btn btn-dark btn-block'>Register</button>
+						<form onSubmit={this.handleSubmit}>
+							<Input
+								name='name'
+								placeholder='Full name'
+								onChange={this.handleChange}
+							/>
+							<Input
+								name='email'
+								type='email'
+								placeholder='Email address'
+								onChange={this.handleChange}
+							/>
+							<Input
+								name='password'
+								placeholder='Password'
+								type='password'
+								onChange={this.handleChange}
+							/>
+							<button className='btn btn-dark btn-block'>
+								Register
+							</button>
+						</form>
 						<br />
 
-						<h5 class='text-center'>
+						<h5 className='text-center'>
 							Already have an account?{' '}
 							<Link to='/login'>Login</Link>
 						</h5>

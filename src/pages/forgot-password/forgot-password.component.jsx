@@ -10,31 +10,39 @@ class ForgotPasswordPage extends Component {
 			email: '',
 		}
 	}
-	onChange = e => {
+
+	handleChange = e => {
 		this.setState({
 			[e.target.name]: e.target.value,
 		})
 	}
+	handleSubmit = e => {
+		e.preventDefault()
+		console.log(this.state)
+	}
 	render() {
 		return (
 			<div className='container py-5'>
-				<div class='row'>
-					<div class='col-md-8 offset-md-2'>
+				<div className='row'>
+					<div className='col-md-8 offset-md-2'>
 						<Logo size='md' />
 						<br />
-						<h2 class='text-center'>Reset your password</h2>
+						<h2 className='text-center'>Reset your password</h2>
 						<br />
-						<Input
-							name='email'
-							placeholder='Email address'
-							onChange={this.onChange}
-						/>
-						<button class='btn btn-dark btn-block'>
-							Send New Password
-						</button>
+						<form onSubmit={this.handleSubmit}>
+							<Input
+								name='email'
+								type='email'
+								placeholder='Email address'
+								onChange={this.handleChange}
+							/>
+							<button className='btn btn-dark btn-block'>
+								Send New Password
+							</button>
+						</form>
 						<br />
 
-						<h5 class='text-center'>
+						<h5 className='text-center'>
 							Go Back to <Link to='/login'>Login</Link> or{' '}
 							<Link to='/register'>Register</Link>
 						</h5>
