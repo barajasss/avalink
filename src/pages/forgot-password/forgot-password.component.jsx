@@ -8,7 +8,6 @@ class ForgotPasswordPage extends Component {
 		super(props)
 		this.state = {
 			email: '',
-			password: '',
 		}
 	}
 	onChange = e => {
