@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
 
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
+
+import DashboardHeader from '../../components/dashboard-header/dashboard-header.component'
+import DashboardUser from '../../components/dashboard-user/dashboard-user.component'
+import DashboardLinks from '../../components/dashboard-links/dashboard-links.component'
+
+import './dashboard.styles.scss'
 
 class Dashboard extends Component {
 	render() {
@@ -10,8 +16,14 @@ class Dashboard extends Component {
 			return <Redirect to='/' />
 		}
 		return (
-			<div>
-				<h1>Dashboard</h1>
+			<div className='dashboard'>
+				<div className='row'>
+					<div className='col-md-8 offset-md-2'>
+						<DashboardHeader />
+						<DashboardUser />
+						<DashboardLinks />
+					</div>
+				</div>
 			</div>
 		)
 	}

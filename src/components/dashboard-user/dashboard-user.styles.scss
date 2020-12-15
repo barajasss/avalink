@@ -1,0 +1,35 @@
+.dashboard-user {
+	background-color: white;
+	box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.3);
+	border-radius: 20px;
+	margin: -20px 20px;
+	padding: 30px 14px;
+	position: relative;
+	z-index: 10;
+	margin-bottom: 20px;
+
+	.display-image {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		img {
+			max-width: 100%;
+			width: 120px;
+			height: auto;
+			border-radius: 50%;
+			border: 3px solid #888;
+		}
+	}
+	.qr-icon,
+	.link-icon {
+		margin: auto;
+		display: block;
+		max-width: 35px;
+		font-size: 25px;
+		cursor: pointer;
+	}
+	.qr-icon {
+		margin-bottom: 30px;
+	}
+}

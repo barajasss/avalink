@@ -1,0 +1,12 @@
+.dashboard-header {
+	position: relative;
+	border-radius: 0 0 30px 30px;
+	min-height: 150px;
+
+	.logo-container {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 100000;
+	}
+}
