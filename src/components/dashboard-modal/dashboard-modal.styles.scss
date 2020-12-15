@@ -1,0 +1,66 @@
+.dashboard-modal {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	border-radius: 10px;
+	visibility: hidden;
+	opacity: 0;
+	transition: 0.5s;
+	position: fixed;
+	width: 60%;
+	background: white;
+	top: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1000;
+	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+	padding: 20px;
+	min-height: 100px;
+	max-height: 90vh;
+	height: 90vh;
+
+	.close-icon {
+		position: absolute;
+		right: 15px;
+		top: 15px;
+		font-size: 2em;
+		cursor: pointer;
+	}
+
+	&.show {
+		visibility: visible;
+		// animation: slide-down 0.5s;
+		opacity: 1;
+	}
+}
+
+// @keyframes slide-down {
+// 	from {
+// 		top: -100%;
+// 	}
+// 	to {
+// 		top: 20px;
+// 	}
+// }
+
+.black-screen {
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0);
+	visibility: hidden;
+	z-index: 10;
+	transition: 0.5;
+	height: 100%;
+	width: 100%;
+
+	&.show {
+		visibility: visible;
+		background: rgba(0, 0, 0, 0.4);
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.dashboard-modal {
+		width: 95%;
+	}
+}
