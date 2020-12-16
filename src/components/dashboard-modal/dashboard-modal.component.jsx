@@ -4,7 +4,7 @@ import './dashboard-modal.styles.scss'
 import LinkEditor from './link-editor.component'
 import LinkOptions from './link-options.component'
 
-export default class DashboardModal extends Component {
+class DashboardModal extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -21,13 +21,16 @@ export default class DashboardModal extends Component {
 	closeModal = () => {
 		const { showModal } = this.props
 		showModal(false)
-		setTimeout(
+		this.timeout = setTimeout(
 			() =>
 				this.setState({
 					openLinkEditor: false,
 				}),
 			1000
 		)
+	}
+	componentWillUnmount() {
+		clearTimeout(this.timeout)
 	}
 	render() {
 		const { show } = this.props
@@ -57,3 +60,5 @@ export default class DashboardModal extends Component {
 		)
 	}
 }
+
+export default DashboardModal

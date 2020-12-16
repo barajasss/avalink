@@ -39,4 +39,13 @@ const logoutUser = async () => {
 	}
 }
 
-export { registerUser, loginUser, logoutUser }
+const getCurrentUser = async () => {
+	try {
+		const user = await firebase.auth().currentUser
+		return user
+	} catch (err) {
+		throw err
+	}
+}
+
+export { registerUser, loginUser, logoutUser, getCurrentUser }

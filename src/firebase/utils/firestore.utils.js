@@ -37,9 +37,36 @@ const updateData = async (user, name, value) => {
 	try {
 		db.collection('users')
 			.doc(user.uid)
-			.update({
-				[name]: value,
+			.set(
+				{
+					[name]: value,
+				},
+				{ merge: true }
+			)
+	} catch (err) {
+		throw err
+	}
+}
+
+const fetchLinks = async user => {
+	try {
+		let links = []
+		const doc = await db.collection('users').doc(user.uid).get()
+		const data = doc.data()
+
+		// filter links with empty string
+		if (data) {
+			Object.keys(data).forEach(link => {
+				if (
+					data[link] &&
+					link !== 'bio' &&
+					link !== 'totalProfileLinks'
+				) {
+					links = [...links, { type: link, link: data[link] }]
+				}
 			})
+		}
+		return links
 	} catch (err) {
 		throw err
 	}
@@ -57,4 +84,9 @@ const incrementTotalProfileLinks = user => {
 	}
 }
 
-export { createUserDefaults, updateData, incrementTotalProfileLinks }
+export {
+	createUserDefaults,
+	updateData,
+	incrementTotalProfileLinks,
+	fetchLinks,
+}

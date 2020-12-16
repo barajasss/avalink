@@ -4,7 +4,7 @@ import './dashboard-link-item.styles.scss'
 
 class DashboardLinkItem extends Component {
 	render() {
-		const { modalBtn, showModal, history, onClick } = this.props
+		const { modalBtn, showModal, onClick } = this.props
 		return (
 			<div
 				className='dashboard-link-item'
@@ -14,9 +14,9 @@ class DashboardLinkItem extends Component {
 					if (showModal) {
 						console.log('modal')
 						showModal(true)
-						// history.push('/dashboard/links')
 					}
 					if (onClick) {
+						// run the custom onclick prop
 						onClick()
 					}
 				}}>

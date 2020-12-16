@@ -14,7 +14,7 @@ import './App.css'
 class App extends React.Component {
 	componentDidMount() {
 		const { setUser, unsetUser, resolveAuthState, location } = this.props
-		firebase.auth().onAuthStateChanged(user => {
+		this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
 			console.log(user, location)
 			if (user) {
 				if (location.state && location.state.from === 'register') {
@@ -30,6 +30,9 @@ class App extends React.Component {
 			}
 			resolveAuthState()
 		})
+	}
+	componentWillUnmount() {
+		this.unsubscribe()
 	}
 	render() {
 		const { isLoggedIn, location, authStateResolved } = this.props
