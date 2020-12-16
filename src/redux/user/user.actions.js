@@ -20,9 +20,9 @@ const unsetUser = () => ({
 	type: UserActionTypes.UNSET_USER,
 })
 
-const updateUser = (propName, propvalue) => ({
+const updateUser = (propName, propValue) => ({
 	type: UserActionTypes.UPDATE_USER,
-	payload: { propName, propvalue },
+	payload: { propName, propValue },
 })
 
 const updateUserAsync = (name, value) => async dispatch => {

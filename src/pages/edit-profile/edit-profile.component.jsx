@@ -7,7 +7,11 @@ import DashboardHeader from '../../components/dashboard-header/dashboard-header.
 import DashboardUser from '../../components/dashboard-user/dashboard-user.component'
 import InlineLinkEditor from './inline-link-editor.component'
 
-import { fetchDefaultLinks, fetchLinks } from '../../redux/links/links.actions'
+import {
+	fetchDefaultLinks,
+	fetchLinks,
+	updateMultipleLinks,
+} from '../../redux/links/links.actions'
 import { updateUserAsync } from '../../redux/user/user.actions'
 
 import './edit-profile.styles.scss'
@@ -28,7 +32,11 @@ class EditProfilePage extends Component {
 			fetchDefaultLinks,
 			userLinksLoaded,
 			fetchLinks,
+			name,
+			about,
 		} = this.props
+
+		console.log(name, about)
 
 		let { userLinks, defaultLinks } = this.props
 
@@ -86,12 +94,13 @@ class EditProfilePage extends Component {
 	}
 	saveDetails = async () => {
 		const { name, about, links } = this.state
-		const { updateUserAsync } = this.props
+		const { updateUserAsync, updateMultipleLinks } = this.props
 
 		// save name and about
 		try {
 			await updateUserAsync('name', name)
 			await updateUserAsync('about', about)
+			await updateMultipleLinks(links)
 		} catch (err) {
 			console.log(err)
 		}
@@ -163,6 +172,7 @@ const mapDispatchToProps = dispatch => ({
 	fetchDefaultLinks: () => dispatch(fetchDefaultLinks()),
 	fetchLinks: () => dispatch(fetchLinks()),
 	updateUserAsync: (name, value) => dispatch(updateUserAsync(name, value)),
+	updateMultipleLinks: links => dispatch(updateMultipleLinks(links)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditProfilePage)

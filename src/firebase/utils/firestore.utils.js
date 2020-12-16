@@ -48,6 +48,21 @@ const updateData = async (user, name, value) => {
 	}
 }
 
+const updateBulkData = async (user, data) => {
+	try {
+		db.collection('users')
+			.doc(user.uid)
+			.set(
+				{
+					...data,
+				},
+				{ merge: true }
+			)
+	} catch (err) {
+		throw err
+	}
+}
+
 const fetchData = async (user, name) => {
 	try {
 		const doc = await db.collection('users').doc(user.uid).get()
@@ -68,6 +83,7 @@ const fetchLinks = async user => {
 
 		// filter links with empty string
 		if (data) {
+			// transform data to a proper format
 			Object.keys(data).forEach(link => {
 				if (
 					data[link] &&
@@ -119,4 +135,5 @@ export {
 	fetchLinks,
 	fetchDefaultLinks,
 	fetchData,
+	updateBulkData,
 }

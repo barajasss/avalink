@@ -21,9 +21,7 @@ class InlineLinkEditor extends React.Component {
 				</div>
 				<i
 					className='fas fa-times text-danger fa-2x p-1 ml-3 clear-icon'
-					onClick={() => {
-						this.setState({ link: '' })
-					}}
+					onClick={() => updateLink(type, '')}
 				/>
 			</div>
 		)

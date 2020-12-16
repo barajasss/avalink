@@ -5,6 +5,7 @@ import {
 	updateData as updateLinkFirebase,
 	fetchLinks as fetchLinksFirebase,
 	fetchDefaultLinks as fetchDefaultLinksFirebase,
+	updateBulkData as updateBulkDataFirebase,
 } from '../../firebase/utils/firestore.utils'
 
 const setLink = (type, link) => ({
@@ -59,6 +60,28 @@ const updateLink = (type, link) => async dispatch => {
 	}
 }
 
+const updateMultipleLinks = links => async dispatch => {
+	try {
+		console.log(links)
+		let transformedLinks = {}
+
+		// filter links from empty values
+		links = links.filter(item => item.link !== '')
+
+		// map and transform data to a proper format before persisting to firebase
+		links.forEach(link => {
+			transformedLinks = {
+				...transformedLinks,
+				[link.type]: link.link,
+			}
+		})
+		await updateBulkDataFirebase(await getCurrentUser(), transformedLinks)
+		dispatch(setLinkMultiple(links))
+	} catch (err) {
+		throw err
+	}
+}
+
 const removeLink = type => async dispatch => {
 	// use to set or unset or modify any links.
 	const user = await getCurrentUser()
@@ -77,4 +100,5 @@ export {
 	removeLink,
 	fetchLinks,
 	fetchDefaultLinks,
+	updateMultipleLinks,
 }
