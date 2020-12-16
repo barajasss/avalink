@@ -26,6 +26,10 @@
 		box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
 		padding: 15px;
 		border-radius: 10px;
+		transition: 0.1s;
+	}
+	.icon-img:hover {
+		box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.5);
 	}
 
 	.check-icon,
