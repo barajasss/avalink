@@ -4,6 +4,7 @@ const initialLinksState = {
 	userLinks: [],
 	defaultLinks: [],
 	defaultLinksLoaded: false,
+	userLinksLoaded: false,
 }
 
 const linksReducer = (state = initialLinksState, action) => {
@@ -42,7 +43,7 @@ const linksReducer = (state = initialLinksState, action) => {
 				var textB = b.type.toUpperCase()
 				return textA < textB ? -1 : textA > textB ? 1 : 0
 			})
-			return { ...state, userLinks: [...links] }
+			return { ...state, userLinks: [...links], userLinksLoaded: true }
 		}
 		case LinksActionTypes.UNSET_LINK: {
 			const type = action.payload

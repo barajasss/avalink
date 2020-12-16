@@ -15,6 +15,9 @@
 		input {
 			padding: 15px;
 		}
+		input::placeholder {
+			color: #aaa;
+		}
 	}
 	.icon {
 		width: 35px;
