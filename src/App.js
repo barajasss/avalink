@@ -36,13 +36,19 @@ class App extends React.Component {
 	}
 	render() {
 		const { isLoggedIn, location, authStateResolved } = this.props
-		const ignoredRoutes = ['/setting', '/settings', '/dashboard']
+		const allowedRoutes = [
+			'/setting',
+			'/settings',
+			'/dashboard',
+			'/edit-profile',
+			'/change-password',
+		]
 		// Redirect logic for logged users
 		if (
 			authStateResolved &&
 			isLoggedIn &&
 			location.pathname !== '/register' &&
-			!ignoredRoutes.includes(location.pathname) &&
+			!allowedRoutes.includes(location.pathname) &&
 			!location.state
 		) {
 			return <Redirect to='/dashboard' />

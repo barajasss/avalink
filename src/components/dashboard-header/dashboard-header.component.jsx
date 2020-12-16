@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom'
 import './dashboard-header.styles.scss'
 
 class DashboardHeader extends Component {
-	Header
 	render() {
+		const { editProfile } = this.props
 		return (
 			<div className='dashboard-header py-4 px-3 d-flex justify-content-between bg-dark text-white'>
 				<Link to='/settings' className='menu-icon text-white'>
@@ -22,7 +22,11 @@ class DashboardHeader extends Component {
 						}}
 					/>
 				</div>
-				<h6>0 Links</h6>
+				{editProfile ? (
+					<button className='save-btn'>Save</button>
+				) : (
+					<h6>0 Links</h6>
+				)}
 			</div>
 		)
 	}

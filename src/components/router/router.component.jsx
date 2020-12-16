@@ -13,12 +13,18 @@ const ForgotPasswordPage = React.lazy(() =>
 	import('../../pages/forgot-password/forgot-password.component')
 )
 
+// MAIN MENU
+
 const DashboardPage = React.lazy(() =>
 	import('../../pages/dashboard/dashboard.component')
 )
 
 const SettingPage = React.lazy(() =>
 	import('../../pages/setting/setting.component')
+)
+
+const EditProfilePage = React.lazy(() =>
+	import('../../pages/edit-profile/edit-profile.component')
 )
 
 class Router extends React.Component {
@@ -39,12 +45,15 @@ class Router extends React.Component {
 						<ForgotPasswordPage />
 					</Route>
 
-					{/* DASHBOARD */}
+					{/* DASHBOARD AND MENU*/}
 					<Route path='/dashboard'>
 						<DashboardPage />
 					</Route>
 					<Route path={['/setting', '/settings']}>
 						<SettingPage />
+					</Route>
+					<Route path='/edit-profile'>
+						<EditProfilePage />
 					</Route>
 
 					{/* 404 Not Found */}

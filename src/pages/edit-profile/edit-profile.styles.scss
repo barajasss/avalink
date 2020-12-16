@@ -1,0 +1,30 @@
+.inline-link-editor {
+	display: flex;
+	flex-direction: row;
+	justify-content: stretch;
+	padding: 15px 20px;
+	background-color: #eee;
+	box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+	margin: 20px;
+	border-radius: 10px;
+	transition: 0.1s;
+
+	div.form-group {
+		flex: 1;
+		margin: 0;
+		input {
+			padding: 15px;
+		}
+	}
+	.icon {
+		width: 35px;
+		height: 35px;
+		margin-right: 20px;
+	}
+	.clear-icon {
+		cursor: pointer;
+	}
+}
+.inline-link-editor:hover {
+	box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.45);
+}
