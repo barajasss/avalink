@@ -7,6 +7,8 @@ import DashboardHeader from '../../components/dashboard-header/dashboard-header.
 import DashboardUser from '../../components/dashboard-user/dashboard-user.component'
 import InlineLinkEditor from './inline-link-editor.component'
 
+import { toast } from 'react-toastify'
+
 import {
 	fetchDefaultLinks,
 	fetchLinks,
@@ -20,6 +22,7 @@ class EditProfilePage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			savingDetails: false,
 			loadingLinks: false,
 			links: [],
 			name: props.name || '',
@@ -35,8 +38,6 @@ class EditProfilePage extends Component {
 			name,
 			about,
 		} = this.props
-
-		console.log(name, about)
 
 		let { userLinks, defaultLinks } = this.props
 
@@ -93,23 +94,29 @@ class EditProfilePage extends Component {
 		this.setState({ name: val })
 	}
 	saveDetails = async () => {
-		const { name, about, links } = this.state
+		const { name, about, links, savingDetails } = this.state
 		const { updateUserAsync, updateMultipleLinks } = this.props
 
+		if (savingDetails) return
+		this.setState({ savingDetails: true })
 		// save name and about
 		try {
 			await updateUserAsync('name', name)
 			await updateUserAsync('about', about)
 			await updateMultipleLinks(links)
+			toast.success('Details updated successfully')
 		} catch (err) {
 			console.log(err)
+			toast.error('Could not update your details. Try again later.')
 		}
+
+		this.setState({ savingDetails: false })
 		console.log('save details triggered')
 	}
 
 	render() {
 		const { isLoggedIn } = this.props
-		const { loadingLinks, links, name, about } = this.state
+		const { savingDetails, loadingLinks, links, name, about } = this.state
 		if (!isLoggedIn) {
 			return <Redirect to='/' />
 		}
@@ -120,6 +127,7 @@ class EditProfilePage extends Component {
 						<DashboardHeader
 							editProfile
 							saveDetails={this.saveDetails}
+							savingDetails={savingDetails}
 						/>
 						<DashboardUser
 							editProfile
@@ -145,9 +153,11 @@ class EditProfilePage extends Component {
 						)}
 						<div className='p-3 py-2'>
 							<button
-								className='btn btn-dark btn-block py-2'
+								className={`btn btn-dark btn-block py-2 ${
+									savingDetails ? 'disabled' : ''
+								}`}
 								onClick={this.saveDetails}>
-								Save Changes
+								{savingDetails ? 'Saving...' : 'Save Changes'}
 							</button>
 						</div>
 						<br />

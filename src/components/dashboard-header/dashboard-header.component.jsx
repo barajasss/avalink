@@ -7,7 +7,7 @@ import './dashboard-header.styles.scss'
 
 class DashboardHeader extends Component {
 	render() {
-		const { editProfile, saveDetails } = this.props
+		const { editProfile, saveDetails, savingDetails } = this.props
 		return (
 			<div className='dashboard-header py-4 px-3 d-flex justify-content-between bg-dark text-white'>
 				<Link to='/settings' className='menu-icon text-white'>
@@ -23,8 +23,12 @@ class DashboardHeader extends Component {
 					/>
 				</div>
 				{editProfile ? (
-					<button className='save-btn' onClick={saveDetails}>
-						Save
+					<button
+						className={`save-btn ${
+							savingDetails ? 'disabled' : ''
+						}`}
+						onClick={saveDetails}>
+						{savingDetails ? 'Saving...' : 'Save'}
 					</button>
 				) : (
 					<h6>0 Links</h6>
