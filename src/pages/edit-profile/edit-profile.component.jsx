@@ -17,6 +17,8 @@ class EditProfilePage extends Component {
 		this.state = {
 			loadingLinks: false,
 			links: [],
+			name: props.name,
+			about: props.about,
 		}
 	}
 	componentDidMount = async () => {
@@ -75,9 +77,19 @@ class EditProfilePage extends Component {
 		})
 	}
 
+	updateAbout = val => {
+		this.setState({ about: val })
+	}
+	updateName = val => {
+		this.setState({ name: val })
+	}
+	saveDetails = () => {
+		console.log('save details triggered')
+	}
+
 	render() {
 		const { isLoggedIn } = this.props
-		const { loadingLinks, links } = this.state
+		const { loadingLinks, links, name, about } = this.state
 		if (!isLoggedIn) {
 			return <Redirect to='/' />
 		}
@@ -85,8 +97,17 @@ class EditProfilePage extends Component {
 			<div className='dashboard'>
 				<div className='row'>
 					<div className='col-md-8 offset-md-2'>
-						<DashboardHeader editProfile />
-						<DashboardUser editProfile />
+						<DashboardHeader
+							editProfile
+							saveDetails={this.saveDetails}
+						/>
+						<DashboardUser
+							editProfile
+							editableName={name}
+							editableAbout={about}
+							updateName={this.updateName}
+							updateAbout={this.updateAbout}
+						/>
 
 						{links.map(item => (
 							<InlineLinkEditor
@@ -103,7 +124,9 @@ class EditProfilePage extends Component {
 							</h5>
 						)}
 						<div className='p-3 py-2'>
-							<button className='btn btn-dark btn-block py-2'>
+							<button
+								className='btn btn-dark btn-block py-2'
+								onClick={this.saveDetails}>
 								Save Changes
 							</button>
 						</div>
@@ -116,6 +139,8 @@ class EditProfilePage extends Component {
 }
 
 const mapStateToProps = state => ({
+	name: state.user.name,
+	about: state.user.about,
 	isLoggedIn: state.user.isLoggedIn,
 	userLinks: state.links.userLinks,
 	defaultLinks: state.links.defaultLinks,

@@ -8,11 +8,24 @@ import EditProfile from './edit-profile.component'
 
 class DashboardUser extends Component {
 	render() {
-		const { name, about, editProfile } = this.props
+		const {
+			name,
+			about,
+			editableName,
+			editableAbout,
+			editProfile,
+			updateName,
+			updateAbout,
+		} = this.props
 		return (
 			<div className='dashboard-user'>
 				{editProfile ? (
-					<EditProfile name={name} about={about} />
+					<EditProfile
+						name={editableName}
+						about={editableAbout}
+						updateName={updateName}
+						updateAbout={updateAbout}
+					/>
 				) : (
 					<ProfileDetails name={name} about={about} />
 				)}

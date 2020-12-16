@@ -1,4 +1,4 @@
-const EditProfile = ({ name, about }) => (
+const EditProfile = ({ name, about, updateName, updateAbout }) => (
 	<div className='px-3'>
 		<div className='row'>
 			<div className='display-image col-md-4'>
@@ -11,7 +11,8 @@ const EditProfile = ({ name, about }) => (
 						<input
 							type='text'
 							className='form-control'
-							defaultValue={name}
+							value={name}
+							onChange={e => updateName(e.target.value)}
 						/>
 					</div>
 					<div className='form-group'>
@@ -19,7 +20,8 @@ const EditProfile = ({ name, about }) => (
 						<input
 							type='text'
 							className='form-control'
-							defaultValue={about}
+							value={about}
+							onChange={e => updateAbout(e.target.value)}
 						/>
 					</div>
 				</form>
