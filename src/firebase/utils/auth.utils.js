@@ -48,4 +48,16 @@ const getCurrentUser = async () => {
 	}
 }
 
-export { registerUser, loginUser, logoutUser, getCurrentUser }
+const updateUser = async (name, value) => {
+	try {
+		const user = firebase.auth().currentUser
+		await user.updateProfile({
+			[name]: value,
+		})
+		return user
+	} catch (err) {
+		throw err
+	}
+}
+
+export { registerUser, loginUser, logoutUser, getCurrentUser, updateUser }

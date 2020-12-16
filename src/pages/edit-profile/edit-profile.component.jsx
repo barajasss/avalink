@@ -8,6 +8,7 @@ import DashboardUser from '../../components/dashboard-user/dashboard-user.compon
 import InlineLinkEditor from './inline-link-editor.component'
 
 import { fetchDefaultLinks, fetchLinks } from '../../redux/links/links.actions'
+import { updateUserAsync } from '../../redux/user/user.actions'
 
 import './edit-profile.styles.scss'
 
@@ -17,8 +18,8 @@ class EditProfilePage extends Component {
 		this.state = {
 			loadingLinks: false,
 			links: [],
-			name: props.name,
-			about: props.about,
+			name: props.name || '',
+			about: props.about || '',
 		}
 	}
 	componentDidMount = async () => {
@@ -83,7 +84,17 @@ class EditProfilePage extends Component {
 	updateName = val => {
 		this.setState({ name: val })
 	}
-	saveDetails = () => {
+	saveDetails = async () => {
+		const { name, about, links } = this.state
+		const { updateUserAsync } = this.props
+
+		// save name and about
+		try {
+			await updateUserAsync('name', name)
+			await updateUserAsync('about', about)
+		} catch (err) {
+			console.log(err)
+		}
 		console.log('save details triggered')
 	}
 
@@ -151,6 +162,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	fetchDefaultLinks: () => dispatch(fetchDefaultLinks()),
 	fetchLinks: () => dispatch(fetchLinks()),
+	updateUserAsync: (name, value) => dispatch(updateUserAsync(name, value)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditProfilePage)
