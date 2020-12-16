@@ -69,8 +69,8 @@ class EditProfilePage extends Component {
 								Loading your profile links...
 							</h5>
 						)}
-						<div className='p-3'>
-							<button className='btn btn-dark btn-block'>
+						<div className='p-3 py-2'>
+							<button className='btn btn-dark btn-block py-2'>
 								Save Changes
 							</button>
 						</div>
