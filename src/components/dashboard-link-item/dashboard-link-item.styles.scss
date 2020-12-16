@@ -9,4 +9,9 @@
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
+
+	&.disabled {
+		cursor: auto;
+		opacity: 0.5;
+	}
 }

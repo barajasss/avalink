@@ -10,6 +10,11 @@ const linksReducer = (state = initialLinksState, action) => {
 	switch (action.type) {
 		case LinksActionTypes.SET_DEFAULT_LINKS: {
 			const defaultLinks = action.payload
+			defaultLinks.sort(function (a, b) {
+				var textA = a.type.toUpperCase()
+				var textB = b.type.toUpperCase()
+				return textA < textB ? -1 : textA > textB ? 1 : 0
+			})
 			return {
 				...state,
 				defaultLinks,

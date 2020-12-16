@@ -1,5 +1,5 @@
 import DashboardLinkItem from '../dashboard-link-item/dashboard-link-item.component'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 import { fetchDefaultLinks } from '../../redux/links/links.actions'
 import { connect } from 'react-redux'
@@ -9,14 +9,19 @@ const LinkOptions = ({
 	fetchDefaultLinks,
 	defaultLinksLoaded,
 	defaultLinks,
+	userLinks,
 }) => {
+	const [fetching, setFetching] = useState(false)
+
 	useEffect(async () => {
 		if (!defaultLinksLoaded) {
+			setFetching(true)
 			try {
 				await fetchDefaultLinks()
 			} catch (err) {
 				console.log(err)
 			}
+			setFetching(false)
 		}
 	}, [])
 
@@ -25,21 +30,37 @@ const LinkOptions = ({
 			<h4>Add a social link to your profile</h4>
 			<hr />
 			<div className='link-grid'>
-				{defaultLinks.map(item => (
-					<DashboardLinkItem
-						key={item.type}
-						onClick={() => {
-							openLinkEditor(item.type)
-						}}>
-						{item.type}
-					</DashboardLinkItem>
-				))}
+				{fetching && <h5>Loading...</h5>}
+				{defaultLinks.map(item => {
+					const userAddedAlready =
+						userLinks.findIndex(
+							userLink => userLink.type === item.type
+						) !== -1
+					if (!userAddedAlready) {
+						return (
+							<DashboardLinkItem
+								key={item.type}
+								onClick={() => {
+									openLinkEditor(item.type)
+								}}>
+								{item.type}
+							</DashboardLinkItem>
+						)
+					} else {
+						return (
+							<DashboardLinkItem key={item.type} disabled>
+								{item.type}
+							</DashboardLinkItem>
+						)
+					}
+				})}
 			</div>
 		</div>
 	)
 }
 
 const mapStateToProps = state => ({
+	userLinks: state.links.userLinks,
 	defaultLinks: state.links.defaultLinks,
 	defaultLinksLoaded: state.links.defaultLinksLoaded,
 })

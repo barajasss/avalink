@@ -4,13 +4,21 @@ import './dashboard-link-item.styles.scss'
 
 class DashboardLinkItem extends Component {
 	render() {
-		const { modalBtn, linkBtn, showModal, onClick, type } = this.props
+		const {
+			disabled,
+			modalBtn,
+			linkBtn,
+			showModal,
+			onClick,
+			type,
+		} = this.props
 		return (
 			<div
-				className='dashboard-link-item'
+				className={`dashboard-link-item ${disabled ? 'disabled' : ''}`}
 				data-toggle='modal'
 				data-target={`${modalBtn ? '#myModal' : '#addLinkModal'}`}
 				onClick={() => {
+					if (disabled) return
 					if (modalBtn && showModal) {
 						showModal(true, {
 							displayLinkEditor: false,
