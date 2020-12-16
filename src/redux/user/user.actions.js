@@ -67,7 +67,7 @@ const loginUser = (user, avoidLogin) => async dispatch => {
 		if (!avoidLogin) {
 			loggedUser = await loginUserFirebase(user)
 		}
-		const about = await fetchDataFirebase(user, 'about')
+		const about = await fetchDataFirebase(await getCurrentUser(), 'about')
 		dispatch(
 			setUser({
 				name: loggedUser.user && loggedUser.user.displayName,
