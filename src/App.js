@@ -7,24 +7,32 @@ import 'react-toastify/dist/ReactToastify.css'
 import Loading from './components/loading/loading.component'
 import { Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { setUser, unsetUser, resolveAuthState } from './redux/user/user.actions'
+import {
+	loginUser,
+	setUser,
+	unsetUser,
+	resolveAuthState,
+} from './redux/user/user.actions'
 
 import './App.css'
 
 class App extends React.Component {
-	componentDidMount() {
-		const { setUser, unsetUser, resolveAuthState, location } = this.props
-		this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
+	componentDidMount = () => {
+		const {
+			setUser,
+			unsetUser,
+			resolveAuthState,
+			location,
+			loginUser,
+		} = this.props
+		this.unsubscribe = firebase.auth().onAuthStateChanged(async user => {
 			console.log(user, location)
 			if (user) {
 				if (location.state && location.state.from === 'register') {
 					return
 				}
-				const { displayName: name, email } = user
-				setUser({
-					name,
-					email,
-				})
+				const { displayName: name, email, uid } = user
+				await loginUser({ name, email, uid }, true)
 			} else {
 				unsetUser()
 			}
@@ -91,6 +99,7 @@ const mapDispatchToProps = dispatch => ({
 	setUser: user => dispatch(setUser(user)),
 	unsetUser: () => dispatch(unsetUser()),
 	resolveAuthState: () => dispatch(resolveAuthState()),
+	loginUser: (user, opt) => dispatch(loginUser(user, opt)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App))

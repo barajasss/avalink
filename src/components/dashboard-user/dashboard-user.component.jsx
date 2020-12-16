@@ -3,19 +3,20 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './dashboard-user.styles.scss'
 
-const ProfileDetails = ({ name }) => (
+const ProfileDetails = ({ name, about }) => (
 	<div className='row'>
-		<div className='col-4 display-image'>
+		<div className='col-sm-4 display-image'>
 			<img src={process.env.PUBLIC_URL + 'user.png'} alt='user display' />
 		</div>
-		<div className='col-6'>
-			<h3 className='text-capitalize mt-1'>{name}</h3>
+		<div className='col-sm-6'>
+			<h3 className='text-capitalize mt-1 profile-name'>{name}</h3>
+			<p className='profile-about'>{about}</p>
 		</div>
-		<div className='col-2'>
+		<div className='col-sm-2 qr-and-link-contianer'>
 			<img
 				className='qr-icon'
 				src={process.env.PUBLIC_URL + 'icons/qrcode.png'}
-				alt='qr icon'
+				alt='QR icon'
 			/>
 			<i className='fas fa-link link-icon' />
 		</div>
@@ -46,10 +47,14 @@ const EditProfile = () => (
 
 class DashboardUser extends Component {
 	render() {
-		const { name, editProfile } = this.props
+		const { name, about, editProfile } = this.props
 		return (
 			<div className='dashboard-user'>
-				{editProfile ? <EditProfile /> : <ProfileDetails name={name} />}
+				{editProfile ? (
+					<EditProfile />
+				) : (
+					<ProfileDetails name={name} about={about} />
+				)}
 			</div>
 		)
 	}
@@ -57,6 +62,7 @@ class DashboardUser extends Component {
 
 const mapStateToProps = state => ({
 	name: state.user.name,
+	about: state.user.about,
 })
 
 export default connect(mapStateToProps)(DashboardUser)

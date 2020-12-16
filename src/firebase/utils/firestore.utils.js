@@ -6,7 +6,7 @@ const createUserDefaults = async user => {
 	try {
 		await db.collection('users').doc(user.uid).set({
 			totalProfileLinks: 0,
-			bio: '',
+			about: '',
 			instagram: '',
 			snapchat: '',
 			twitter: '',
@@ -48,6 +48,18 @@ const updateData = async (user, name, value) => {
 	}
 }
 
+const fetchData = async (user, name) => {
+	try {
+		const doc = await db.collection('users').doc(user.uid).get()
+		const data = doc.data()
+		if (data) {
+			return data[name]
+		}
+	} catch (err) {
+		throw err
+	}
+}
+
 const fetchLinks = async user => {
 	try {
 		let links = []
@@ -59,7 +71,7 @@ const fetchLinks = async user => {
 			Object.keys(data).forEach(link => {
 				if (
 					data[link] &&
-					link !== 'bio' &&
+					link !== 'about' &&
 					link !== 'totalProfileLinks'
 				) {
 					links = [...links, { type: link, link: data[link] }]
@@ -106,4 +118,5 @@ export {
 	incrementTotalProfileLinks,
 	fetchLinks,
 	fetchDefaultLinks,
+	fetchData,
 }

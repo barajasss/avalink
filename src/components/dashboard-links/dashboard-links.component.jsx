@@ -52,7 +52,7 @@ class DashboardLinks extends Component {
 		return (
 			<div className='dashboard-links'>
 				{/* CONTROLS */}
-				<div className='container row mb-4'>
+				<div className='mx-2 mx-sm-0 px-0 row mb-4'>
 					<div className='col-6 col-md-4 offset-md-2'>
 						<button
 							className={`btn ${

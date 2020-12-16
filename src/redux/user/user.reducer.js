@@ -3,6 +3,7 @@ import UserActionTypes from './user.types'
 const initialUserState = {
 	name: '',
 	email: '',
+	about: '',
 	isLoggedIn: false,
 	authStateResolved: false,
 }
@@ -10,11 +11,12 @@ const initialUserState = {
 const userReducer = (state = initialUserState, action) => {
 	switch (action.type) {
 		case UserActionTypes.SET_USER: {
-			const { name, email } = action.payload
+			const { name, email, about } = action.payload
 			return {
 				...state,
 				name,
 				email,
+				about,
 				isLoggedIn: true,
 			}
 		}

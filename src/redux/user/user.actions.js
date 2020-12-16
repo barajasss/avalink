@@ -4,6 +4,7 @@ import {
 	loginUser as loginUserFirebase,
 	logoutUser as logoutUserFirebase,
 } from '../../firebase/utils/auth.utils'
+import { fetchData as fetchDataFirebase } from '../../firebase/utils/firestore.utils'
 
 const setUser = user => ({
 	type: UserActionTypes.SET_USER,
@@ -32,13 +33,18 @@ const resolveAuthState = () => ({
 	type: UserActionTypes.RESOLVE_AUTH_STATE,
 })
 
-const loginUser = user => async dispatch => {
+const loginUser = (user, avoidLogin) => async dispatch => {
 	try {
-		const loggedUser = await loginUserFirebase(user)
+		let loggedUser = {}
+		if (!avoidLogin) {
+			loggedUser = await loginUserFirebase(user)
+		}
+		const about = await fetchDataFirebase(user, 'about')
 		dispatch(
 			setUser({
-				...user,
 				name: loggedUser.user && loggedUser.user.displayName,
+				about,
+				...user,
 			})
 		)
 	} catch (err) {
