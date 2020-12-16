@@ -44,7 +44,7 @@ const LinkEditor = ({
 					className='btn btn-danger px-5'
 					type='button'
 					onClick={() => {
-						closeLinkEditor()
+						closeModal()
 					}}>
 					Cancel
 				</button>{' '}
