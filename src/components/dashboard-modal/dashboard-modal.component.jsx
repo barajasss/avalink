@@ -41,6 +41,7 @@ class DashboardModal extends Component {
 							onClick={this.closeModal}></i>
 						{displayLinkEditor ? (
 							<LinkEditor
+								key={linkEditorType}
 								closeModal={this.closeModal}
 								closeLinkEditor={this.closeLinkEditor}
 								type={linkEditorType}

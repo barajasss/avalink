@@ -8,13 +8,15 @@ const LinkEditor = ({
 	closeModal,
 	updateLink,
 	links,
+	getLinkFromType,
 }) => {
-	const [link, setLink] = useState(links[type] || '')
+	const [link, setLink] = useState(getLinkFromType(type) || '')
 
 	const saveLink = async e => {
 		e.preventDefault()
 		try {
 			await updateLink(type, link)
+			closeModal()
 		} catch (err) {
 			console.log(err)
 		}
@@ -34,6 +36,7 @@ const LinkEditor = ({
 						className='form-control'
 						placeholder={`paste your ${type} profile link here`}
 						onChange={e => setLink(e.target.value)}
+						defaultValue={link}
 						required
 					/>
 				</div>
@@ -53,6 +56,12 @@ const LinkEditor = ({
 
 const mapStateToProps = state => ({
 	links: state.links.userLinks,
+	getLinkFromType: type => {
+		const found = state.links.userLinks.find(link => link.type === type)
+		if (found) {
+			return found.link
+		}
+	},
 })
 
 const mapDispatchToProps = dispatch => ({
