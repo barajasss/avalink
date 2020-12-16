@@ -72,6 +72,22 @@ const fetchLinks = async user => {
 	}
 }
 
+const fetchDefaultLinks = async () => {
+	try {
+		let links = []
+		const doc = await db.collection('defaults').doc('links').get()
+		const data = doc.data()
+		if (data) {
+			Object.keys(data).forEach(link => {
+				links = [...links, { type: link, link: data[link] }]
+			})
+		}
+		return links
+	} catch (err) {
+		throw err
+	}
+}
+
 const incrementTotalProfileLinks = user => {
 	try {
 		db.collection('users')
@@ -89,4 +105,5 @@ export {
 	updateData,
 	incrementTotalProfileLinks,
 	fetchLinks,
+	fetchDefaultLinks,
 }

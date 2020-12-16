@@ -1,13 +1,25 @@
 import LinksActionTypes from './links.types'
 
-const initialLinksState = []
+const initialLinksState = {
+	userLinks: [],
+	defaultLinks: [],
+	defaultLinksLoaded: false,
+}
 
 const linksReducer = (state = initialLinksState, action) => {
 	switch (action.type) {
+		case LinksActionTypes.SET_DEFAULT_LINKS: {
+			const defaultLinks = action.payload
+			return {
+				...state,
+				defaultLinks,
+				defaultLinksLoaded: true,
+			}
+		}
 		case LinksActionTypes.SET_LINK: {
 			const { type, link } = action.payload
-			const pos = state.findIndex(item => item.type === type)
-			let updatedLinkState = [...state]
+			const pos = state.userLinks.findIndex(item => item.type === type)
+			let updatedLinkState = [...state.userLinks]
 			console.log(pos)
 			if (pos !== -1) {
 				updatedLinkState[pos] = { type, link }
@@ -15,20 +27,20 @@ const linksReducer = (state = initialLinksState, action) => {
 				// insert new data
 				updatedLinkState = [...updatedLinkState, { type, link }]
 			}
-			return updatedLinkState
+			return { ...state, userLinks: updatedLinkState }
 		}
 		case LinksActionTypes.SET_LINK_MULTIPLE: {
 			const links = action.payload
-			return [...links]
+			return { ...state, userLinks: [...links] }
 		}
 		case LinksActionTypes.UNSET_LINK: {
 			const type = action.payload
-			const pos = state.findIndex(item => item.type === type)
-			let updatedLinkState = [...state]
+			const pos = state.userLinks.findIndex(item => item.type === type)
+			let updatedLinkState = [...state.userLinks]
 			if (pos !== -1) {
 				updatedLinkState[pos] = { type, link: '' }
 			}
-			return updatedLinkState
+			return { ...state, userLinks: updatedLinkState }
 		}
 		default:
 			return state

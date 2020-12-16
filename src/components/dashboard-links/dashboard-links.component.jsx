@@ -71,7 +71,7 @@ class DashboardLinks extends Component {
 }
 
 const mapStateToProps = state => ({
-	links: state.links,
+	links: state.links.userLinks,
 })
 
 const mapDispatchToProps = dispatch => ({

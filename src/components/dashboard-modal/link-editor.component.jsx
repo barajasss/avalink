@@ -52,7 +52,7 @@ const LinkEditor = ({
 }
 
 const mapStateToProps = state => ({
-	links: state.links,
+	links: state.links.userLinks,
 })
 
 const mapDispatchToProps = dispatch => ({

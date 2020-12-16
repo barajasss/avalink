@@ -4,11 +4,17 @@ import { getCurrentUser } from '../../firebase/utils/auth.utils'
 import {
 	updateData as updateLinkFirebase,
 	fetchLinks as fetchLinksFirebase,
+	fetchDefaultLinks as fetchDefaultLinksFirebase,
 } from '../../firebase/utils/firestore.utils'
 
 const setLink = (type, link) => ({
 	type: LinksActionTypes.SET_LINK,
 	payload: { type, link },
+})
+
+const setDefaultLinks = links => ({
+	type: LinksActionTypes.SET_DEFAULT_LINKS,
+	payload: links,
 })
 
 const setLinkMultiple = links => ({
@@ -31,6 +37,15 @@ const fetchLinks = () => async dispatch => {
 	}
 }
 
+const fetchDefaultLinks = () => async dispatch => {
+	try {
+		const links = await fetchDefaultLinksFirebase()
+		dispatch(setDefaultLinks(links))
+	} catch (err) {
+		throw err
+	}
+}
+
 const updateLink = (type, link) => async dispatch => {
 	// use to set or unset or modify any links.
 	const user = await getCurrentUser()
@@ -42,4 +57,4 @@ const updateLink = (type, link) => async dispatch => {
 	}
 }
 
-export { setLink, unsetLink, updateLink, fetchLinks }
+export { setLink, unsetLink, updateLink, fetchLinks, fetchDefaultLinks }
