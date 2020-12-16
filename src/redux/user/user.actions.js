@@ -34,8 +34,13 @@ const resolveAuthState = () => ({
 
 const loginUser = user => async dispatch => {
 	try {
-		await loginUserFirebase(user)
-		dispatch(setUser(user))
+		const loggedUser = await loginUserFirebase(user)
+		dispatch(
+			setUser({
+				...user,
+				name: loggedUser.user && loggedUser.user.displayName,
+			})
+		)
 	} catch (err) {
 		throw err
 	}

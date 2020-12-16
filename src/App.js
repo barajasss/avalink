@@ -38,6 +38,7 @@ class App extends React.Component {
 		if (
 			authStateResolved &&
 			isLoggedIn &&
+			location.pathname !== '/register' &&
 			!ignoredRoutes.includes(location.pathname) &&
 			!location.state
 		) {
@@ -57,7 +58,17 @@ class App extends React.Component {
 				</div>
 			)
 		} else {
-			return <Loading />
+			return (
+				<>
+					<Loading />
+					<ToastContainer
+						position='top-right'
+						autoClose={3500}
+						newestOnTop={true}
+						transition={Slide}
+					/>
+				</>
+			)
 		}
 	}
 }

@@ -1,4 +1,5 @@
 import firebase from '../firebase'
+import { createUserDefaults } from './firestore.utils'
 
 const registerUser = async ({ name, email, password }) => {
 	try {
@@ -11,6 +12,7 @@ const registerUser = async ({ name, email, password }) => {
 		})
 
 		// don't log user after registering...
+		await createUserDefaults(user)
 		await firebase.auth().signOut()
 	} catch (err) {
 		console.log(err)
@@ -20,7 +22,10 @@ const registerUser = async ({ name, email, password }) => {
 
 const loginUser = async ({ email, password }) => {
 	try {
-		await firebase.auth().signInWithEmailAndPassword(email, password)
+		const user = await firebase
+			.auth()
+			.signInWithEmailAndPassword(email, password)
+		return user
 	} catch (err) {
 		throw err
 	}

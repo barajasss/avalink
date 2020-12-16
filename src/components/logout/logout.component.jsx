@@ -13,7 +13,7 @@ class Logout extends Component {
 			await logoutUser()
 			toast.success('Logged out successfully!', { hideProgressBar: true })
 			resolveAuthState()
-			return setTimeout(() => history.push('/'), 1000)
+			return history.push('/')
 		} catch (err) {
 			console.log(err)
 			toast.error('Could not logout. Please try again later!')
