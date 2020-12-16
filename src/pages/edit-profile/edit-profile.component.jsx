@@ -15,7 +15,8 @@ class EditProfilePage extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			loading: false,
+			loadingLinks: false,
+			links: [],
 		}
 	}
 	componentDidMount = async () => {
@@ -25,26 +26,58 @@ class EditProfilePage extends Component {
 			userLinksLoaded,
 			fetchLinks,
 		} = this.props
-		this.setState({ loading: true })
+
+		let { userLinks, defaultLinks } = this.props
+
+		this.setState({ loadingLinks: true })
 		if (!defaultLinksLoaded) {
 			try {
-				await fetchDefaultLinks()
+				defaultLinks = await fetchDefaultLinks()
 			} catch (err) {
 				console.log(err)
 			}
 		}
 		if (!userLinksLoaded) {
 			try {
-				await fetchLinks()
+				userLinks = await fetchLinks()
 			} catch (err) {
 				console.log(err)
 			}
 		}
-		this.setState({ loading: false })
+
+		// create links by merging user links and default links
+
+		let links = []
+
+		userLinks.forEach(userLink => {
+			links = [...links, { ...userLink }]
+		})
+
+		defaultLinks.forEach(defaultLink => {
+			const linkFoundInUser = userLinks.find(
+				userLink => userLink.type === defaultLink.type
+			)
+			if (!linkFoundInUser) {
+				links = [...links, { ...defaultLink }]
+			}
+		})
+		this.setState({ loadingLinks: false, links })
 	}
+
+	updateLink = (type, link) => {
+		const { links } = this.state
+		const i = links.findIndex(link => link.type === type)
+		if (i === -1) return
+		const updatedLinks = [...links]
+		updatedLinks[i].link = link
+		this.setState({
+			links: updatedLinks,
+		})
+	}
+
 	render() {
-		const { isLoggedIn, userLinks, defaultLinks } = this.props
-		const { loading } = this.state
+		const { isLoggedIn } = this.props
+		const { loadingLinks, links } = this.state
 		if (!isLoggedIn) {
 			return <Redirect to='/' />
 		}
@@ -54,27 +87,17 @@ class EditProfilePage extends Component {
 					<div className='col-md-8 offset-md-2'>
 						<DashboardHeader editProfile />
 						<DashboardUser editProfile />
-						{userLinks.map(item => (
+
+						{links.map(item => (
 							<InlineLinkEditor
 								key={item.type}
 								type={item.type}
+								link={item.link}
+								updateLink={this.updateLink}
 							/>
 						))}
-						{defaultLinks.map(item => {
-							if (
-								userLinks.findIndex(
-									userLink => userLink.type === item.type
-								) === -1
-							) {
-								return (
-									<InlineLinkEditor
-										key={item.type}
-										type={item.type}
-									/>
-								)
-							}
-						})}
-						{loading && (
+
+						{loadingLinks && (
 							<h5 className='text-center'>
 								Loading your profile links...
 							</h5>

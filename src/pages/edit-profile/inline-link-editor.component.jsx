@@ -2,15 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 class InlineLinkEditor extends React.Component {
-	constructor(props) {
-		super(props)
-		this.state = {
-			link: props.getLinkFromType(props.type),
-		}
-	}
 	render() {
-		const { type } = this.props
-		const { link } = this.state
+		const { type, link, updateLink } = this.props
 		return (
 			<div className='inline-link-editor'>
 				<img
@@ -22,7 +15,7 @@ class InlineLinkEditor extends React.Component {
 						className='form-control'
 						type='text'
 						placeholder={`${type} profile link`}
-						onChange={e => this.setState({ link: e.target.value })}
+						onChange={e => updateLink(type, e.target.value)}
 						value={link}
 					/>
 				</div>

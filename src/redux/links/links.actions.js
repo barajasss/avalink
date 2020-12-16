@@ -32,6 +32,7 @@ const fetchLinks = () => async dispatch => {
 		const user = await getCurrentUser()
 		const links = await fetchLinksFirebase(user)
 		dispatch(setLinkMultiple(links))
+		return links
 	} catch (err) {
 		throw err
 	}
@@ -41,6 +42,7 @@ const fetchDefaultLinks = () => async dispatch => {
 	try {
 		const links = await fetchDefaultLinksFirebase()
 		dispatch(setDefaultLinks(links))
+		return links
 	} catch (err) {
 		throw err
 	}
