@@ -16,7 +16,7 @@ class DashboardUser extends Component {
 						/>
 					</div>
 					<div className='col-6'>
-						<h3 className='text-capitalize'>{name}</h3>
+						<h3 className='text-capitalize mt-1'>{name}</h3>
 					</div>
 					<div className='col-2'>
 						<img

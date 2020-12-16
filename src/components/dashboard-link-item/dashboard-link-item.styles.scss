@@ -1,3 +1,8 @@
+.remove-mode {
+	img {
+		filter: grayscale(1);
+	}
+}
 .dashboard-link-item {
 	border-radius: 10px;
 	margin: auto;
@@ -23,7 +28,8 @@
 		border-radius: 10px;
 	}
 
-	.check-icon {
+	.check-icon,
+	.remove-icon {
 		position: absolute;
 		right: -5px;
 		top: -5px;
@@ -31,9 +37,21 @@
 		font-size: 1em;
 		background: rgba(0, 200, 0, 0.9);
 		border-radius: 50%;
+		height: 25px;
+		width: 25px;
 		padding: 5px;
+		text-align: center;
 	}
-
+	.remove-icon {
+		background: rgba(200, 0, 0, 0.8);
+		transition: 0.3s;
+	}
+	&:hover .remove-icon {
+		background: rgba(200, 0, 0, 0.9);
+	}
+	.check-icon {
+		background: rgba(0, 200, 0, 0.9);
+	}
 	.link-title {
 		font-size: 0.9em;
 	}

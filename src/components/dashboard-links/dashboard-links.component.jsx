@@ -15,6 +15,7 @@ class DashboardLinks extends Component {
 			showModal: false,
 			linkEditorType: '',
 			displayLinkEditor: false,
+			removeMode: false,
 		}
 	}
 
@@ -41,32 +42,62 @@ class DashboardLinks extends Component {
 		}
 	}
 	render() {
-		const { showModal, linkEditorType, displayLinkEditor } = this.state
+		const {
+			removeMode,
+			showModal,
+			linkEditorType,
+			displayLinkEditor,
+		} = this.state
 		const { links } = this.props
 		return (
-			<div className='dashboard-links link-grid'>
-				<DashboardLinkItem type={'contact'} />
-				{links.map(link => (
-					<DashboardLinkItem
-						key={link.type}
+			<div className='dashboard-links'>
+				{/* CONTROLS */}
+				<div className='container row mb-4'>
+					<div className='col-6 col-md-4 offset-md-2'>
+						<button
+							className={`btn ${
+								removeMode ? 'btn-dark' : 'btn-outline-dark'
+							} mt-2 btn-block`}
+							onClick={() =>
+								this.setState(state => ({
+									removeMode: !state.removeMode,
+								}))
+							}>
+							{removeMode ? 'Save' : 'Edit links'}
+						</button>
+					</div>
+					<div className='col-6 col-md-4'>
+						<button className='btn btn-outline-dark mt-2 btn-block'>
+							Enable Quick Link
+						</button>
+					</div>
+				</div>
+				{/* LINKS */}
+				<div className='link-grid'>
+					{!removeMode && <DashboardLinkItem type={'contact'} />}
+					{links.map(link => (
+						<DashboardLinkItem
+							key={link.type}
+							showModal={this.showModal}
+							linkBtn
+							type={link.type}
+							removeMode={removeMode}
+						/>
+					))}
+					{!removeMode && (
+						<DashboardLinkItem
+							modalBtn
+							showModal={this.showModal}
+							type={'new link'}
+						/>
+					)}
+					<DashboardModal
+						show={showModal}
 						showModal={this.showModal}
-						linkBtn
-						type={link.type}
+						displayLinkEditor={displayLinkEditor}
+						linkEditorType={linkEditorType}
 					/>
-				))}
-
-				<DashboardLinkItem
-					modalBtn
-					showModal={this.showModal}
-					type={'new link'}
-				/>
-
-				<DashboardModal
-					show={showModal}
-					showModal={this.showModal}
-					displayLinkEditor={displayLinkEditor}
-					linkEditorType={linkEditorType}
-				/>
+				</div>
 			</div>
 		)
 	}

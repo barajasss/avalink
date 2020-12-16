@@ -57,4 +57,22 @@ const updateLink = (type, link) => async dispatch => {
 	}
 }
 
-export { setLink, unsetLink, updateLink, fetchLinks, fetchDefaultLinks }
+const removeLink = type => async dispatch => {
+	// use to set or unset or modify any links.
+	const user = await getCurrentUser()
+	try {
+		await updateLinkFirebase(user, type, '')
+		dispatch(unsetLink(type))
+	} catch (err) {
+		throw err
+	}
+}
+
+export {
+	setLink,
+	unsetLink,
+	updateLink,
+	removeLink,
+	fetchLinks,
+	fetchDefaultLinks,
+}

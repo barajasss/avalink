@@ -46,11 +46,9 @@ const linksReducer = (state = initialLinksState, action) => {
 		}
 		case LinksActionTypes.UNSET_LINK: {
 			const type = action.payload
-			const pos = state.userLinks.findIndex(item => item.type === type)
-			let updatedLinkState = [...state.userLinks]
-			if (pos !== -1) {
-				updatedLinkState[pos] = { type, link: '' }
-			}
+			const updatedLinkState = state.userLinks.filter(
+				item => item.type !== type
+			)
 			return { ...state, userLinks: updatedLinkState }
 		}
 		default:
