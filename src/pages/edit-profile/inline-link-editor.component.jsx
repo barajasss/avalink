@@ -22,10 +22,16 @@ class InlineLinkEditor extends React.Component {
 						className='form-control'
 						type='text'
 						placeholder={`${type} profile link`}
-						defaultValue={link}
+						onChange={e => this.setState({ link: e.target.value })}
+						value={link}
 					/>
 				</div>
-				<i className='fas fa-times text-danger fa-2x p-1 ml-3 clear-icon' />
+				<i
+					className='fas fa-times text-danger fa-2x p-1 ml-3 clear-icon'
+					onClick={() => {
+						this.setState({ link: '' })
+					}}
+				/>
 			</div>
 		)
 	}
