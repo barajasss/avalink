@@ -13,6 +13,8 @@ class DashboardLinks extends Component {
 		super(props)
 		this.state = {
 			showModal: false,
+			linkEditorType: '',
+			displayLinkEditor: false,
 		}
 	}
 
@@ -25,24 +27,44 @@ class DashboardLinks extends Component {
 		}
 	}
 
-	showModal = show => {
-		this.setState({ showModal: show })
+	showModal = (show, opts) => {
+		if (opts) {
+			this.setState({
+				showModal: show,
+				linkEditorType: opts.linkEditorType || '',
+				displayLinkEditor: opts.displayLinkEditor || false,
+			})
+		} else {
+			this.setState({
+				showModal: show,
+			})
+		}
 	}
 	render() {
-		const { showModal } = this.state
+		const { showModal, linkEditorType, displayLinkEditor } = this.state
 		const { links } = this.props
 		return (
 			<div className='dashboard-links link-grid'>
 				<DashboardLinkItem>Contact</DashboardLinkItem>
 				{links.map(link => (
-					<DashboardLinkItem key={link.type}>
-						{link.type}
-					</DashboardLinkItem>
+					<DashboardLinkItem
+						key={link.type}
+						showModal={this.showModal}
+						linkBtn
+						type={link.type}
+					/>
 				))}
+
 				<DashboardLinkItem modalBtn showModal={this.showModal}>
 					<i className='fas fa-plus fa-3x'></i>
 				</DashboardLinkItem>
-				<DashboardModal show={showModal} showModal={this.showModal} />
+
+				<DashboardModal
+					show={showModal}
+					showModal={this.showModal}
+					displayLinkEditor={displayLinkEditor}
+					linkEditorType={linkEditorType}
+				/>
 			</div>
 		)
 	}

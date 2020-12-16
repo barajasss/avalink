@@ -7,34 +7,28 @@ import LinkOptions from './link-options.component'
 class DashboardModal extends Component {
 	constructor(props) {
 		super(props)
-		this.state = {
-			openLinkEditor: false,
-			type: '',
-		}
 	}
 	openLinkEditor = type => {
-		this.setState({ openLinkEditor: true, type })
+		const { showModal } = this.props
+		showModal(true, {
+			displayLinkEditor: true,
+			linkEditorType: type,
+		})
 	}
 	closeLinkEditor = () => {
-		this.setState({ openLinkEditor: false })
+		const { showModal } = this.props
+		showModal(true, {
+			displayLinkEditor: false,
+			linkEditorType: '',
+		})
 	}
 	closeModal = () => {
 		const { showModal } = this.props
 		showModal(false)
-		this.timeout = setTimeout(
-			() =>
-				this.setState({
-					openLinkEditor: false,
-				}),
-			1000
-		)
 	}
-	componentWillUnmount() {
-		clearTimeout(this.timeout)
-	}
+	componentWillUnmount() {}
 	render() {
-		const { show } = this.props
-		const { openLinkEditor, type } = this.state
+		const { show, displayLinkEditor, linkEditorType } = this.props
 		return (
 			<>
 				<div
@@ -45,11 +39,11 @@ class DashboardModal extends Component {
 						<i
 							className='fas fa-times close-icon'
 							onClick={this.closeModal}></i>
-						{openLinkEditor ? (
+						{displayLinkEditor ? (
 							<LinkEditor
 								closeModal={this.closeModal}
 								closeLinkEditor={this.closeLinkEditor}
-								type={type}
+								type={linkEditorType}
 							/>
 						) : (
 							<LinkOptions openLinkEditor={this.openLinkEditor} />

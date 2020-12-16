@@ -8,7 +8,8 @@ const linksReducer = (state = initialLinksState, action) => {
 			const { type, link } = action.payload
 			const pos = state.findIndex(item => item.type === type)
 			let updatedLinkState = [...state]
-			if (pos && pos !== -1) {
+			console.log(pos)
+			if (pos !== -1) {
 				updatedLinkState[pos] = { type, link }
 			} else {
 				// insert new data
@@ -24,7 +25,7 @@ const linksReducer = (state = initialLinksState, action) => {
 			const type = action.payload
 			const pos = state.findIndex(item => item.type === type)
 			let updatedLinkState = [...state]
-			if (pos && pos !== -1) {
+			if (pos !== -1) {
 				updatedLinkState[pos] = { type, link: '' }
 			}
 			return updatedLinkState
