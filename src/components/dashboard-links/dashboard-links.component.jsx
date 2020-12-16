@@ -45,7 +45,7 @@ class DashboardLinks extends Component {
 		const { links } = this.props
 		return (
 			<div className='dashboard-links link-grid'>
-				<DashboardLinkItem>Contact</DashboardLinkItem>
+				<DashboardLinkItem type={'contact'} />
 				{links.map(link => (
 					<DashboardLinkItem
 						key={link.type}
@@ -55,9 +55,11 @@ class DashboardLinks extends Component {
 					/>
 				))}
 
-				<DashboardLinkItem modalBtn showModal={this.showModal}>
-					<i className='fas fa-plus fa-3x'></i>
-				</DashboardLinkItem>
+				<DashboardLinkItem
+					modalBtn
+					showModal={this.showModal}
+					type={'new link'}
+				/>
 
 				<DashboardModal
 					show={showModal}

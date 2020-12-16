@@ -5,20 +5,20 @@ import './dashboard-link-item.styles.scss'
 class DashboardLinkItem extends Component {
 	render() {
 		const {
-			disabled,
+			checked,
 			modalBtn,
 			linkBtn,
 			showModal,
 			onClick,
+			noIcon,
 			type,
 		} = this.props
 		return (
 			<div
-				className={`dashboard-link-item ${disabled ? 'disabled' : ''}`}
+				className={`dashboard-link-item ${checked ? 'checked' : ''}`}
 				data-toggle='modal'
 				data-target={`${modalBtn ? '#myModal' : '#addLinkModal'}`}
 				onClick={() => {
-					if (disabled) return
 					if (modalBtn && showModal) {
 						showModal(true, {
 							displayLinkEditor: false,
@@ -36,7 +36,14 @@ class DashboardLinkItem extends Component {
 					}
 				}}>
 				{this.props.children}
-				{type}
+				{!noIcon && (
+					<img
+						src={`${process.env.PUBLIC_URL}icons/${type}.png`}
+						className='icon-img img-fluid'
+					/>
+				)}
+				{checked && <i className='fas fa-check check-icon' />}
+				<p className='link-title text-center m-0 pt-1'>{type}</p>
 			</div>
 		)
 	}

@@ -42,15 +42,20 @@ const LinkOptions = ({
 								key={item.type}
 								onClick={() => {
 									openLinkEditor(item.type)
-								}}>
-								{item.type}
-							</DashboardLinkItem>
+								}}
+								type={item.type}
+							/>
 						)
 					} else {
 						return (
-							<DashboardLinkItem key={item.type} disabled>
-								{item.type}
-							</DashboardLinkItem>
+							<DashboardLinkItem
+								key={item.type}
+								onClick={() => {
+									openLinkEditor(item.type)
+								}}
+								type={item.type}
+								checked
+							/>
 						)
 					}
 				})}
