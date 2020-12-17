@@ -42,9 +42,16 @@ class LoginPage extends Component {
 			return setTimeout(() => history.push('/dashboard'), 1100)
 		} catch (err) {
 			console.log(err)
-			toast.error(
-				err.message || 'Error trying to login. Please try again later.'
-			)
+			if (err.code === 'auth/user-not-found') {
+				toast.error('No user exists with this email')
+			} else if (err.code === 'auth/wrong-password') {
+				toast.error('Password is incorrect')
+			} else {
+				toast.error(
+					err.message ||
+						'Error trying to login. Please try again later.'
+				)
+			}
 		}
 		this.setState({
 			logging: false,

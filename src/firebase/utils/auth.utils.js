@@ -74,6 +74,14 @@ const updatePassword = async (oldPassword, newPassword) => {
 	}
 }
 
+const sendResetPassword = async email => {
+	try {
+		await firebase.auth().sendPasswordResetEmail(email)
+	} catch (err) {
+		throw err
+	}
+}
+
 export {
 	registerUser,
 	loginUser,
@@ -81,4 +89,5 @@ export {
 	getCurrentUser,
 	updateUser,
 	updatePassword,
+	sendResetPassword,
 }
