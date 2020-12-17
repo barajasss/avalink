@@ -16,6 +16,8 @@ import {
 } from '../../redux/links/links.actions'
 import { updateUserAsync } from '../../redux/user/user.actions'
 
+import { saveProfileImage } from '../../firebase/utils/firebase-storage.utils'
+
 import './edit-profile.styles.scss'
 
 class EditProfilePage extends Component {
@@ -27,7 +29,10 @@ class EditProfilePage extends Component {
 			links: [],
 			name: props.name || '',
 			about: props.about || '',
-			file: '',
+			file: {
+				data: '',
+				type: '',
+			},
 		}
 	}
 	componentDidMount = async () => {
@@ -94,11 +99,11 @@ class EditProfilePage extends Component {
 	updateName = val => {
 		this.setState({ name: val })
 	}
-	updateFile = val => {
-		this.setState({ file: val })
+	updateFile = (data, type) => {
+		this.setState({ file: { data, type } })
 	}
 	saveDetails = async () => {
-		const { name, about, links, savingDetails } = this.state
+		const { name, about, links, file, savingDetails } = this.state
 		const { updateUserAsync, updateMultipleLinks } = this.props
 
 		if (savingDetails) return
@@ -108,7 +113,11 @@ class EditProfilePage extends Component {
 			await updateUserAsync('name', name)
 			await updateUserAsync('about', about)
 			await updateMultipleLinks(links)
-			toast.success('Details updated successfully')
+			// save profile image
+			if (file.data) {
+				await saveProfileImage(file.data, file.type)
+			}
+			toast.success('Profile updated successfully')
 		} catch (err) {
 			console.log(err)
 			toast.error('Could not update your details. Try again later.')

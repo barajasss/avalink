@@ -14,7 +14,7 @@ const EditProfile = ({ name, about, updateName, updateAbout, updateFile }) => {
 			const reader = new FileReader()
 			reader.onload = () => {
 				imageRef.current.src = reader.result
-				updateFile(reader.result)
+				updateFile(reader.result, file.type)
 			}
 			reader.readAsDataURL(file)
 		}
