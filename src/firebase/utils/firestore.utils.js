@@ -1,10 +1,12 @@
 import firebase from '../firebase'
 
+import shortId from 'shortid'
 const db = firebase.firestore()
 
 const createUserDefaults = async user => {
 	try {
 		await db.collection('users').doc(user.uid).set({
+			id: shortId.generate(),
 			totalProfileLinks: 0,
 			about: '',
 			instagram: '',
@@ -28,6 +30,30 @@ const createUserDefaults = async user => {
 			website: '',
 			address: '',
 		})
+	} catch (err) {
+		throw err
+	}
+}
+
+const getId = async () => {
+	// returns the shortId and creates it if it does not exist
+	const user = firebase.auth().currentUser
+	try {
+		const doc = await db.collection('users').doc(user.uid).get()
+		const id = doc.data().id
+		if (id) {
+			return id
+		} else {
+			// create new id and store it if it does not exist
+			const newId = shortId.generate()
+			await db.collection('users').doc(user.uid).set(
+				{
+					id: newId,
+				},
+				{ merge: true }
+			)
+			return newId
+		}
 	} catch (err) {
 		throw err
 	}
@@ -87,6 +113,7 @@ const fetchLinks = async user => {
 			Object.keys(data).forEach(link => {
 				if (
 					data[link] &&
+					link !== 'id' &&
 					link !== 'about' &&
 					link !== 'totalProfileLinks'
 				) {
@@ -129,6 +156,7 @@ const incrementTotalProfileLinks = user => {
 }
 
 export {
+	getId,
 	createUserDefaults,
 	updateData,
 	incrementTotalProfileLinks,

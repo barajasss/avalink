@@ -1,3 +1,29 @@
+.qr-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	svg {
+		display: block;
+		margin: 5px auto;
+		max-width: 300px;
+		width: 60%;
+		height: auto;
+	}
+}
+.profile-link-container {
+	margin-top: 50px;
+	margin-bottom: 40px;
+	border: 2px solid #333;
+	padding: 15px;
+	padding-top: 12px;
+	text-align: center;
+	font-size: 1.2em;
+	border-radius: 10px;
+	line-height: 1.2em;
+	color: #555;
+	word-break: break-all;
+}
+
 .qr-icon,
 .link-icon {
 	transition: 0.3s;
@@ -13,4 +39,10 @@
 }
 .link-icon:hover {
 	transform: scale(1.15);
+}
+
+@media screen and (max-width: 576px) {
+	.profile-link-container {
+		padding: 15px 0;
+	}
 }

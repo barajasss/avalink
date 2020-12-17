@@ -1,19 +1,75 @@
-import React, { Component } from 'react'
+import React, { Component, useState, useEffect, createRef } from 'react'
 import DashboardModal from '../../components/dashboard-modal/dashboard-modal.component'
 
 import './profile-details.styles.scss'
+import { getId } from '../../firebase/utils/firestore.utils'
 
-const QrView = () => (
-	<div>
-		<h4>Share your profile</h4>
-	</div>
-)
+import { toast } from 'react-toastify'
 
-const LinkView = () => (
-	<div>
-		<h4>Your Profile link</h4>
-	</div>
-)
+const createProflieUrl = id =>
+	window.location.origin + process.env.REACT_APP_PROFILE_URL + id
+
+const QrView = ({ id }) => {
+	const imageContainerRef = createRef()
+	useEffect(() => {
+		const typeNumber = 4
+		const errorCorrectionLevel = 'L'
+		const qr = window.qrcode(typeNumber, errorCorrectionLevel)
+		qr.addData(createProflieUrl(id))
+		qr.make()
+		imageContainerRef.current.innerHTML = qr.createSvgTag()
+	}, [])
+	return (
+		<div>
+			<h4 className='text-center'>Share your profile link</h4>
+			<hr />
+			<div className='qr-container' ref={imageContainerRef}></div>
+			<p className='text-center'>
+				Scan this QR code using any QR scanner app/camera.
+			</p>
+		</div>
+	)
+}
+
+const LinkView = ({ id }) => {
+	const linkRef = createRef()
+	const link = createProflieUrl(id)
+	const copyLink = async () => {
+		await navigator.clipboard.writeText(link)
+		toast.success('Link copied to clipboard.', {
+			autoClose: 2000,
+		})
+	}
+	return (
+		<div>
+			<h4>Your Profile link</h4>
+			<hr />
+			<p
+				className='profile-link-container'
+				ref={linkRef}
+				onClick={copyLink}>
+				{link}
+			</p>
+			<div className='row pb-3'>
+				<div className='col-6 col-md-4 offset-md-2'>
+					<a
+						href={link}
+						className='btn btn-dark btn-block'
+						target='_blank'>
+						Open in new tab
+					</a>
+				</div>
+				<div className='col-6 col-md-4'>
+					<button
+						className='btn btn-dark btn-block'
+						onClick={copyLink}>
+						Copy Link
+					</button>
+				</div>
+			</div>
+		</div>
+	)
+}
 
 class ProfileDetails extends Component {
 	constructor(props) {
@@ -21,7 +77,12 @@ class ProfileDetails extends Component {
 		this.state = {
 			show: false,
 			displayQr: false,
+			id: '',
 		}
+	}
+	async componentDidMount() {
+		console.log(window.qrcode)
+		this.setState({ id: await getId() })
 	}
 	showModal = show => {
 		console.log(show)
@@ -39,7 +100,7 @@ class ProfileDetails extends Component {
 	}
 	render() {
 		const { name, about } = this.props
-		const { show, displayQr } = this.state
+		const { id, show, displayQr } = this.state
 		return (
 			<div className='row'>
 				<div className='col-sm-4 display-image'>
@@ -67,7 +128,7 @@ class ProfileDetails extends Component {
 					/>
 				</div>
 				<DashboardModal show={show} showModal={this.showModal} custom>
-					{displayQr ? <QrView /> : <LinkView />}
+					{displayQr ? <QrView id={id} /> : <LinkView id={id} />}
 				</DashboardModal>
 			</div>
 		)

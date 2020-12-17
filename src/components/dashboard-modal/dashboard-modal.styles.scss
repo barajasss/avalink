@@ -16,6 +16,7 @@
 	padding: 20px;
 	min-height: 100px;
 	max-height: 90vh;
+	max-width: 90vw;
 	height: 90vh;
 
 	.close-icon {
@@ -50,8 +51,8 @@
 	visibility: hidden;
 	z-index: 300;
 	transition: 0.5;
-	height: 100%;
-	width: 100%;
+	min-height: 100%;
+	min-width: 100%;
 
 	&.show {
 		visibility: visible;
@@ -62,5 +63,14 @@
 @media screen and (max-width: 767px) {
 	.dashboard-modal {
 		width: 95%;
+		// margin-top: 20%;
+		// transform: translate(-50%);
+		height: auto;
+	}
+}
+@media screen and (max-width: 576px) {
+	.dashboard-modal {
+		width: 95%;
+		height: auto;
 	}
 }
