@@ -1,0 +1,25 @@
+.home-logo-container {
+	img {
+		border: 5px solid rgb(160, 160, 160);
+		border-radius: 50%;
+	}
+}
+div.jumbotron {
+	// background-image: url('images/milky way.jpg');
+	background-attachment: fixed;
+}
+.feature-text-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.feature-images {
+	border-radius: 50px;
+	border: 2px solid #333;
+	padding: 13px;
+	margin-bottom: 10px;
+	overflow: hidden;
+}
+.footer {
+	background-color: #222;
+}
