@@ -64,7 +64,7 @@ class DashboardLinks extends Component {
 										removeMode: !state.removeMode,
 									}))
 								}>
-								{removeMode ? 'Save' : 'Edit links'}
+								{removeMode ? 'Done' : 'Edit links'}
 							</button>
 						</div>
 						<div className='col-6 col-md-4'>
