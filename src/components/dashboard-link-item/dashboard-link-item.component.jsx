@@ -25,7 +25,26 @@ class DashboardLinkItem extends Component {
 			noIcon,
 			type,
 			removeMode,
+			profilePage,
+			quickLink,
+			getLinkFromType,
 		} = this.props
+
+		if (profilePage && quickLink) {
+			return (
+				<div className='dashboard-link-item'>
+					{!noIcon && (
+						<a href={getLinkFromType(type)} target='_blank'>
+							<img
+								src={`/icons/${type}.png`}
+								className='icon-img img-fluid'
+							/>
+						</a>
+					)}
+					<p className='link-title text-center m-0 pt-1'>{type}</p>
+				</div>
+			)
+		}
 		return (
 			<div
 				className={`dashboard-link-item ${
@@ -70,8 +89,18 @@ class DashboardLinkItem extends Component {
 		)
 	}
 }
-
+const mapStateToProps = state => ({
+	getLinkFromType: type => {
+		const found = state.links.userLinks.find(link => link.type === type)
+		if (found) {
+			return found.link
+		}
+	},
+})
 const mapDispatchToProps = dispatch => ({
 	removeLink: type => dispatch(removeLink(type)),
 })
-export default connect(null, mapDispatchToProps)(withRouter(DashboardLinkItem))
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withRouter(DashboardLinkItem))

@@ -2,10 +2,11 @@ import LinksActionTypes from './links.types'
 
 import { getCurrentUser } from '../../firebase/utils/auth.utils'
 import {
-	updateData as updateLinkFirebase,
+	updateData as updateDataFirebase,
 	fetchLinks as fetchLinksFirebase,
 	fetchDefaultLinks as fetchDefaultLinksFirebase,
 	updateBulkData as updateBulkDataFirebase,
+	fetchData as fetchDataFirebase,
 } from '../../firebase/utils/firestore.utils'
 
 const setLink = (type, link) => ({
@@ -33,6 +34,12 @@ const fetchLinks = () => async dispatch => {
 		const user = await getCurrentUser()
 		const links = await fetchLinksFirebase(user)
 		dispatch(setLinkMultiple(links))
+		const quickLink = await fetchDataFirebase(user, 'quickLink')
+		if (quickLink) {
+			dispatch(setQuickLink())
+		} else {
+			dispatch(unsetQuickLink())
+		}
 		return links
 	} catch (err) {
 		throw err
@@ -53,7 +60,7 @@ const updateLink = (type, link) => async dispatch => {
 	// use to set or unset or modify any links.
 	const user = await getCurrentUser()
 	try {
-		await updateLinkFirebase(user, type, link)
+		await updateDataFirebase(user, type, link)
 		dispatch(setLink(type, link))
 	} catch (err) {
 		throw err
@@ -85,12 +92,45 @@ const removeLink = type => async dispatch => {
 	// use to set or unset or modify any links.
 	const user = await getCurrentUser()
 	try {
-		await updateLinkFirebase(user, type, '')
+		await updateDataFirebase(user, type, '')
 		dispatch(unsetLink(type))
 	} catch (err) {
 		throw err
 	}
 }
+
+/* QUICK LINKS */
+const setQuickLink = () => ({
+	type: LinksActionTypes.SET_QUICK_LINK,
+})
+
+const unsetQuickLink = () => ({
+	type: LinksActionTypes.UNSET_QUICK_LINK,
+})
+
+const setQuickLinkAsync = () => async dispatch => {
+	// use to set or unset or modify any links.
+	const user = await getCurrentUser()
+	try {
+		await updateDataFirebase(user, 'quickLink', true)
+		dispatch(setQuickLink())
+	} catch (err) {
+		throw err
+	}
+}
+
+const unsetQuickLinkAsync = () => async dispatch => {
+	// use to set or unset or modify any links.
+	const user = await getCurrentUser()
+	try {
+		await updateDataFirebase(user, 'quickLink', false)
+		dispatch(unsetQuickLink())
+	} catch (err) {
+		throw err
+	}
+}
+
+// EXPORT
 
 export {
 	setLink,
@@ -100,4 +140,6 @@ export {
 	fetchLinks,
 	fetchDefaultLinks,
 	updateMultipleLinks,
+	setQuickLinkAsync,
+	unsetQuickLinkAsync,
 }

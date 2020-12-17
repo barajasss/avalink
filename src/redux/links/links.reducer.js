@@ -2,6 +2,7 @@ import LinksActionTypes from './links.types'
 
 const initialLinksState = {
 	userLinks: [],
+	quickLink: false,
 	defaultLinks: [],
 	defaultLinksLoaded: false,
 	userLinksLoaded: false,
@@ -9,6 +10,12 @@ const initialLinksState = {
 
 const linksReducer = (state = initialLinksState, action) => {
 	switch (action.type) {
+		case LinksActionTypes.SET_QUICK_LINK: {
+			return { ...state, quickLink: true }
+		}
+		case LinksActionTypes.UNSET_QUICK_LINK: {
+			return { ...state, quickLink: false }
+		}
 		case LinksActionTypes.SET_DEFAULT_LINKS: {
 			const defaultLinks = action.payload
 			// sort alphabetically

@@ -8,6 +8,7 @@ const createUserDefaults = async user => {
 		await db.collection('users').doc(user.uid).set({
 			id: shortId.generate(),
 			totalProfileLinks: 0,
+			quickLink: false,
 			about: '',
 			instagram: '',
 			snapchat: '',
@@ -115,6 +116,7 @@ const fetchLinks = async user => {
 					data[link] &&
 					link !== 'id' &&
 					link !== 'about' &&
+					link !== 'quickLink' &&
 					link !== 'totalProfileLinks'
 				) {
 					links = [...links, { type: link, link: data[link] }]

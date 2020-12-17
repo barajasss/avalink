@@ -4,7 +4,11 @@ import DashboardLinkItem from '../dashboard-link-item/dashboard-link-item.compon
 import DashboardModal from '../dashboard-modal/dashboard-modal.component'
 
 import { connect } from 'react-redux'
-import { fetchLinks } from '../../redux/links/links.actions'
+import {
+	fetchLinks,
+	setQuickLinkAsync,
+	unsetQuickLinkAsync,
+} from '../../redux/links/links.actions'
 
 import './dashboard-links.styles.scss'
 
@@ -41,6 +45,18 @@ class DashboardLinks extends Component {
 			})
 		}
 	}
+	toggleQuickLink = async () => {
+		const { quickLink, setQuickLinkAsync, unsetQuickLinkAsync } = this.props
+		try {
+			if (quickLink) {
+				await unsetQuickLinkAsync()
+			} else {
+				await setQuickLinkAsync()
+			}
+		} catch (err) {
+			console.log(err)
+		}
+	}
 	render() {
 		const {
 			removeMode,
@@ -48,7 +64,7 @@ class DashboardLinks extends Component {
 			linkEditorType,
 			displayLinkEditor,
 		} = this.state
-		const { links, profilePage } = this.props
+		const { links, quickLink, profilePage } = this.props
 		return (
 			<div className='dashboard-links'>
 				{/* CONTROLS */}
@@ -68,8 +84,17 @@ class DashboardLinks extends Component {
 							</button>
 						</div>
 						<div className='col-6 col-md-4'>
-							<button className='btn btn-outline-dark mt-2 btn-block'>
-								Enable Quick Link
+							<button
+								className='btn btn-outline-dark mt-2 btn-block'
+								onClick={this.toggleQuickLink}>
+								{quickLink ? (
+									<span>
+										<i className='fas fa-check-square mr-2' />
+										Quick Link Enabled
+									</span>
+								) : (
+									'Enable Quick Link'
+								)}
 							</button>
 						</div>
 					</div>
@@ -84,6 +109,8 @@ class DashboardLinks extends Component {
 							linkBtn
 							type={link.type}
 							removeMode={removeMode}
+							profilePage={profilePage}
+							quickLink={quickLink}
 						/>
 					))}
 					{!profilePage && !removeMode && (
@@ -108,10 +135,13 @@ class DashboardLinks extends Component {
 
 const mapStateToProps = state => ({
 	links: state.links.userLinks,
+	quickLink: state.links.quickLink,
 })
 
 const mapDispatchToProps = dispatch => ({
 	fetchLinks: () => dispatch(fetchLinks()),
+	setQuickLinkAsync: () => dispatch(setQuickLinkAsync()),
+	unsetQuickLinkAsync: () => dispatch(unsetQuickLinkAsync()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardLinks)
