@@ -11,7 +11,7 @@ import './dashboard.styles.scss'
 
 class Dashboard extends Component {
 	render() {
-		const { isLoggedIn } = this.props
+		const { isLoggedIn, profilePage } = this.props
 		if (!isLoggedIn) {
 			return <Redirect to='/' />
 		}
@@ -19,9 +19,9 @@ class Dashboard extends Component {
 			<div className='dashboard'>
 				<div className='row'>
 					<div className='col-md-8 offset-md-2'>
-						<DashboardHeader />
-						<DashboardUser />
-						<DashboardLinks />
+						<DashboardHeader profilePage={profilePage} />
+						<DashboardUser profilePage={profilePage} />
+						<DashboardLinks profilePage={profilePage} />
 					</div>
 				</div>
 			</div>

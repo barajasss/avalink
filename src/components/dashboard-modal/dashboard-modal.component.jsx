@@ -28,7 +28,13 @@ class DashboardModal extends Component {
 	}
 	componentWillUnmount() {}
 	render() {
-		const { show, displayLinkEditor, linkEditorType, custom } = this.props
+		const {
+			show,
+			displayLinkEditor,
+			linkEditorType,
+			custom,
+			profilePage,
+		} = this.props
 		return (
 			<>
 				<div
@@ -45,15 +51,18 @@ class DashboardModal extends Component {
 						{!custom &&
 							(displayLinkEditor ? (
 								<LinkEditor
-									key={linkEditorType}
+									key={show}
 									closeModal={this.closeModal}
 									closeLinkEditor={this.closeLinkEditor}
 									type={linkEditorType}
+									profilePage={profilePage}
 								/>
 							) : (
-								<LinkOptions
-									openLinkEditor={this.openLinkEditor}
-								/>
+								!profilePage && (
+									<LinkOptions
+										openLinkEditor={this.openLinkEditor}
+									/>
+								)
 							))}
 					</div>
 				</div>

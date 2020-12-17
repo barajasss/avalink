@@ -16,6 +16,7 @@ class DashboardUser extends Component {
 			editProfile,
 			updateName,
 			updateAbout,
+			profilePage,
 		} = this.props
 		return (
 			<div className='dashboard-user'>
@@ -27,7 +28,11 @@ class DashboardUser extends Component {
 						updateAbout={updateAbout}
 					/>
 				) : (
-					<ProfileDetails name={name} about={about} />
+					<ProfileDetails
+						name={name}
+						about={about}
+						profilePage={profilePage}
+					/>
 				)}
 			</div>
 		)

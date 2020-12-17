@@ -99,7 +99,7 @@ class ProfileDetails extends Component {
 		this.setState({ displayQr: false })
 	}
 	render() {
-		const { name, about } = this.props
+		const { name, about, profilePage } = this.props
 		const { id, show, displayQr } = this.state
 		return (
 			<div className='row'>
@@ -112,18 +112,20 @@ class ProfileDetails extends Component {
 					</h3>
 					<p className='profile-about'>{about}</p>
 				</div>
-				<div className='col-sm-2 qr-and-link-contianer'>
-					<img
-						className='qr-icon'
-						src={'/icons/qrcode.png'}
-						alt='QR icon'
-						onClick={this.viewQr}
-					/>
-					<i
-						className='fas fa-link link-icon'
-						onClick={this.viewLink}
-					/>
-				</div>
+				{!profilePage && (
+					<div className='col-sm-2 qr-and-link-contianer'>
+						<img
+							className='qr-icon'
+							src={'/icons/qrcode.png'}
+							alt='QR icon'
+							onClick={this.viewQr}
+						/>
+						<i
+							className='fas fa-link link-icon'
+							onClick={this.viewLink}
+						/>
+					</div>
+				)}
 				<DashboardModal show={show} showModal={this.showModal} custom>
 					{displayQr ? <QrView id={id} /> : <LinkView id={id} />}
 				</DashboardModal>

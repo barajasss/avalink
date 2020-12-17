@@ -48,30 +48,32 @@ class DashboardLinks extends Component {
 			linkEditorType,
 			displayLinkEditor,
 		} = this.state
-		const { links } = this.props
+		const { links, profilePage } = this.props
 		return (
 			<div className='dashboard-links'>
 				{/* CONTROLS */}
-				<div className='mx-2 mx-sm-0 px-0 row mb-4'>
-					<div className='col-6 col-md-4 offset-md-2'>
-						<button
-							className={`btn ${
-								removeMode ? 'btn-dark' : 'btn-outline-dark'
-							} mt-2 btn-block`}
-							onClick={() =>
-								this.setState(state => ({
-									removeMode: !state.removeMode,
-								}))
-							}>
-							{removeMode ? 'Save' : 'Edit links'}
-						</button>
+				{!profilePage && (
+					<div className='mx-2 mx-sm-0 px-0 row mb-4'>
+						<div className='col-6 col-md-4 offset-md-2'>
+							<button
+								className={`btn ${
+									removeMode ? 'btn-dark' : 'btn-outline-dark'
+								} mt-2 btn-block`}
+								onClick={() =>
+									this.setState(state => ({
+										removeMode: !state.removeMode,
+									}))
+								}>
+								{removeMode ? 'Save' : 'Edit links'}
+							</button>
+						</div>
+						<div className='col-6 col-md-4'>
+							<button className='btn btn-outline-dark mt-2 btn-block'>
+								Enable Quick Link
+							</button>
+						</div>
 					</div>
-					<div className='col-6 col-md-4'>
-						<button className='btn btn-outline-dark mt-2 btn-block'>
-							Enable Quick Link
-						</button>
-					</div>
-				</div>
+				)}
 				{/* LINKS */}
 				<div className='link-grid'>
 					{!removeMode && <DashboardLinkItem type={'contact'} />}
@@ -84,7 +86,7 @@ class DashboardLinks extends Component {
 							removeMode={removeMode}
 						/>
 					))}
-					{!removeMode && (
+					{!profilePage && !removeMode && (
 						<DashboardLinkItem
 							modalBtn
 							showModal={this.showModal}
@@ -96,6 +98,7 @@ class DashboardLinks extends Component {
 						showModal={this.showModal}
 						displayLinkEditor={displayLinkEditor}
 						linkEditorType={linkEditorType}
+						profilePage={profilePage}
 					/>
 				</div>
 			</div>
