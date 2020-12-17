@@ -101,12 +101,15 @@ class ProfileDetails extends Component {
 		this.setState({ displayQr: false })
 	}
 	render() {
-		const { name, about, profilePage } = this.props
+		const { name, about, imageUrl, profilePage } = this.props
 		const { id, show, displayQr } = this.state
 		return (
 			<div className='row'>
 				<div className='col-sm-4 display-image'>
-					<img src={'/user.png'} alt='user display' />
+					<img
+						src={imageUrl ? imageUrl : '/user.png'}
+						alt='user display'
+					/>
 				</div>
 				<div className='col-sm-6'>
 					<h3 className='text-capitalize mt-1 profile-name'>

@@ -31,9 +31,9 @@ const updateUserAsync = (name, value) => async dispatch => {
 	let firebaseUpdateProp = name
 	if (name === 'name') {
 		firebaseUpdateProp = 'displayName'
-	}
-	if (name === 'about') {
 		try {
+			// udpate user display name as well as firebase data name
+			await updateUserFirebase(firebaseUpdateProp, value)
 			await updateDataFirebase(await getCurrentUser(), name, value)
 			dispatch(updateUser(name, value))
 		} catch (err) {
@@ -41,8 +41,6 @@ const updateUserAsync = (name, value) => async dispatch => {
 		}
 	} else {
 		try {
-			// udpate user display name as well as firebase data name
-			await updateUserFirebase(firebaseUpdateProp, value)
 			await updateDataFirebase(await getCurrentUser(), name, value)
 			dispatch(updateUser(name, value))
 		} catch (err) {
@@ -73,11 +71,16 @@ const loginUser = (user, avoidLogin) => async dispatch => {
 		}
 		const name = await fetchDataFirebase(await getCurrentUser(), 'name')
 		const about = await fetchDataFirebase(await getCurrentUser(), 'about')
+		const imageUrl = await fetchDataFirebase(
+			await getCurrentUser(),
+			'imageUrl'
+		)
 		dispatch(
 			setUser({
-				about,
 				...user,
+				about,
 				name: name || user.name,
+				imageUrl,
 			})
 		)
 	} catch (err) {
@@ -90,7 +93,13 @@ const loadUserFromId = id => async dispatch => {
 	try {
 		const user = await getUserDetailsById(id)
 		if (user) {
-			dispatch(setUser({ name: user.name, about: user.about }))
+			dispatch(
+				setUser({
+					name: user.name,
+					about: user.about,
+					imageUrl: user.imageUrl,
+				})
+			)
 		}
 		return user
 	} catch (err) {

@@ -115,16 +115,15 @@ class EditProfilePage extends Component {
 			await updateMultipleLinks(links)
 			// save profile image
 			if (file.data) {
-				await saveProfileImage(file.data, file.type)
+				const imageUrl = await saveProfileImage(file.data, file.type)
+				await updateUserAsync('imageUrl', imageUrl)
 			}
 			toast.success('Profile updated successfully')
 		} catch (err) {
 			console.log(err)
 			toast.error('Could not update your details. Try again later.')
 		}
-
 		this.setState({ savingDetails: false })
-		console.log('save details triggered')
 	}
 
 	render() {

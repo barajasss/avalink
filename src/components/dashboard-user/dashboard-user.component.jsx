@@ -11,6 +11,7 @@ class DashboardUser extends Component {
 		const {
 			name,
 			about,
+			imageUrl,
 			editableName,
 			editableAbout,
 			editProfile,
@@ -25,6 +26,7 @@ class DashboardUser extends Component {
 					<EditProfile
 						name={editableName}
 						about={editableAbout}
+						imageUrl={imageUrl}
 						updateName={updateName}
 						updateAbout={updateAbout}
 						updateFile={updateFile}
@@ -33,6 +35,7 @@ class DashboardUser extends Component {
 					<ProfileDetails
 						name={name}
 						about={about}
+						imageUrl={imageUrl}
 						profilePage={profilePage}
 					/>
 				)}
@@ -44,6 +47,7 @@ class DashboardUser extends Component {
 const mapStateToProps = state => ({
 	name: state.user.name,
 	about: state.user.about,
+	imageUrl: state.user.imageUrl,
 })
 
 export default connect(mapStateToProps)(DashboardUser)

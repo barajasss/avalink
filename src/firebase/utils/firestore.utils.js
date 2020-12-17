@@ -10,6 +10,7 @@ const createUserDefaults = async user => {
 			id: shortId.generate(),
 			totalProfileLinks: 0,
 			quickLink: false,
+			imageUrl: '',
 			about: '',
 			instagram: '',
 			snapchat: '',
@@ -145,6 +146,7 @@ const transformLinksForApp = data => {
 			link !== 'name' &&
 			link !== 'about' &&
 			link !== 'quickLink' &&
+			link !== 'imageUrl' &&
 			link !== 'totalProfileLinks'
 		) {
 			links = [...links, { type: link, link: data[link] }]

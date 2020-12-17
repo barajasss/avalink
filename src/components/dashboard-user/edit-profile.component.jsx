@@ -1,7 +1,14 @@
 import './edit-profile.styles.scss'
 import { createRef } from 'react'
 
-const EditProfile = ({ name, about, updateName, updateAbout, updateFile }) => {
+const EditProfile = ({
+	name,
+	about,
+	imageUrl,
+	updateName,
+	updateAbout,
+	updateFile,
+}) => {
 	const fileRef = createRef()
 	const imageRef = createRef()
 
@@ -25,7 +32,10 @@ const EditProfile = ({ name, about, updateName, updateAbout, updateFile }) => {
 			<div className='row'>
 				<div className='col-md-4 image-container'>
 					<div className='display-image'>
-						<img ref={imageRef} src={'/user.png'} />
+						<img
+							ref={imageRef}
+							src={imageUrl ? imageUrl : '/user.png'}
+						/>
 						<button
 							className='btn btn-dark btn-sm'
 							onClick={openFilePicker}>
