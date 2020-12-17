@@ -1,7 +1,7 @@
 import './edit-profile.styles.scss'
 import { createRef } from 'react'
 
-const EditProfile = ({ name, about, updateName, updateAbout }) => {
+const EditProfile = ({ name, about, updateName, updateAbout, updateFile }) => {
 	const fileRef = createRef()
 	const imageRef = createRef()
 
@@ -14,6 +14,7 @@ const EditProfile = ({ name, about, updateName, updateAbout }) => {
 			const reader = new FileReader()
 			reader.onload = () => {
 				imageRef.current.src = reader.result
+				updateFile(reader.result)
 			}
 			reader.readAsDataURL(file)
 		}

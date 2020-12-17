@@ -16,6 +16,7 @@ class DashboardUser extends Component {
 			editProfile,
 			updateName,
 			updateAbout,
+			updateFile,
 			profilePage,
 		} = this.props
 		return (
@@ -26,6 +27,7 @@ class DashboardUser extends Component {
 						about={editableAbout}
 						updateName={updateName}
 						updateAbout={updateAbout}
+						updateFile={updateFile}
 					/>
 				) : (
 					<ProfileDetails

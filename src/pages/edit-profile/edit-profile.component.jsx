@@ -27,6 +27,7 @@ class EditProfilePage extends Component {
 			links: [],
 			name: props.name || '',
 			about: props.about || '',
+			file: '',
 		}
 	}
 	componentDidMount = async () => {
@@ -93,6 +94,9 @@ class EditProfilePage extends Component {
 	updateName = val => {
 		this.setState({ name: val })
 	}
+	updateFile = val => {
+		this.setState({ file: val })
+	}
 	saveDetails = async () => {
 		const { name, about, links, savingDetails } = this.state
 		const { updateUserAsync, updateMultipleLinks } = this.props
@@ -135,6 +139,7 @@ class EditProfilePage extends Component {
 							editableAbout={about}
 							updateName={this.updateName}
 							updateAbout={this.updateAbout}
+							updateFile={this.updateFile}
 						/>
 
 						{links.map(item => (
