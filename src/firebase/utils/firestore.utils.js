@@ -104,23 +104,44 @@ const updateBulkData = async (user, data) => {
 	}
 }
 
-const fetchData = async (user, name) => {
+const fetchData = async (type, name, useId) => {
 	try {
-		const doc = await db.collection('users').doc(user.uid).get()
-		const data = doc.data()
-		if (data) {
-			return data[name]
+		if (useId) {
+			const snapshot = await db
+				.collection('users')
+				.where('id', '==', type)
+				.get()
+			const data = await snapshot.docs[0].data()
+			if (data) {
+				return data[name]
+			}
+		} else {
+			const doc = await db.collection('users').doc(type.uid).get()
+			const data = doc.data()
+			if (data) {
+				return data[name]
+			}
 		}
 	} catch (err) {
 		throw err
 	}
 }
 
-const fetchLinks = async user => {
+const fetchLinks = async (type, useId) => {
 	try {
 		let links = []
-		const doc = await db.collection('users').doc(user.uid).get()
-		const data = doc.data()
+		let doc
+		let data
+		if (useId) {
+			const snapshot = await db
+				.collection('users')
+				.where('id', '==', type)
+				.get()
+			data = await snapshot.docs[0].data()
+		} else {
+			doc = await db.collection('users').doc(type.uid).get()
+			data = doc.data()
+		}
 
 		// filter links with empty string
 		if (data) {

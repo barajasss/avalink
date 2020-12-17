@@ -8,17 +8,29 @@ import DashboardUser from '../../components/dashboard-user/dashboard-user.compon
 import DashboardLinks from '../../components/dashboard-links/dashboard-links.component'
 
 import { loadUserFromId } from '../../redux/user/user.actions'
+import { fetchLinksById } from '../../redux/links/links.actions'
 
 import './dashboard.styles.scss'
 
 class Dashboard extends Component {
 	async componentDidMount() {
-		const { isLoggedIn, profilePage, match, loadUserFromId } = this.props
+		const {
+			isLoggedIn,
+			profilePage,
+			match,
+			loadUserFromId,
+			fetchLinksById,
+		} = this.props
 		// if (profilePage && !isLoggedIn) { !enable later!
 		if (profilePage) {
 			// load and fetch all the user details if the user is not logged in.
 			const id = match.params.id
-			await loadUserFromId(id)
+			try {
+				await loadUserFromId(id)
+				await fetchLinksById(id)
+			} catch (err) {
+				console.log(err)
+			}
 			console.log('into the profile page', id)
 		} else {
 			// the app component loads all the data if the user is logged in.
@@ -48,6 +60,7 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = dispatch => ({
 	loadUserFromId: id => dispatch(loadUserFromId(id)),
+	fetchLinksById: id => dispatch(fetchLinksById(id)),
 })
 
 export default connect(

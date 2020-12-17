@@ -45,6 +45,21 @@ const fetchLinks = () => async dispatch => {
 		throw err
 	}
 }
+const fetchLinksById = id => async dispatch => {
+	try {
+		const links = await fetchLinksFirebase(id, true)
+		dispatch(setLinkMultiple(links))
+		const quickLink = await fetchDataFirebase(id, 'quickLink', true)
+		if (quickLink) {
+			dispatch(setQuickLink())
+		} else {
+			dispatch(unsetQuickLink())
+		}
+		return links
+	} catch (err) {
+		throw err
+	}
+}
 
 const fetchDefaultLinks = () => async dispatch => {
 	try {
@@ -142,4 +157,5 @@ export {
 	updateMultipleLinks,
 	setQuickLinkAsync,
 	unsetQuickLinkAsync,
+	fetchLinksById,
 }
