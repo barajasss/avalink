@@ -11,6 +11,7 @@ class DashboardUser extends Component {
 		const {
 			name,
 			about,
+			email,
 			imageUrl,
 			editableName,
 			editableAbout,
@@ -35,6 +36,7 @@ class DashboardUser extends Component {
 					<ProfileDetails
 						name={name}
 						about={about}
+						email={email}
 						imageUrl={imageUrl}
 						profilePage={profilePage}
 					/>
@@ -46,6 +48,7 @@ class DashboardUser extends Component {
 
 const mapStateToProps = state => ({
 	name: state.user.name,
+	email: state.user.email,
 	about: state.user.about,
 	imageUrl: state.user.imageUrl,
 })

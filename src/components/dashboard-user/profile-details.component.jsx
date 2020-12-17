@@ -99,7 +99,7 @@ class ProfileDetails extends Component {
 		this.setState({ displayQr: false })
 	}
 	render() {
-		const { name, about, imageUrl, profilePage } = this.props
+		const { name, about, imageUrl, email, profilePage } = this.props
 		const { id, show, displayQr } = this.state
 		return (
 			<div className='row'>
@@ -117,6 +117,7 @@ class ProfileDetails extends Component {
 					<h3 className='text-capitalize mt-1 profile-name'>
 						{name}
 					</h3>
+					{!profilePage && <p className='profile-email'>{email}</p>}
 					<p className='profile-about'>{about}</p>
 				</div>
 				{!profilePage && (

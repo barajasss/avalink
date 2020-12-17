@@ -10,6 +10,12 @@
 
 	.profile-name {
 		text-align: left;
+		margin-left: -2px;
+		margin-bottom: 5px;
+	}
+	.profile-email {
+		text-align: left;
+		font-size: 0.85em;
 	}
 	.profile-about {
 		text-align: justify;
@@ -59,7 +65,8 @@
 		padding: 20px 14px;
 
 		.profile-name,
-		.profile-about {
+		.profile-about,
+		.profile-email {
 			text-align: center;
 		}
 
