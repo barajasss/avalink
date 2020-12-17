@@ -88,11 +88,6 @@ class DashboardLinks extends Component {
 		vCard.source = url
 		vCard.note = about
 
-		console.log(
-			vCard.getFormattedString()
-			// .replace('END:VCARD', 'EMAIL:' + email + '\nEND:VCARD')
-		)
-
 		const blob = new Blob([vCard.getFormattedString()], {
 			type: 'text/vcard',
 		})

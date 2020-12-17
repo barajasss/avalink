@@ -103,7 +103,7 @@ const loadUserFromId = id => async dispatch => {
 				setUser({
 					name: user.name,
 					about: user.about,
-					email: user.email,
+					email: user.emailAddress,
 					imageUrl: user.imageUrl,
 				})
 			)
