@@ -135,6 +135,24 @@ const fetchData = async (type, name, useId) => {
 	}
 }
 
+const transformLinksForApp = data => {
+	// map links data properly for the redux store...
+	let links = []
+	Object.keys(data).forEach(link => {
+		if (
+			data[link] &&
+			link !== 'id' &&
+			link !== 'name' &&
+			link !== 'about' &&
+			link !== 'quickLink' &&
+			link !== 'totalProfileLinks'
+		) {
+			links = [...links, { type: link, link: data[link] }]
+		}
+	})
+	return links
+}
+
 const fetchLinks = async (type, useId) => {
 	try {
 		let links = []
@@ -155,23 +173,7 @@ const fetchLinks = async (type, useId) => {
 			doc = await db.collection('users').doc(type.uid).get()
 			data = doc.data()
 		}
-
-		// filter links with empty string
-		if (data) {
-			// transform data to a proper format
-			Object.keys(data).forEach(link => {
-				if (
-					data[link] &&
-					link !== 'id' &&
-					link !== 'name' &&
-					link !== 'about' &&
-					link !== 'quickLink' &&
-					link !== 'totalProfileLinks'
-				) {
-					links = [...links, { type: link, link: data[link] }]
-				}
-			})
-		}
+		links = transformLinksForApp(data)
 		return links
 	} catch (err) {
 		throw err
@@ -216,4 +218,5 @@ export {
 	fetchDefaultLinks,
 	fetchData,
 	updateBulkData,
+	transformLinksForApp,
 }

@@ -7,6 +7,7 @@ import {
 	fetchDefaultLinks as fetchDefaultLinksFirebase,
 	updateBulkData as updateBulkDataFirebase,
 	fetchData as fetchDataFirebase,
+	transformLinksForApp,
 } from '../../firebase/utils/firestore.utils'
 
 const setLink = (type, link) => ({
@@ -45,13 +46,23 @@ const fetchLinks = () => async dispatch => {
 		throw err
 	}
 }
-const fetchLinksById = id => async dispatch => {
+const fetchLinksById = (id, data) => async dispatch => {
+	// can fetch from firebase or use preloaded data if id===0...
 	try {
-		const links = await fetchLinksFirebase(id, true)
+		let links = []
+		let quickLink
+		if (id === 0 && data) {
+			// use preloaded data if id === 0
+			links = transformLinksForApp(data)
+			quickLink = data.quickLink
+		} else {
+			links = await fetchLinksFirebase(id, true)
+			quickLink = await fetchDataFirebase(id, 'quickLink', true)
+		}
+
 		if (links) {
 			dispatch(setLinkMultiple(links))
 		}
-		const quickLink = await fetchDataFirebase(id, 'quickLink', true)
 		if (quickLink) {
 			dispatch(setQuickLink())
 		} else {

@@ -8,7 +8,6 @@ import DashboardUser from '../../components/dashboard-user/dashboard-user.compon
 import DashboardLinks from '../../components/dashboard-links/dashboard-links.component'
 import Loading from '../../components/loading/loading.component'
 
-import { Link } from 'react-router-dom'
 import { loadUserFromId } from '../../redux/user/user.actions'
 import { fetchLinksById } from '../../redux/links/links.actions'
 
@@ -36,14 +35,13 @@ class Dashboard extends Component {
 			this.setState({ loading: true })
 			const id = match.params.id
 			try {
-				const user = await loadUserFromId(id)
-				await fetchLinksById(id)
-				if (user) {
+				const data = await loadUserFromId(id)
+				await fetchLinksById(0, data)
+				if (data) {
 					this.setState({ userExists: true })
 				} else {
 					return history.push('/register')
 				}
-				console.log(user)
 			} catch (err) {
 				console.log(err)
 				this.setState({ userExists: false })
@@ -82,7 +80,7 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = dispatch => ({
 	loadUserFromId: id => dispatch(loadUserFromId(id)),
-	fetchLinksById: id => dispatch(fetchLinksById(id)),
+	fetchLinksById: (id, data) => dispatch(fetchLinksById(id, data)),
 })
 
 export default connect(
