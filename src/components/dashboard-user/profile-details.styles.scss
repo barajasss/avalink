@@ -1,0 +1,16 @@
+.qr-icon,
+.link-icon {
+	transition: 0.3s;
+}
+.link-icon {
+	padding-top: 5px;
+}
+.qr-icon {
+	transform: scale(0.85);
+}
+.qr-icon:hover {
+	transform: scale(0.95);
+}
+.link-icon:hover {
+	transform: scale(1.15);
+}

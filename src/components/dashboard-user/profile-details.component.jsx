@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
 import DashboardModal from '../../components/dashboard-modal/dashboard-modal.component'
 
+import './profile-details.styles.scss'
+
 const QrView = () => (
 	<div>
-		<h4>Scan your QR Code</h4>
+		<h4>Share your profile</h4>
 	</div>
 )
 
 const LinkView = () => (
 	<div>
-		<h4>Copy your profile link</h4>
+		<h4>Your Profile link</h4>
 	</div>
 )
 
