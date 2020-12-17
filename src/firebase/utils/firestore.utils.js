@@ -43,8 +43,12 @@ const getUserDetailsById = async id => {
 			.collection('users')
 			.where('id', '==', id)
 			.get()
-		const data = await snapshot.docs[0].data()
-		return data
+		if (snapshot.docs[0]) {
+			const data = await snapshot.docs[0].data()
+			if (data) return data
+		} else {
+			return
+		}
 	} catch (err) {
 		throw err
 	}
@@ -111,9 +115,13 @@ const fetchData = async (type, name, useId) => {
 				.collection('users')
 				.where('id', '==', type)
 				.get()
-			const data = await snapshot.docs[0].data()
-			if (data) {
-				return data[name]
+			if (snapshot.docs[0]) {
+				const data = await snapshot.docs[0].data()
+				if (data) {
+					return data[name]
+				}
+			} else {
+				return
 			}
 		} else {
 			const doc = await db.collection('users').doc(type.uid).get()
@@ -137,8 +145,13 @@ const fetchLinks = async (type, useId) => {
 				.collection('users')
 				.where('id', '==', type)
 				.get()
-			data = await snapshot.docs[0].data()
-		} else {
+			if (snapshot.docs[0]) {
+				data = await snapshot.docs[0].data()
+			} else {
+				return
+			}
+		}
+		if (type.uid) {
 			doc = await db.collection('users').doc(type.uid).get()
 			data = doc.data()
 		}

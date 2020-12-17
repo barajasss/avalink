@@ -48,7 +48,9 @@ const fetchLinks = () => async dispatch => {
 const fetchLinksById = id => async dispatch => {
 	try {
 		const links = await fetchLinksFirebase(id, true)
-		dispatch(setLinkMultiple(links))
+		if (links) {
+			dispatch(setLinkMultiple(links))
+		}
 		const quickLink = await fetchDataFirebase(id, 'quickLink', true)
 		if (quickLink) {
 			dispatch(setQuickLink())

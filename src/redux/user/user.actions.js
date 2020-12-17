@@ -92,6 +92,7 @@ const loadUserFromId = id => async dispatch => {
 		if (user) {
 			dispatch(setUser({ name: user.name, about: user.about }))
 		}
+		return user
 	} catch (err) {
 		throw err
 	}
