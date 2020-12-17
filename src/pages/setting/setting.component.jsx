@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import { Helmet } from 'react-helmet'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Logo from '../../components/logo/logo.component'
@@ -13,6 +14,11 @@ class SettingPage extends Component {
 		}
 		return (
 			<div className='container py-4'>
+				<Helmet>
+					<title>
+						{process.env.REACT_APP_PRODUCT_NAME} | Settings
+					</title>
+				</Helmet>
 				<Logo />
 				<h2 className='text-center my-4'>Settings</h2>
 				<div className='row'>

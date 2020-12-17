@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import { Helmet } from 'react-helmet'
 import Logo from '../../components/logo/logo.component'
 import Input from '../../components/input/input.component'
 import { toast } from 'react-toastify'
@@ -7,7 +8,7 @@ import { toast } from 'react-toastify'
 import { withRouter } from 'react-router-dom'
 import { updatePassword } from '../../firebase/utils/auth.utils'
 
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 class ChangePassword extends Component {
@@ -57,6 +58,11 @@ class ChangePassword extends Component {
 		}
 		return (
 			<div className='container py-5'>
+				<Helmet>
+					<title>
+						{process.env.REACT_APP_PRODUCT_NAME} | Change Password
+					</title>
+				</Helmet>
 				<div className='row'>
 					<div className='col-md-8 offset-md-2'>
 						<Logo size='md' />
@@ -92,6 +98,9 @@ class ChangePassword extends Component {
 								{!saving ? 'Change Password' : 'Please wait...'}
 							</button>
 						</form>
+						<h5 className='text-center mt-3'>
+							<Link to='/dashboard'>Back to Dashboard</Link>
+						</h5>
 					</div>
 				</div>
 			</div>

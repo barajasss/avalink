@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import { Helmet } from 'react-helmet'
+
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -134,6 +136,11 @@ class EditProfilePage extends Component {
 		}
 		return (
 			<div className='dashboard'>
+				<Helmet>
+					<title>
+						{process.env.REACT_APP_PRODUCT_NAME} | Edit Profile
+					</title>
+				</Helmet>
 				<div className='row'>
 					<div className='col-md-8 offset-md-2'>
 						<DashboardHeader

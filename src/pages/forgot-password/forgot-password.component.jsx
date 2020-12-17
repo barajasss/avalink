@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Input from '../../components/input/input.component'
 import Logo from '../../components/logo/logo.component'
 
+import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 import { sendResetPassword } from '../../firebase/utils/auth.utils'
 import { toast } from 'react-toastify'
@@ -45,6 +46,11 @@ class ForgotPasswordPage extends Component {
 		const { sending } = this.state
 		return (
 			<div className='container py-5'>
+				<Helmet>
+					<title>
+						{process.env.REACT_APP_PRODUCT_NAME} | Reset Password
+					</title>
+				</Helmet>
 				<div className='row'>
 					<div className='col-md-8 offset-md-2'>
 						<Logo size='md' />
@@ -70,6 +76,9 @@ class ForgotPasswordPage extends Component {
 						<h5 className='text-center'>
 							Go Back to <Link to='/login'>Login</Link> or{' '}
 							<Link to='/register'>Register</Link>
+						</h5>
+						<h5 className='text-center mt-3'>
+							<Link to='/'>Go to Home</Link>
 						</h5>
 					</div>
 				</div>

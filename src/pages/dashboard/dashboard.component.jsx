@@ -76,7 +76,9 @@ class Dashboard extends Component {
 		return (
 			<div className='dashboard'>
 				<Helmet>
-					<title>Dashboard</title>
+					<title>
+						{process.env.REACT_APP_PRODUCT_NAME} | Dashboard
+					</title>
 				</Helmet>
 				<div className='row'>
 					<div className='col-md-8 offset-md-2'>

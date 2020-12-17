@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Input from '../../components/input/input.component'
 import Logo from '../../components/logo/logo.component'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 
 import { withRouter } from 'react-router-dom'
 import { loginUser } from '../../redux/user/user.actions'
@@ -61,6 +62,9 @@ class LoginPage extends Component {
 		const { logging } = this.state
 		return (
 			<div className='container py-5'>
+				<Helmet>
+					<title>{process.env.REACT_APP_PRODUCT_NAME} | Login</title>
+				</Helmet>
 				<div className='row'>
 					<div className='col-md-8 offset-md-2'>
 						<Logo size='md' />
@@ -105,6 +109,9 @@ class LoginPage extends Component {
 						<h5 className='text-center'>
 							Don't have an account?{' '}
 							<Link to='/register'>Register</Link>
+						</h5>
+						<h5 className='text-center mt-3'>
+							<Link to='/'>Go to Home</Link>
 						</h5>
 					</div>
 				</div>
