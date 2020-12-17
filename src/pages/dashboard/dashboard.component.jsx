@@ -28,8 +28,9 @@ class Dashboard extends Component {
 			match,
 			loadUserFromId,
 			fetchLinksById,
+			isLoggedIn,
+			history,
 		} = this.props
-		// if (profilePage && !isLoggedIn) { !enable later!
 		if (profilePage) {
 			// load and fetch all the user details if the user is not logged in.
 			this.setState({ loading: true })
@@ -39,11 +40,14 @@ class Dashboard extends Component {
 				await fetchLinksById(id)
 				if (user) {
 					this.setState({ userExists: true })
+				} else {
+					return history.push('/register')
 				}
 				console.log(user)
 			} catch (err) {
 				console.log(err)
 				this.setState({ userExists: false })
+				return history.push('/register')
 			}
 			this.setState({ loading: false })
 		} else {
@@ -55,16 +59,6 @@ class Dashboard extends Component {
 		const { userExists, loading } = this.state
 		if (loading && profilePage) {
 			return <Loading />
-		}
-		if (!loading && !userExists && profilePage) {
-			return (
-				<h3 className='m-5 text-center'>
-					User does not exist <br />
-					<Link className='btn btn-dark mt-3' to='/'>
-						Home - AvaLink
-					</Link>
-				</h3>
-			)
 		}
 		if (!isLoggedIn && !profilePage) {
 			return <Redirect to='/' />

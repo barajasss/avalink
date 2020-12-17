@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import Loading from '../loading/loading.component'
 
 const HomePage = React.lazy(() => import('../../pages/home/home.component'))
@@ -68,7 +68,7 @@ class Router extends React.Component {
 
 					{/* 404 Not Found */}
 					<Route path='*' exact={true}>
-						<h4>Route not found.</h4>
+						<Redirect to='/' />
 					</Route>
 				</Switch>
 			</Suspense>
