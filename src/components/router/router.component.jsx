@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import Loading from '../loading/loading.component'
+import ErrorBoundary from '../error-boundary/error-boundary.component'
 
 const HomePage = React.lazy(() => import('../../pages/home/home.component'))
 
@@ -34,44 +35,46 @@ const ChangePasswordPage = React.lazy(() =>
 class Router extends React.Component {
 	render() {
 		return (
-			<Suspense fallback={<Loading />}>
-				<Switch>
-					<Route exact path='/'>
-						<HomePage />
-					</Route>
-					<Route path='/register'>
-						<RegisterPage />
-					</Route>
-					<Route path='/login'>
-						<LoginPage />
-					</Route>
-					<Route path='/forgot-password'>
-						<ForgotPasswordPage />
-					</Route>
+			<ErrorBoundary>
+				<Suspense fallback={<Loading />}>
+					<Switch>
+						<Route exact path='/'>
+							<HomePage />
+						</Route>
+						<Route path='/register'>
+							<RegisterPage />
+						</Route>
+						<Route path='/login'>
+							<LoginPage />
+						</Route>
+						<Route path='/forgot-password'>
+							<ForgotPasswordPage />
+						</Route>
 
-					{/* DASHBOARD AND MENU*/}
-					<Route exact path='/u/:id'>
-						<DashboardPage profilePage />
-					</Route>
-					<Route path='/dashboard'>
-						<DashboardPage />
-					</Route>
-					<Route path={['/setting', '/settings']}>
-						<SettingPage />
-					</Route>
-					<Route path='/edit-profile'>
-						<EditProfilePage />
-					</Route>
-					<Route path='/change-password'>
-						<ChangePasswordPage />
-					</Route>
+						{/* DASHBOARD AND MENU*/}
+						<Route exact path='/u/:id'>
+							<DashboardPage profilePage />
+						</Route>
+						<Route path='/dashboard'>
+							<DashboardPage />
+						</Route>
+						<Route path={['/setting', '/settings']}>
+							<SettingPage />
+						</Route>
+						<Route path='/edit-profile'>
+							<EditProfilePage />
+						</Route>
+						<Route path='/change-password'>
+							<ChangePasswordPage />
+						</Route>
 
-					{/* 404 Not Found */}
-					<Route path='*' exact={true}>
-						<Redirect to='/' />
-					</Route>
-				</Switch>
-			</Suspense>
+						{/* 404 Not Found */}
+						<Route path='*' exact={true}>
+							<Redirect to='/' />
+						</Route>
+					</Switch>
+				</Suspense>
+			</ErrorBoundary>
 		)
 	}
 }

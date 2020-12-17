@@ -117,11 +117,11 @@ class DashboardLinks extends Component {
 								className={`btn ${
 									removeMode ? 'btn-dark' : 'btn-outline-dark'
 								} mt-2 btn-block`}
-								onClick={() =>
+								onClick={() => {
 									this.setState(state => ({
 										removeMode: !state.removeMode,
 									}))
-								}>
+								}}>
 								{removeMode ? 'Done' : 'Edit links'}
 							</button>
 						</div>
