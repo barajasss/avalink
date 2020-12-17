@@ -69,7 +69,9 @@ class LoginPage extends Component {
 					<div className='col-md-8 offset-md-2'>
 						<Logo size='md' />
 						<br />
-						<h1 className='text-center'>Welcome Back to Ava</h1>
+						<h1 className='text-center'>
+							Welcome Back to {process.env.REACT_APP_PRODUCT_NAME}
+						</h1>
 						<br />
 						<h4 className='text-center'>
 							Login securely to your account.

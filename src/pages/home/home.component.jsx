@@ -11,7 +11,9 @@ export default class HomePage extends Component {
 					<title>{process.env.REACT_APP_PRODUCT_NAME} | Home</title>
 				</Helmet>
 				<div className='jumbotron jumbotron-fluid'>
-					<h1 className='text-center'>Welcome to Ava</h1>
+					<h1 className='text-center'>
+						Welcome to {process.env.REACT_APP_PRODUCT_NAME}
+					</h1>
 				</div>
 				<div className='container'>
 					<div className='row'>

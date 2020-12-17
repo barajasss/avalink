@@ -67,7 +67,9 @@ class ChangePassword extends Component {
 					<div className='col-md-8 offset-md-2'>
 						<Logo size='md' />
 						<br />
-						<h1 className='text-center'>Ava Link</h1>
+						<h1 className='text-center'>
+							{process.env.REACT_APP_PRODUCT_NAME}
+						</h1>
 						<h4 className='text-center'>
 							Change your password securely
 						</h4>

@@ -72,7 +72,9 @@ class RegisterPage extends Component {
 					<div className='col-md-8 offset-md-2'>
 						<Logo size='md' />
 						<br />
-						<h1 className='text-center'>Welcome to Ava</h1>
+						<h1 className='text-center'>
+							Welcome to {process.env.REACT_APP_PRODUCT_NAME}
+						</h1>
 						<br />
 						<h4 className='text-center'>
 							Register and easily maintain your profile links.
