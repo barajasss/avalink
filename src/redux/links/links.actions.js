@@ -10,6 +10,11 @@ import {
 	transformLinksForApp,
 } from '../../firebase/utils/firestore.utils'
 
+const setTotalProfileLinks = count => ({
+	type: LinksActionTypes.SET_TOTAL_PROFILE_LINKS,
+	payload: count,
+})
+
 const setLink = (type, link) => ({
 	type: LinksActionTypes.SET_LINK,
 	payload: { type, link },
@@ -36,6 +41,11 @@ const fetchLinks = () => async dispatch => {
 		const links = await fetchLinksFirebase(user)
 		dispatch(setLinkMultiple(links))
 		const quickLink = await fetchDataFirebase(user, 'quickLink')
+		const totalProfileLinks = await fetchDataFirebase(
+			user,
+			'totalProfileLinks'
+		)
+		dispatch(setTotalProfileLinks(totalProfileLinks))
 		if (quickLink) {
 			dispatch(setQuickLink())
 		} else {

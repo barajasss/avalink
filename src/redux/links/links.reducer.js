@@ -3,6 +3,8 @@ import LinksActionTypes from './links.types'
 const initialLinksState = {
 	userLinks: [],
 	quickLink: false,
+	totalProfileLinks: 0,
+	totalProfileLinksLoaded: false,
 	defaultLinks: [],
 	defaultLinksLoaded: false,
 	userLinksLoaded: false,
@@ -10,6 +12,13 @@ const initialLinksState = {
 
 const linksReducer = (state = initialLinksState, action) => {
 	switch (action.type) {
+		case LinksActionTypes.SET_TOTAL_PROFILE_LINKS: {
+			return {
+				...state,
+				totalProfileLinks: action.payload,
+				totalProfileLinksLoaded: true,
+			}
+		}
 		case LinksActionTypes.SET_QUICK_LINK: {
 			return { ...state, quickLink: true }
 		}

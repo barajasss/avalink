@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Logo from '../../components/logo/logo.component'
 
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import './dashboard-header.styles.scss'
 
@@ -12,6 +13,8 @@ class DashboardHeader extends Component {
 			saveDetails,
 			savingDetails,
 			profilePage,
+			totalProfileLinks,
+			totalProfileLinksLoaded,
 		} = this.props
 		return (
 			<div className='dashboard-header py-4 px-3 d-flex justify-content-between bg-dark text-white'>
@@ -38,11 +41,22 @@ class DashboardHeader extends Component {
 						{savingDetails ? 'Saving...' : 'Save'}
 					</button>
 				) : (
-					!profilePage && <h6>0 Links</h6>
+					!profilePage &&
+					totalProfileLinksLoaded && (
+						<h6>
+							{totalProfileLinks}{' '}
+							{totalProfileLinks > 1 ? 'Links' : 'Link'}
+						</h6>
+					)
 				)}
 			</div>
 		)
 	}
 }
 
-export default DashboardHeader
+const mapStateToProps = state => ({
+	totalProfileLinks: state.links.totalProfileLinks,
+	totalProfileLinksLoaded: state.links.totalProfileLinksLoaded,
+})
+
+export default connect(mapStateToProps)(DashboardHeader)

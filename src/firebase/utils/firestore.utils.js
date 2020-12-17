@@ -198,13 +198,24 @@ const fetchDefaultLinks = async () => {
 	}
 }
 
-const incrementTotalProfileLinks = user => {
+const incrementTotalProfileLinks = async id => {
 	try {
-		db.collection('users')
-			.doc(user.uid)
-			.update({
-				totalProfileLinks: firebase.firestore.FieldValue.increment(1),
-			})
+		// get document from user Id
+		const snapshot = await db
+			.collection('users')
+			.where('id', '==', id)
+			.get()
+		const doc = await snapshot.docs[0]
+		if (doc) {
+			await doc.ref.set(
+				{
+					totalProfileLinks: firebase.firestore.FieldValue.increment(
+						1
+					),
+				},
+				{ merge: true }
+			)
+		}
 	} catch (err) {
 		throw err
 	}

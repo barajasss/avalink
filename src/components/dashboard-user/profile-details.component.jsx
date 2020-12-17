@@ -91,12 +91,10 @@ class ProfileDetails extends Component {
 		this.setState({ show })
 	}
 	viewQr = () => {
-		console.log('view qr')
 		this.showModal(true)
 		this.setState({ displayQr: true })
 	}
 	viewLink = () => {
-		console.log('view link')
 		this.showModal(true)
 		this.setState({ displayQr: false })
 	}

@@ -10,6 +10,7 @@ import Loading from '../../components/loading/loading.component'
 
 import { loadUserFromId } from '../../redux/user/user.actions'
 import { fetchLinksById } from '../../redux/links/links.actions'
+import { incrementTotalProfileLinks } from '../../firebase/utils/firestore.utils'
 
 import './dashboard.styles.scss'
 
@@ -30,6 +31,14 @@ class Dashboard extends Component {
 			isLoggedIn,
 			history,
 		} = this.props
+
+		const id = match.params.id
+
+		if (isLoggedIn && profilePage) {
+			console.log('logged in')
+			await incrementTotalProfileLinks(id)
+		}
+
 		if (profilePage) {
 			// load and fetch all the user details if the user is not logged in.
 			this.setState({ loading: true })
@@ -40,9 +49,11 @@ class Dashboard extends Component {
 				if (data) {
 					this.setState({ userExists: true })
 				} else {
+					// user does not exist
 					return history.push('/register')
 				}
 			} catch (err) {
+				// some other error
 				console.log(err)
 				this.setState({ userExists: false })
 				return history.push('/register')
