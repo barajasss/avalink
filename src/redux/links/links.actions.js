@@ -62,7 +62,6 @@ const updateLink = (type, link) => async dispatch => {
 
 const updateMultipleLinks = links => async dispatch => {
 	try {
-		console.log(links)
 		let transformedLinks = {}
 
 		// filter links from empty values

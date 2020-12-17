@@ -28,7 +28,7 @@ class DashboardModal extends Component {
 	}
 	componentWillUnmount() {}
 	render() {
-		const { show, displayLinkEditor, linkEditorType } = this.props
+		const { show, displayLinkEditor, linkEditorType, custom } = this.props
 		return (
 			<>
 				<div
@@ -39,16 +39,22 @@ class DashboardModal extends Component {
 						<i
 							className='fas fa-times close-icon'
 							onClick={this.closeModal}></i>
-						{displayLinkEditor ? (
-							<LinkEditor
-								key={linkEditorType}
-								closeModal={this.closeModal}
-								closeLinkEditor={this.closeLinkEditor}
-								type={linkEditorType}
-							/>
-						) : (
-							<LinkOptions openLinkEditor={this.openLinkEditor} />
-						)}
+
+						{custom && this.props.children}
+
+						{!custom &&
+							(displayLinkEditor ? (
+								<LinkEditor
+									key={linkEditorType}
+									closeModal={this.closeModal}
+									closeLinkEditor={this.closeLinkEditor}
+									type={linkEditorType}
+								/>
+							) : (
+								<LinkOptions
+									openLinkEditor={this.openLinkEditor}
+								/>
+							))}
 					</div>
 				</div>
 			</>
