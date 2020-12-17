@@ -8,7 +8,7 @@ export default function Logo({ small, customStyle }) {
 		<div className='text-center'>
 			<Link to='/'>
 				<img
-					src={'/Ava logo.png'}
+					src='/images/logo.png'
 					alt='Ava logo'
 					className={`img-fluid ${small ? 'sm' : 'md'}`}
 					style={customStyle}

@@ -6,3 +6,18 @@
 	padding: 10px 20px;
 	margin-bottom: 30px;
 }
+button.dashboard-button {
+	padding: 5px;
+	margin: 0;
+}
+
+@media screen and (max-width: 476px) {
+	button.dashboard-button {
+		padding: 5px;
+		margin: 0;
+		height: 100%;
+	}
+	.link-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+}

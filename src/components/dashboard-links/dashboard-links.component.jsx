@@ -114,7 +114,7 @@ class DashboardLinks extends Component {
 					<div className='mx-2 mx-sm-0 px-0 row mb-4'>
 						<div className='col-6 col-md-4 offset-md-2'>
 							<button
-								className={`btn ${
+								className={`dashboard-button btn ${
 									removeMode ? 'btn-dark' : 'btn-outline-dark'
 								} mt-2 btn-block`}
 								onClick={() => {
@@ -127,7 +127,7 @@ class DashboardLinks extends Component {
 						</div>
 						<div className='col-6 col-md-4'>
 							<button
-								className='btn btn-outline-dark mt-2 btn-block'
+								className='dashboard-button btn btn-outline-dark mt-2 btn-block'
 								onClick={this.toggleQuickLink}>
 								{quickLink ? (
 									<span>
