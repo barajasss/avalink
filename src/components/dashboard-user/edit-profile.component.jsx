@@ -1,8 +1,13 @@
+import './edit-profile.styles.scss'
+
 const EditProfile = ({ name, about, updateName, updateAbout }) => (
-	<div className='px-3'>
+	<div className='px-3 edit-profile-dashboard'>
 		<div className='row'>
-			<div className='display-image col-md-4'>
-				<img src={'/user.png'} />
+			<div className='col-md-4 image-container'>
+				<div className='display-image'>
+					<img src={'/user.png'} />
+					<button className='btn btn-dark btn-sm'>Change</button>
+				</div>
 			</div>
 			<div className='col-md-8 edit-profile-input-container'>
 				<form>

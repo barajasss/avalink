@@ -1,0 +1,21 @@
+.edit-profile-dashboard {
+	.image-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 10px;
+
+		.display-image {
+			position: relative;
+			img {
+				width: 100%;
+				max-width: 140px;
+				height: auto;
+			}
+			button {
+				bottom: -10px;
+				position: absolute;
+			}
+		}
+	}
+}
