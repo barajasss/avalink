@@ -60,4 +60,25 @@ const updateUser = async (name, value) => {
 	}
 }
 
-export { registerUser, loginUser, logoutUser, getCurrentUser, updateUser }
+const updatePassword = async (oldPassword, newPassword) => {
+	try {
+		const user = firebase.auth().currentUser
+		const credentials = firebase.auth.EmailAuthProvider.credential(
+			user.email,
+			oldPassword
+		)
+		await user.reauthenticateWithCredential(credentials)
+		await user.updatePassword(newPassword)
+	} catch (err) {
+		throw err
+	}
+}
+
+export {
+	registerUser,
+	loginUser,
+	logoutUser,
+	getCurrentUser,
+	updateUser,
+	updatePassword,
+}

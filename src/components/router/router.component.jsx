@@ -27,6 +27,10 @@ const EditProfilePage = React.lazy(() =>
 	import('../../pages/edit-profile/edit-profile.component')
 )
 
+const ChangePasswordPage = React.lazy(() =>
+	import('../../pages/change-password/change-password.component')
+)
+
 class Router extends React.Component {
 	render() {
 		return (
@@ -54,6 +58,9 @@ class Router extends React.Component {
 					</Route>
 					<Route path='/edit-profile'>
 						<EditProfilePage />
+					</Route>
+					<Route path='/change-password'>
+						<ChangePasswordPage />
 					</Route>
 
 					{/* 404 Not Found */}
