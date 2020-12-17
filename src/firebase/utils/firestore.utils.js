@@ -37,6 +37,19 @@ const createUserDefaults = async user => {
 	}
 }
 
+const getUserDetailsById = async id => {
+	try {
+		const snapshot = await db
+			.collection('users')
+			.where('id', '==', id)
+			.get()
+		const data = await snapshot.docs[0].data()
+		return data
+	} catch (err) {
+		throw err
+	}
+}
+
 const getId = async () => {
 	// returns the shortId and creates it if it does not exist
 	const user = firebase.auth().currentUser
@@ -160,6 +173,7 @@ const incrementTotalProfileLinks = user => {
 }
 
 export {
+	getUserDetailsById,
 	getId,
 	createUserDefaults,
 	updateData,

@@ -81,8 +81,10 @@ class ProfileDetails extends Component {
 		}
 	}
 	async componentDidMount() {
-		console.log(window.qrcode)
-		this.setState({ id: await getId() })
+		const { profilePage } = this.props
+		if (!profilePage) {
+			this.setState({ id: await getId() })
+		}
 	}
 	showModal = show => {
 		console.log(show)

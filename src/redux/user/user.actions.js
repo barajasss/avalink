@@ -9,6 +9,7 @@ import {
 import {
 	fetchData as fetchDataFirebase,
 	updateData as updateDataFirebase,
+	getUserDetailsById,
 } from '../../firebase/utils/firestore.utils'
 
 const setUser = user => ({
@@ -67,6 +68,7 @@ const loginUser = (user, avoidLogin) => async dispatch => {
 	try {
 		let loggedUser = {}
 		if (!avoidLogin) {
+			// avoid login is used by app on auth state changed
 			loggedUser = await loginUserFirebase(user)
 		}
 		const name = await fetchDataFirebase(await getCurrentUser(), 'name')
@@ -78,6 +80,18 @@ const loginUser = (user, avoidLogin) => async dispatch => {
 				name: name || user.name,
 			})
 		)
+	} catch (err) {
+		throw err
+	}
+}
+
+const loadUserFromId = id => async dispatch => {
+	// used for loading profile data from url ID even if the user is not logged in.
+	try {
+		const user = await getUserDetailsById(id)
+		if (user) {
+			dispatch(setUser({ name: user.name, about: user.about }))
+		}
 	} catch (err) {
 		throw err
 	}
@@ -101,4 +115,5 @@ export {
 	loginUser,
 	logoutUser,
 	updateUserAsync,
+	loadUserFromId,
 }
