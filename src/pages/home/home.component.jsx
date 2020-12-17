@@ -24,13 +24,13 @@ export default class HomePage extends Component {
 					<div className='d-flex flex-row justify-content-center mt-4'>
 						<Link
 							to='/register'
-							style={{ color: 'lightblue', fontSize: '1.2em' }}>
+							className='btn btn-outline-light home-button'>
 							Register
 						</Link>
 						<span className='mx-3'></span>
 						<Link
 							to='/login'
-							style={{ color: 'lightblue', fontSize: '1.2em' }}>
+							className='btn btn-outline-light home-button'>
 							Login
 						</Link>
 					</div>
