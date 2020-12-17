@@ -32,7 +32,13 @@ class DashboardLinkItem extends Component {
 
 		if (profilePage && quickLink) {
 			return (
-				<div className='dashboard-link-item'>
+				<div
+					className='dashboard-link-item'
+					onClick={() => {
+						if (onClick) {
+							onClick()
+						}
+					}}>
 					{!noIcon && (
 						<a href={getLinkFromType(type)} target='_blank'>
 							<img

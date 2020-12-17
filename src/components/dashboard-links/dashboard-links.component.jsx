@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 
 import DashboardLinkItem from '../dashboard-link-item/dashboard-link-item.component'
 import DashboardModal from '../dashboard-modal/dashboard-modal.component'
-
+import vCardsJS from 'vcards-js'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import {
 	fetchLinks,
@@ -21,6 +22,8 @@ class DashboardLinks extends Component {
 			displayLinkEditor: false,
 			removeMode: false,
 		}
+		this.vCardDownloadBtn = createRef()
+		this.imgRef = createRef()
 	}
 
 	async componentDidMount() {
@@ -57,6 +60,41 @@ class DashboardLinks extends Component {
 			console.log(err)
 		}
 	}
+	generateVCard = async () => {
+		const { user, match } = this.props
+		const { name, imageUrl, about } = user
+
+		const id = match.params.id
+		const cleanUrl = imageUrl.slice(0, imageUrl.indexOf('?'))
+		const type = cleanUrl.slice(cleanUrl.lastIndexOf('.') + 1)
+		const url =
+			window.location.origin + process.env.REACT_APP_PROFILE_URL + id
+
+		// const canvas = document.createElement('canvas')
+		// canvas.height = this.imgRef.current.naturalHeight
+		// canvas.width = this.imgRef.current.naturalWidth
+		// this.imgRef.current.crossOrigin = 'Anonymous'
+
+		// const ctx = canvas.getContext('2d')
+		// ctx.drawImage(this.imgRef.current, 0, 0)
+		// const dataUrl = canvas.toDataURL()
+		// console.log(dataUrl)
+
+		const vCard = vCardsJS()
+		vCard.formattedName = name
+		// vCard.photo.attachFromUrl(imageUrl, type.toUpperCase())
+		vCard.url = url
+		vCard.source = url
+		vCard.note = about
+
+		console.log(vCard.getFormattedString())
+
+		const blob = new Blob([vCard.getFormattedString()], {
+			type: 'text/vcard',
+		})
+		this.vCardDownloadBtn.current.href = URL.createObjectURL(blob)
+		this.vCardDownloadBtn.current.click()
+	}
 	render() {
 		const {
 			removeMode,
@@ -64,7 +102,12 @@ class DashboardLinks extends Component {
 			linkEditorType,
 			displayLinkEditor,
 		} = this.state
-		const { links, quickLink, profilePage } = this.props
+		const {
+			links,
+			quickLink,
+			profilePage,
+			user: { name, imageUrl },
+		} = this.props
 		return (
 			<div className='dashboard-links'>
 				{/* CONTROLS */}
@@ -101,7 +144,25 @@ class DashboardLinks extends Component {
 				)}
 				{/* LINKS */}
 				<div className='link-grid'>
-					{!removeMode && <DashboardLinkItem type={'contact'} />}
+					{!removeMode && (
+						<>
+							<img
+								ref={this.imgRef}
+								src={imageUrl}
+								className='d-none'
+							/>
+							<a
+								className='d-none'
+								ref={this.vCardDownloadBtn}
+								href='#'
+								download={`${name}.vcf`}
+							/>
+							<DashboardLinkItem
+								onClick={this.generateVCard}
+								type={'contact'}
+							/>
+						</>
+					)}
 					{links.map(link => (
 						<DashboardLinkItem
 							key={link.type}
@@ -134,6 +195,7 @@ class DashboardLinks extends Component {
 }
 
 const mapStateToProps = state => ({
+	user: state.user,
 	links: state.links.userLinks,
 	quickLink: state.links.quickLink,
 })
@@ -144,4 +206,7 @@ const mapDispatchToProps = dispatch => ({
 	unsetQuickLinkAsync: () => dispatch(unsetQuickLinkAsync()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardLinks)
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withRouter(DashboardLinks))
