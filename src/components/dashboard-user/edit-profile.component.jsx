@@ -35,6 +35,11 @@ const EditProfile = ({
 						<img
 							ref={imageRef}
 							src={imageUrl ? imageUrl : '/user.png'}
+							alt='user display'
+							onError={e => {
+								e.target.onerror = null
+								e.target.src = '/user.png'
+							}}
 						/>
 						<button
 							className='btn btn-dark btn-sm'

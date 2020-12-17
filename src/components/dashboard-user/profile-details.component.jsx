@@ -109,6 +109,10 @@ class ProfileDetails extends Component {
 					<img
 						src={imageUrl ? imageUrl : '/user.png'}
 						alt='user display'
+						onError={e => {
+							e.target.onerror = null
+							e.target.src = '/user.png'
+						}}
 					/>
 				</div>
 				<div className='col-sm-6'>
