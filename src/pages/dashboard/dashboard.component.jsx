@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Redirect } from 'react-router-dom'
+import { Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import DashboardHeader from '../../components/dashboard-header/dashboard-header.component'
@@ -10,9 +10,20 @@ import DashboardLinks from '../../components/dashboard-links/dashboard-links.com
 import './dashboard.styles.scss'
 
 class Dashboard extends Component {
+	componentDidMount() {
+		const { isLoggedIn, profilePage, match } = this.props
+		// if (profilePage && !isLoggedIn) { !enable later!
+		if (profilePage) {
+			// load and fetch all the user details if the user is not logged in.
+			const id = match.params.id
+			console.log('into the profile page', id)
+		} else {
+			// the app component loads all the data if the user is logged in.
+		}
+	}
 	render() {
 		const { isLoggedIn, profilePage } = this.props
-		if (!isLoggedIn) {
+		if (!isLoggedIn && !profilePage) {
 			return <Redirect to='/' />
 		}
 		return (
@@ -33,4 +44,4 @@ const mapStateToProps = state => ({
 	isLoggedIn: state.user.isLoggedIn,
 })
 
-export default connect(mapStateToProps)(Dashboard)
+export default connect(mapStateToProps)(withRouter(Dashboard))

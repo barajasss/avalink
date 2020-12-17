@@ -6,6 +6,7 @@ const db = firebase.firestore()
 const createUserDefaults = async user => {
 	try {
 		await db.collection('users').doc(user.uid).set({
+			name: user.displayName,
 			id: shortId.generate(),
 			totalProfileLinks: 0,
 			quickLink: false,
@@ -115,6 +116,7 @@ const fetchLinks = async user => {
 				if (
 					data[link] &&
 					link !== 'id' &&
+					link !== 'name' &&
 					link !== 'about' &&
 					link !== 'quickLink' &&
 					link !== 'totalProfileLinks'

@@ -40,7 +40,9 @@ const updateUserAsync = (name, value) => async dispatch => {
 		}
 	} else {
 		try {
+			// udpate user display name as well as firebase data name
 			await updateUserFirebase(firebaseUpdateProp, value)
+			await updateDataFirebase(await getCurrentUser(), name, value)
 			dispatch(updateUser(name, value))
 		} catch (err) {
 			throw err
@@ -67,12 +69,13 @@ const loginUser = (user, avoidLogin) => async dispatch => {
 		if (!avoidLogin) {
 			loggedUser = await loginUserFirebase(user)
 		}
+		const name = await fetchDataFirebase(await getCurrentUser(), 'name')
 		const about = await fetchDataFirebase(await getCurrentUser(), 'about')
 		dispatch(
 			setUser({
-				name: loggedUser.user && loggedUser.user.displayName,
 				about,
 				...user,
+				name: name || user.name,
 			})
 		)
 	} catch (err) {
