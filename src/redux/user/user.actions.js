@@ -69,8 +69,13 @@ const loginUser = (user, avoidLogin) => async dispatch => {
 			// avoid login is used by app on auth state changed
 			loggedUser = await loginUserFirebase(user)
 		}
+		console.log(user)
 		const name = await fetchDataFirebase(await getCurrentUser(), 'name')
 		const about = await fetchDataFirebase(await getCurrentUser(), 'about')
+		const email = await fetchDataFirebase(
+			await getCurrentUser(),
+			'emailAddress'
+		)
 		const imageUrl = await fetchDataFirebase(
 			await getCurrentUser(),
 			'imageUrl'
@@ -81,6 +86,7 @@ const loginUser = (user, avoidLogin) => async dispatch => {
 				about,
 				name: name || user.name,
 				imageUrl,
+				email,
 			})
 		)
 	} catch (err) {
@@ -97,6 +103,7 @@ const loadUserFromId = id => async dispatch => {
 				setUser({
 					name: user.name,
 					about: user.about,
+					email: user.email,
 					imageUrl: user.imageUrl,
 				})
 			)

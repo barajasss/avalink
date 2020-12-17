@@ -103,7 +103,7 @@ class LoginPage extends Component {
 						<br />
 
 						<h5 className='text-center'>
-							Already have an account?{' '}
+							Don't have an account?{' '}
 							<Link to='/register'>Register</Link>
 						</h5>
 					</div>

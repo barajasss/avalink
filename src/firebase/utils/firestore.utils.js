@@ -3,10 +3,12 @@ import firebase from '../firebase'
 import shortId from 'shortid'
 const db = firebase.firestore()
 
-const createUserDefaults = async user => {
+const createUserDefaults = async () => {
+	const user = firebase.auth().currentUser
 	try {
 		await db.collection('users').doc(user.uid).set({
 			name: user.displayName,
+			emailAddress: user.email,
 			id: shortId.generate(),
 			totalProfileLinks: 0,
 			quickLink: false,
@@ -80,6 +82,7 @@ const getId = async () => {
 }
 
 const updateData = async (user, name, value) => {
+	user = firebase.auth().currentUser
 	try {
 		db.collection('users')
 			.doc(user.uid)
@@ -95,6 +98,7 @@ const updateData = async (user, name, value) => {
 }
 
 const updateBulkData = async (user, data) => {
+	user = firebase.auth().currentUser
 	try {
 		db.collection('users')
 			.doc(user.uid)
@@ -125,10 +129,13 @@ const fetchData = async (type, name, useId) => {
 				return
 			}
 		} else {
-			const doc = await db.collection('users').doc(type.uid).get()
-			const data = doc.data()
-			if (data) {
-				return data[name]
+			const user = firebase.auth().currentUser
+			if (user) {
+				const doc = await db.collection('users').doc(user.uid).get()
+				const data = doc.data()
+				if (data) {
+					return data[name]
+				}
 			}
 		}
 	} catch (err) {
@@ -147,6 +154,7 @@ const transformLinksForApp = data => {
 			link !== 'about' &&
 			link !== 'quickLink' &&
 			link !== 'imageUrl' &&
+			link !== 'emailAddress' &&
 			link !== 'totalProfileLinks'
 		) {
 			links = [...links, { type: link, link: data[link] }]

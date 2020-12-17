@@ -62,7 +62,7 @@ class DashboardLinks extends Component {
 	}
 	generateVCard = async () => {
 		const { user, match } = this.props
-		const { name, imageUrl, about } = user
+		const { name, imageUrl, about, email } = user
 
 		const id = match.params.id
 		const cleanUrl = imageUrl.slice(0, imageUrl.indexOf('?'))
@@ -84,10 +84,14 @@ class DashboardLinks extends Component {
 		vCard.formattedName = name
 		// vCard.photo.attachFromUrl(imageUrl, type.toUpperCase())
 		vCard.url = url
+		vCard.email = email
 		vCard.source = url
 		vCard.note = about
 
-		console.log(vCard.getFormattedString())
+		console.log(
+			vCard.getFormattedString()
+			// .replace('END:VCARD', 'EMAIL:' + email + '\nEND:VCARD')
+		)
 
 		const blob = new Blob([vCard.getFormattedString()], {
 			type: 'text/vcard',
