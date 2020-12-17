@@ -104,10 +104,7 @@ class ProfileDetails extends Component {
 		return (
 			<div className='row'>
 				<div className='col-sm-4 display-image'>
-					<img
-						src={process.env.PUBLIC_URL + 'user.png'}
-						alt='user display'
-					/>
+					<img src={'/user.png'} alt='user display' />
 				</div>
 				<div className='col-sm-6'>
 					<h3 className='text-capitalize mt-1 profile-name'>
@@ -118,7 +115,7 @@ class ProfileDetails extends Component {
 				<div className='col-sm-2 qr-and-link-contianer'>
 					<img
 						className='qr-icon'
-						src={process.env.PUBLIC_URL + 'icons/qrcode.png'}
+						src={'/icons/qrcode.png'}
 						alt='QR icon'
 						onClick={this.viewQr}
 					/>

@@ -50,6 +50,9 @@ class Router extends React.Component {
 					</Route>
 
 					{/* DASHBOARD AND MENU*/}
+					<Route exact path='/u/:id'>
+						<DashboardPage profilePage />
+					</Route>
 					<Route path='/dashboard'>
 						<DashboardPage />
 					</Route>

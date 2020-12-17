@@ -49,13 +49,14 @@ class App extends React.Component {
 			'/settings',
 			'/dashboard',
 			'/edit-profile',
+			'/register',
 			'/change-password',
 		]
 		// Redirect logic for logged users
 		if (
 			authStateResolved &&
 			isLoggedIn &&
-			location.pathname !== '/register' &&
+			!location.pathname.match(/\/u\/.+/) &&
 			!allowedRoutes.includes(location.pathname) &&
 			!location.state
 		) {

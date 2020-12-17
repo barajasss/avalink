@@ -6,10 +6,7 @@ class InlineLinkEditor extends React.Component {
 		const { type, link, updateLink } = this.props
 		return (
 			<div className='inline-link-editor'>
-				<img
-					src={`${process.env.PUBLIC_URL}icons/${type}.png`}
-					className='icon'
-				/>
+				<img src={`/icons/${type}.png`} className='icon' />
 				<div className='form-group'>
 					<input
 						className='form-control'

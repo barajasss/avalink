@@ -54,7 +54,7 @@ class DashboardLinkItem extends Component {
 				{this.props.children}
 				{!noIcon && (
 					<img
-						src={`${process.env.PUBLIC_URL}icons/${type}.png`}
+						src={`/icons/${type}.png`}
 						className='icon-img img-fluid'
 					/>
 				)}
