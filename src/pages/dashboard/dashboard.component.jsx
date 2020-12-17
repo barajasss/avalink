@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import { Helmet } from 'react-helmet'
+
 import { Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -73,6 +75,9 @@ class Dashboard extends Component {
 		}
 		return (
 			<div className='dashboard'>
+				<Helmet>
+					<title>Dashboard</title>
+				</Helmet>
 				<div className='row'>
 					<div className='col-md-8 offset-md-2'>
 						<DashboardHeader profilePage={profilePage} />
