@@ -70,11 +70,11 @@ class EditProfilePage extends Component {
 		let links = []
 
 		userLinks.forEach(userLink => {
-			links = [...links, { ...userLink }]
+			if (userLink.data !== '') links = [...links, { ...userLink }]
 		})
 
 		defaultLinks.forEach(defaultLink => {
-			const linkFoundInUser = userLinks.find(
+			const linkFoundInUser = links.find(
 				userLink => userLink.name === defaultLink.name
 			)
 			if (!linkFoundInUser) {
@@ -90,6 +90,7 @@ class EditProfilePage extends Component {
 		if (i === -1) return
 		const updatedLinks = [...links]
 		updatedLinks[i].data = link
+		console.log(link)
 		this.setState({
 			links: updatedLinks,
 		})
@@ -161,6 +162,7 @@ class EditProfilePage extends Component {
 							<InlineLinkEditor
 								key={item.name}
 								name={item.name}
+								data={item.data}
 								updateLink={this.updateLink}
 							/>
 						))}

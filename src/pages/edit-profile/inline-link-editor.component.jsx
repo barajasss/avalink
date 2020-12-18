@@ -3,9 +3,8 @@ import { connect } from 'react-redux'
 
 class InlineLinkEditor extends React.Component {
 	render() {
-		const { name, updateLink, getUserLink } = this.props
-		const { data } = getUserLink(name)
-		console.log(name)
+		const { name, data, updateLink, getLinkMeta } = this.props
+		const linkMeta = getLinkMeta(name)
 		return (
 			<div className='inline-link-editor'>
 				<img src={`/icons/${name}.png`} className='icon' />
@@ -13,7 +12,9 @@ class InlineLinkEditor extends React.Component {
 					<input
 						className='form-control'
 						type='text'
-						placeholder={`${name} profile link`}
+						placeholder={
+							linkMeta.placeholder || `${name} profile link`
+						}
 						onChange={e => updateLink(name, e.target.value)}
 						value={data}
 					/>
@@ -28,7 +29,8 @@ class InlineLinkEditor extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	getUserLink: name => state.links.userLinks.find(link => link.name === name),
+	getLinkMeta: name =>
+		state.links.defaultLinks.find(link => link.name === name),
 })
 
 export default connect(mapStateToProps)(InlineLinkEditor)
