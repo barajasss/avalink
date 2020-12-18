@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import Tooltip from '../../components/tooltip/tooltip.component'
 
 class InlineLinkEditor extends React.Component {
 	render() {
@@ -23,6 +24,7 @@ class InlineLinkEditor extends React.Component {
 					className='fas fa-times text-danger fa-2x p-1 ml-3 clear-icon'
 					onClick={() => updateLink(name, '')}
 				/>
+				<Tooltip data={linkMeta.linkInfo} />
 			</div>
 		)
 	}

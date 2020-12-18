@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { updateLink } from '../../redux/links/links.actions'
 import { connect } from 'react-redux'
+import Tooltip from '../tooltip/tooltip.component'
 
 const LinkEditor = ({
 	closeLinkEditor,
@@ -55,30 +56,39 @@ const LinkEditor = ({
 							required
 						/>
 					) : (
-						<input
-							type='text'
-							className='form-control'
-							placeholder={
-								linkMeta.placeholder ||
-								`paste your ${name} profile link here`
-							}
-							onChange={e => setLink(e.target.value)}
-							defaultValue={link}
-							required
-						/>
+						<div className='d-flex flex-row'>
+							<input
+								type='text'
+								className='form-control'
+								placeholder={
+									linkMeta.placeholder ||
+									`paste your ${name} profile link here`
+								}
+								onChange={e => setLink(e.target.value)}
+								value={link}
+								required
+							/>
+							<i
+								className='fas fa-times text-danger fa-2x p-1 ml-3 clear-icon'
+								onClick={() => {
+									setLink('')
+								}}
+							/>
+							<Tooltip data={linkMeta.linkInfo} />
+						</div>
 					)}
 				</div>
 				{!profilePage && (
 					<>
 						<button
-							className='btn btn-danger px-5'
+							className='btn btn-info px-3 mr-1'
 							type='button'
 							onClick={() => {
 								closeModal()
 							}}>
-							Cancel
+							Open Link
 						</button>{' '}
-						<button className='btn btn-dark px-5'>Save</button>
+						<button className='btn btn-dark px-4'>Save</button>
 					</>
 				)}
 				{profilePage && (
