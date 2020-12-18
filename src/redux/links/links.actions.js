@@ -146,6 +146,7 @@ const removeLink = name => async dispatch => {
 		if (link.name === name) {
 			link.data = ''
 		}
+		return link
 	})
 	try {
 		await updateDataFirebase(user, 'links', updatedLinks)
