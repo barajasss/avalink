@@ -27,12 +27,12 @@ const linksReducer = (state = initialLinksState, action) => {
 		}
 		case LinksActionTypes.SET_DEFAULT_LINKS: {
 			const defaultLinks = action.payload
-			// sort alphabetically
-			// defaultLinks.sort(function (a, b) {
-			// 	var textA = a.type.toUpperCase()
-			// 	var textB = b.type.toUpperCase()
-			// 	return textA < textB ? -1 : textA > textB ? 1 : 0
-			// })
+			// sort according to orders
+			defaultLinks.sort(function (a, b) {
+				var textA = a.order
+				var textB = b.order
+				return textA < textB ? -1 : textA > textB ? 1 : 0
+			})
 			return {
 				...state,
 				defaultLinks,
@@ -53,12 +53,12 @@ const linksReducer = (state = initialLinksState, action) => {
 		// }
 		case LinksActionTypes.SET_LINK_MULTIPLE: {
 			let links = action.payload
-			// sort alphabetically
-			// links.sort(function (a, b) {
-			// 	var textA = a.type.toUpperCase()
-			// 	var textB = b.type.toUpperCase()
-			// 	return textA < textB ? -1 : textA > textB ? 1 : 0
-			// })
+			// sort as per order
+			links.sort(function (a, b) {
+				var textA = a.order
+				var textB = b.order
+				return textA < textB ? -1 : textA > textB ? 1 : 0
+			})
 			return { ...state, userLinks: [...links], userLinksLoaded: true }
 		}
 		// case LinksActionTypes.UNSET_LINK: {

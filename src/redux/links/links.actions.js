@@ -120,17 +120,6 @@ const updateLink = (name, data) => async dispatch => {
 
 const updateMultipleLinks = links => async dispatch => {
 	try {
-		// filter links from empty values
-		// links = links.filter(item => item.data !== '')
-
-		// map and transform data to a proper format before persisting to firebase
-		// links.forEach(link => {
-		// 	transformedLinks = {
-		// 		...transformedLinks,
-		// 		[link.name]: link.data,
-		// 	}
-		// })
-
 		await updateBulkDataFirebase(await getCurrentUser(), { links })
 		dispatch(setLinkMultiple(links))
 	} catch (err) {

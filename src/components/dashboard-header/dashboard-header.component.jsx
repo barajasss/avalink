@@ -43,9 +43,21 @@ class DashboardHeader extends Component {
 				) : (
 					!profilePage &&
 					totalProfileLinksLoaded && (
-						<h6>
+						<h6 className='text-center'>
 							{totalProfileLinks}{' '}
-							{totalProfileLinks > 1 ? 'Links' : 'Link'}
+							{totalProfileLinks === 1 ? (
+								<>
+									{' '}
+									AVA <br />
+									Connection
+								</>
+							) : (
+								<>
+									{' '}
+									AVA <br />
+									Connections
+								</>
+							)}
 						</h6>
 					)
 				)}

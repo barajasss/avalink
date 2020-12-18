@@ -29,8 +29,8 @@ class DashboardLinkItem extends Component {
 			quickLink,
 			getUserLink,
 			getLinkMeta,
+			hide,
 		} = this.props
-
 		if (profilePage && quickLink) {
 			const linkMeta = getLinkMeta(name)
 			return (

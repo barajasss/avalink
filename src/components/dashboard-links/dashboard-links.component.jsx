@@ -9,7 +9,10 @@ import {
 	fetchLinks,
 	setQuickLinkAsync,
 	unsetQuickLinkAsync,
+	updateMultipleLinks,
 } from '../../redux/links/links.actions'
+
+import { ReactSortable } from 'react-sortablejs'
 
 import './dashboard-links.styles.scss'
 
@@ -21,15 +24,18 @@ class DashboardLinks extends Component {
 			linkEditorType: '',
 			displayLinkEditor: false,
 			removeMode: false,
+			sortedLinks: [],
 		}
 		this.vCardDownloadBtn = createRef()
 		this.imgRef = createRef()
+		this.saveButton = createRef()
 	}
 
 	async componentDidMount() {
 		const { fetchLinks } = this.props
 		try {
-			await fetchLinks()
+			const links = await fetchLinks()
+			this.setState({ sortedLinks: links.filter(link => link.data) })
 		} catch (err) {
 			console.log(err)
 		}
@@ -60,25 +66,36 @@ class DashboardLinks extends Component {
 			console.log(err)
 		}
 	}
+	saveOrder = async orderedLinks => {
+		const { links, updateMultipleLinks } = this.props
+		// update the position orders of the links
+		orderedLinks.map((item, index) => {
+			item.order = index + 1
+			return item
+		})
+		const processedLinks = links.map((item, index) => {
+			// update item if any ordered Link is found
+			const orderedItem = orderedLinks.find(
+				orderedLink => orderedLink.name === item.name
+			)
+			if (orderedItem) {
+				item.order = orderedItem.order
+			}
+			return item
+		})
+		try {
+			await updateMultipleLinks(processedLinks)
+		} catch (err) {
+			console.log(err)
+		}
+	}
 	generateVCard = async () => {
 		const { user, match } = this.props
 		const { name, imageUrl, about, email } = user
 
 		const id = match.params.id
-		// const cleanUrl = imageUrl.slice(0, imageUrl.indexOf('?'))
-		// const type = cleanUrl.slice(cleanUrl.lastIndexOf('.') + 1)
 		const url =
 			window.location.origin + process.env.REACT_APP_PROFILE_URL + id
-
-		// const canvas = document.createElement('canvas')
-		// canvas.height = this.imgRef.current.naturalHeight
-		// canvas.width = this.imgRef.current.naturalWidth
-		// this.imgRef.current.crossOrigin = 'Anonymous'
-
-		// const ctx = canvas.getContext('2d')
-		// ctx.drawImage(this.imgRef.current, 0, 0)
-		// const dataUrl = canvas.toDataURL()
-		// console.log(dataUrl)
 
 		const vCard = vCardsJS()
 		vCard.formattedName = name
@@ -100,6 +117,7 @@ class DashboardLinks extends Component {
 			showModal,
 			linkEditorType,
 			displayLinkEditor,
+			sortedLinks,
 		} = this.state
 		const {
 			links,
@@ -114,15 +132,22 @@ class DashboardLinks extends Component {
 					<div className='mx-2 mx-sm-0 px-0 row mb-4'>
 						<div className='col-6 col-md-4 offset-md-2'>
 							<button
+								ref={this.saveButton}
 								className={`dashboard-button btn ${
 									removeMode ? 'btn-dark' : 'btn-outline-dark'
 								} mt-2 btn-block`}
-								onClick={() => {
+								onClick={async () => {
+									if (removeMode) {
+										await this.saveOrder(sortedLinks)
+										this.saveButton.current.textContent =
+											'Saving...'
+									}
+									// restore state
 									this.setState(state => ({
 										removeMode: !state.removeMode,
 									}))
 								}}>
-								{removeMode ? 'Done' : 'Edit links'}
+								{removeMode ? 'Save' : 'Shift'}
 							</button>
 						</div>
 						<div className='col-6 col-md-4'>
@@ -132,17 +157,18 @@ class DashboardLinks extends Component {
 								{quickLink ? (
 									<span>
 										<i className='fas fa-check-square mr-2' />
-										Quick Link Enabled
+										Quick Link On
 									</span>
 								) : (
-									'Enable Quick Link'
+									'Quick Link Off'
 								)}
 							</button>
 						</div>
 					</div>
 				)}
+
 				{/* LINKS */}
-				<div className='link-grid'>
+				<div className={`${removeMode ? '' : 'link-grid'}`}>
 					{!removeMode && (
 						<>
 							<img
@@ -162,9 +188,15 @@ class DashboardLinks extends Component {
 							/>
 						</>
 					)}
-					{links.map(
-						link =>
-							link.data && (
+					{removeMode ? (
+						<ReactSortable
+							list={sortedLinks}
+							setList={newState =>
+								this.setState({ sortedLinks: newState })
+							}
+							className='link-grid'
+							animation={200}>
+							{sortedLinks.map(link => (
 								<DashboardLinkItem
 									key={link.name}
 									showModal={this.showModal}
@@ -174,7 +206,23 @@ class DashboardLinks extends Component {
 									profilePage={profilePage}
 									quickLink={quickLink}
 								/>
-							)
+							))}
+						</ReactSortable>
+					) : (
+						links.map(
+							link =>
+								link.data && (
+									<DashboardLinkItem
+										key={link.name}
+										showModal={this.showModal}
+										linkBtn
+										name={link.name}
+										removeMode={removeMode}
+										profilePage={profilePage}
+										quickLink={quickLink}
+									/>
+								)
+						)
 					)}
 					{!profilePage && !removeMode && (
 						<DashboardLinkItem
@@ -206,6 +254,7 @@ const mapDispatchToProps = dispatch => ({
 	fetchLinks: () => dispatch(fetchLinks()),
 	setQuickLinkAsync: () => dispatch(setQuickLinkAsync()),
 	unsetQuickLinkAsync: () => dispatch(unsetQuickLinkAsync()),
+	updateMultipleLinks: links => dispatch(updateMultipleLinks(links)),
 })
 
 export default connect(

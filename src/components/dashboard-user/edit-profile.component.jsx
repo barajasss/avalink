@@ -58,7 +58,7 @@ const EditProfile = ({
 				<div className='col-md-8 edit-profile-input-container'>
 					<form>
 						<div className='form-group'>
-							<label>Profile Name</label>
+							<label>Full Name</label>
 							<input
 								type='text'
 								className='form-control'
@@ -67,7 +67,7 @@ const EditProfile = ({
 							/>
 						</div>
 						<div className='form-group'>
-							<label>About</label>
+							<label>Bio</label>
 							<input
 								type='text'
 								className='form-control'

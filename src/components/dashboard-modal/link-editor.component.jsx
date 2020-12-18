@@ -59,9 +59,9 @@ const LinkEditor = ({
 						<div className='d-flex flex-row'>
 							<div className='input-group h-100'>
 								{linkMeta.prefixSign && (
-									<div class='input-group-prepend'>
+									<div className='input-group-prepend'>
 										<span
-											class='input-group-text'
+											className='input-group-text'
 											id='basic-addon1'>
 											{linkMeta.prefixSign}
 										</span>

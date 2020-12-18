@@ -148,7 +148,7 @@ const defaultLinks = [
 		name: 'cashapp',
 		type: 'sublink',
 		placeholder: 'CashApp username',
-		linkPrefix: 'https://cash.app/',
+		linkPrefix: 'https://cash.app/$',
 		linkInfo:
 			'Step 1: Open the CashApp app. Step 2: Tap on the profile icon in the top right corner. Step 3: Your CashApp username will be in grey with a $.',
 		order: 14,
