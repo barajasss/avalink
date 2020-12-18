@@ -28,9 +28,11 @@ class DashboardLinkItem extends Component {
 			profilePage,
 			quickLink,
 			getUserLink,
+			getLinkMeta,
 		} = this.props
 
 		if (profilePage && quickLink) {
+			const linkMeta = getLinkMeta(name)
 			return (
 				<div
 					className='dashboard-link-item'
@@ -40,7 +42,9 @@ class DashboardLinkItem extends Component {
 						}
 					}}>
 					{!noIcon && (
-						<a href={getUserLink(name).data} target='_blank'>
+						<a
+							href={linkMeta.linkPrefix + getUserLink(name).data}
+							target='_blank'>
 							<img
 								src={`/icons/${name}.png`}
 								className='icon-img img-fluid'
@@ -51,6 +55,7 @@ class DashboardLinkItem extends Component {
 				</div>
 			)
 		}
+
 		return (
 			<div
 				className={`dashboard-link-item ${
@@ -97,6 +102,8 @@ class DashboardLinkItem extends Component {
 }
 const mapStateToProps = state => ({
 	getUserLink: name => state.links.userLinks.find(link => link.name === name),
+	getLinkMeta: name =>
+		state.links.defaultLinks.find(link => link.name === name),
 })
 const mapDispatchToProps = dispatch => ({
 	removeLink: name => dispatch(removeLink(name)),

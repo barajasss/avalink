@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ReactTooltip from 'react-tooltip'
+import './tooltip.styles.scss'
 
 export default class Tooltip extends Component {
 	render() {
@@ -10,6 +11,9 @@ export default class Tooltip extends Component {
 					html={true}
 					backgroundColor='#444'
 					textColor='white'
+					place='left'
+					effect='solid'
+					className='tooltip-element'
 				/>
 				<button
 					type='button'

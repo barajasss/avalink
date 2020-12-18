@@ -9,7 +9,14 @@ class InlineLinkEditor extends React.Component {
 		return (
 			<div className='inline-link-editor'>
 				<img src={`/icons/${name}.png`} className='icon' />
-				<div className='form-group'>
+				<div className='input-group h-100'>
+					{linkMeta.prefixSign && (
+						<div class='input-group-prepend'>
+							<span class='input-group-text' id='basic-addon1'>
+								{linkMeta.prefixSign}
+							</span>
+						</div>
+					)}
 					<input
 						className='form-control'
 						type='text'

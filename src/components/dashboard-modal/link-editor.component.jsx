@@ -57,17 +57,28 @@ const LinkEditor = ({
 						/>
 					) : (
 						<div className='d-flex flex-row'>
-							<input
-								type='text'
-								className='form-control'
-								placeholder={
-									linkMeta.placeholder ||
-									`paste your ${name} profile link here`
-								}
-								onChange={e => setLink(e.target.value)}
-								value={link}
-								required
-							/>
+							<div className='input-group h-100'>
+								{linkMeta.prefixSign && (
+									<div class='input-group-prepend'>
+										<span
+											class='input-group-text'
+											id='basic-addon1'>
+											{linkMeta.prefixSign}
+										</span>
+									</div>
+								)}
+								<input
+									type='text'
+									className='form-control'
+									placeholder={
+										linkMeta.placeholder ||
+										`paste your ${name} profile link here`
+									}
+									onChange={e => setLink(e.target.value)}
+									value={link}
+									required
+								/>
+							</div>
 							<i
 								className='fas fa-times text-danger fa-2x p-1 ml-3 clear-icon'
 								onClick={() => {
@@ -84,7 +95,10 @@ const LinkEditor = ({
 							className='btn btn-info px-3 mr-1'
 							type='button'
 							onClick={() => {
-								closeModal()
+								window.open(
+									linkMeta.linkPrefix + link,
+									'_blank'
+								)
 							}}>
 							Open Link
 						</button>{' '}
