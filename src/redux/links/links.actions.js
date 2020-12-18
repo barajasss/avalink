@@ -121,7 +121,7 @@ const updateLink = (name, data) => async dispatch => {
 const updateMultipleLinks = links => async dispatch => {
 	try {
 		// filter links from empty values
-		links = links.filter(item => item.data !== '')
+		// links = links.filter(item => item.data !== '')
 
 		// map and transform data to a proper format before persisting to firebase
 		// links.forEach(link => {

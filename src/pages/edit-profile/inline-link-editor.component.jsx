@@ -5,6 +5,7 @@ class InlineLinkEditor extends React.Component {
 	render() {
 		const { name, updateLink, getUserLink } = this.props
 		const { data } = getUserLink(name)
+		console.log(name)
 		return (
 			<div className='inline-link-editor'>
 				<img src={`/icons/${name}.png`} className='icon' />

@@ -62,12 +62,9 @@ const updateData = async (user, name, value) => {
 	try {
 		db.collection('users')
 			.doc(user.uid)
-			.set(
-				{
-					[name]: value,
-				},
-				{ merge: true }
-			)
+			.update({
+				[name]: value,
+			})
 	} catch (err) {
 		throw err
 	}
