@@ -64,8 +64,8 @@ const fetchLinksById = (id, data) => async dispatch => {
 		let quickLink
 		if (id === 0 && data) {
 			// use preloaded data if id === 0
-			links = data
-			quickLink = data.quickLink
+			links = data.links
+			quickLink = data.details.quickLink
 		} else {
 			links = await fetchLinksFirebase(id, true)
 			quickLink = await fetchDataFirebase(

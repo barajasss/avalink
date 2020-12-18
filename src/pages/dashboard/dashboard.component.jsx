@@ -11,7 +11,10 @@ import DashboardLinks from '../../components/dashboard-links/dashboard-links.com
 import Loading from '../../components/loading/loading.component'
 
 import { loadUserFromId } from '../../redux/user/user.actions'
-import { fetchLinksById } from '../../redux/links/links.actions'
+import {
+	fetchLinksById,
+	fetchDefaultLinks,
+} from '../../redux/links/links.actions'
 import { incrementTotalProfileLinks } from '../../firebase/utils/firestore.utils'
 
 import './dashboard.styles.scss'
@@ -30,6 +33,7 @@ class Dashboard extends Component {
 			match,
 			loadUserFromId,
 			fetchLinksById,
+			fetchDefaultLinks,
 			isLoggedIn,
 			history,
 		} = this.props
@@ -47,6 +51,7 @@ class Dashboard extends Component {
 			try {
 				const data = await loadUserFromId(id)
 				await fetchLinksById(0, data)
+				await fetchDefaultLinks()
 				if (data) {
 					this.setState({ userExists: true })
 				} else {
@@ -98,6 +103,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	loadUserFromId: id => dispatch(loadUserFromId(id)),
 	fetchLinksById: (id, data) => dispatch(fetchLinksById(id, data)),
+	fetchDefaultLinks: () => dispatch(fetchDefaultLinks()),
 })
 
 export default connect(

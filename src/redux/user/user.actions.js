@@ -115,7 +115,8 @@ const loginUser = (user, avoidLogin) => async dispatch => {
 const loadUserFromId = id => async dispatch => {
 	// used for loading profile data from url ID even if the user is not logged in.
 	try {
-		const { details: user } = await getUserDetailsById(id)
+		const details = await getUserDetailsById(id)
+		const { user } = details
 		if (user) {
 			dispatch(
 				setUser({
@@ -126,7 +127,7 @@ const loadUserFromId = id => async dispatch => {
 				})
 			)
 		}
-		return user
+		return details
 	} catch (err) {
 		throw err
 	}
