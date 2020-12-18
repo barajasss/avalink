@@ -8,11 +8,11 @@ class DashboardModal extends Component {
 	constructor(props) {
 		super(props)
 	}
-	openLinkEditor = type => {
+	openLinkEditor = name => {
 		const { showModal } = this.props
 		showModal(true, {
 			displayLinkEditor: true,
-			linkEditorType: type,
+			linkEditorType: name,
 		})
 	}
 	closeLinkEditor = () => {
@@ -54,7 +54,7 @@ class DashboardModal extends Component {
 									key={show}
 									closeModal={this.closeModal}
 									closeLinkEditor={this.closeLinkEditor}
-									type={linkEditorType}
+									name={linkEditorType}
 									profilePage={profilePage}
 								/>
 							) : (

@@ -34,26 +34,27 @@ const LinkOptions = ({
 				{defaultLinks.map(item => {
 					const userAddedAlready =
 						userLinks.findIndex(
-							userLink => userLink.type === item.type
+							userLink =>
+								userLink.data && userLink.name === item.name
 						) !== -1
 					if (!userAddedAlready) {
 						return (
 							<DashboardLinkItem
-								key={item.type}
+								key={item.name}
 								onClick={() => {
-									openLinkEditor(item.type)
+									openLinkEditor(item.name)
 								}}
-								type={item.type}
+								name={item.name}
 							/>
 						)
 					} else {
 						return (
 							<DashboardLinkItem
-								key={item.type}
+								key={item.name}
 								onClick={() => {
-									openLinkEditor(item.type)
+									openLinkEditor(item.name)
 								}}
-								type={item.type}
+								name={item.name}
 								checked
 							/>
 						)

@@ -1,4 +1,5 @@
 import LinksActionTypes from './links.types'
+import store from '../store'
 
 import { getCurrentUser } from '../../firebase/utils/auth.utils'
 import {
@@ -7,7 +8,6 @@ import {
 	fetchDefaultLinks as fetchDefaultLinksFirebase,
 	updateBulkData as updateBulkDataFirebase,
 	fetchData as fetchDataFirebase,
-	transformLinksForApp,
 } from '../../firebase/utils/firestore.utils'
 
 const setTotalProfileLinks = count => ({
@@ -40,8 +40,9 @@ const fetchLinks = () => async dispatch => {
 		const user = await getCurrentUser()
 		const links = await fetchLinksFirebase(user)
 		dispatch(setLinkMultiple(links))
-		const quickLink = await fetchDataFirebase(user, 'quickLink')
+		const quickLink = await fetchDataFirebase('details', user, 'quickLink')
 		const totalProfileLinks = await fetchDataFirebase(
+			'details',
 			user,
 			'totalProfileLinks'
 		)
@@ -63,11 +64,16 @@ const fetchLinksById = (id, data) => async dispatch => {
 		let quickLink
 		if (id === 0 && data) {
 			// use preloaded data if id === 0
-			links = transformLinksForApp(data)
+			links = data
 			quickLink = data.quickLink
 		} else {
 			links = await fetchLinksFirebase(id, true)
-			quickLink = await fetchDataFirebase(id, 'quickLink', true)
+			quickLink = await fetchDataFirebase(
+				'details',
+				id,
+				'quickLink',
+				true
+			)
 		}
 
 		if (links) {
@@ -86,7 +92,7 @@ const fetchLinksById = (id, data) => async dispatch => {
 
 const fetchDefaultLinks = () => async dispatch => {
 	try {
-		const links = await fetchDefaultLinksFirebase()
+		const links = fetchDefaultLinksFirebase()
 		dispatch(setDefaultLinks(links))
 		return links
 	} catch (err) {
@@ -94,12 +100,19 @@ const fetchDefaultLinks = () => async dispatch => {
 	}
 }
 
-const updateLink = (type, link) => async dispatch => {
+const updateLink = (name, data) => async dispatch => {
 	// use to set or unset or modify any links.
 	const user = await getCurrentUser()
+	const userLinks = store.getState().links.userLinks
+	const updatedLinks = userLinks.map(link => {
+		if (link.name === name) {
+			link.data = data
+		}
+		return link
+	})
 	try {
-		await updateDataFirebase(user, type, link)
-		dispatch(setLink(type, link))
+		await updateDataFirebase(user, 'links', updatedLinks)
+		dispatch(setLinkMultiple(updatedLinks))
 	} catch (err) {
 		throw err
 	}
@@ -107,31 +120,36 @@ const updateLink = (type, link) => async dispatch => {
 
 const updateMultipleLinks = links => async dispatch => {
 	try {
-		let transformedLinks = {}
-
 		// filter links from empty values
-		links = links.filter(item => item.link !== '')
+		links = links.filter(item => item.data !== '')
 
 		// map and transform data to a proper format before persisting to firebase
-		links.forEach(link => {
-			transformedLinks = {
-				...transformedLinks,
-				[link.type]: link.link,
-			}
-		})
-		await updateBulkDataFirebase(await getCurrentUser(), transformedLinks)
+		// links.forEach(link => {
+		// 	transformedLinks = {
+		// 		...transformedLinks,
+		// 		[link.name]: link.data,
+		// 	}
+		// })
+
+		await updateBulkDataFirebase(await getCurrentUser(), { links })
 		dispatch(setLinkMultiple(links))
 	} catch (err) {
 		throw err
 	}
 }
 
-const removeLink = type => async dispatch => {
+const removeLink = name => async dispatch => {
 	// use to set or unset or modify any links.
 	const user = await getCurrentUser()
+	const userLinks = store.getState().links.userLinks
+	const updatedLinks = userLinks.map(link => {
+		if (link.name === name) {
+			link.data = ''
+		}
+	})
 	try {
-		await updateDataFirebase(user, type, '')
-		dispatch(unsetLink(type))
+		await updateDataFirebase(user, 'links', updatedLinks)
+		dispatch(setLinkMultiple(updatedLinks))
 	} catch (err) {
 		throw err
 	}
@@ -150,7 +168,7 @@ const setQuickLinkAsync = () => async dispatch => {
 	// use to set or unset or modify any links.
 	const user = await getCurrentUser()
 	try {
-		await updateDataFirebase(user, 'quickLink', true)
+		await updateDataFirebase(user, 'details.quickLink', true)
 		dispatch(setQuickLink())
 	} catch (err) {
 		throw err
@@ -161,7 +179,7 @@ const unsetQuickLinkAsync = () => async dispatch => {
 	// use to set or unset or modify any links.
 	const user = await getCurrentUser()
 	try {
-		await updateDataFirebase(user, 'quickLink', false)
+		await updateDataFirebase(user, 'details.quickLink', false)
 		dispatch(unsetQuickLink())
 	} catch (err) {
 		throw err

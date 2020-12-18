@@ -65,8 +65,8 @@ class DashboardLinks extends Component {
 		const { name, imageUrl, about, email } = user
 
 		const id = match.params.id
-		const cleanUrl = imageUrl.slice(0, imageUrl.indexOf('?'))
-		const type = cleanUrl.slice(cleanUrl.lastIndexOf('.') + 1)
+		// const cleanUrl = imageUrl.slice(0, imageUrl.indexOf('?'))
+		// const type = cleanUrl.slice(cleanUrl.lastIndexOf('.') + 1)
 		const url =
 			window.location.origin + process.env.REACT_APP_PROFILE_URL + id
 
@@ -158,26 +158,29 @@ class DashboardLinks extends Component {
 							/>
 							<DashboardLinkItem
 								onClick={this.generateVCard}
-								type={'contact'}
+								name={'contact'}
 							/>
 						</>
 					)}
-					{links.map(link => (
-						<DashboardLinkItem
-							key={link.type}
-							showModal={this.showModal}
-							linkBtn
-							type={link.type}
-							removeMode={removeMode}
-							profilePage={profilePage}
-							quickLink={quickLink}
-						/>
-					))}
+					{links.map(
+						link =>
+							link.data && (
+								<DashboardLinkItem
+									key={link.name}
+									showModal={this.showModal}
+									linkBtn
+									name={link.name}
+									removeMode={removeMode}
+									profilePage={profilePage}
+									quickLink={quickLink}
+								/>
+							)
+					)}
 					{!profilePage && !removeMode && (
 						<DashboardLinkItem
 							modalBtn
 							showModal={this.showModal}
-							type={'new link'}
+							name={'new link'}
 						/>
 					)}
 					<DashboardModal

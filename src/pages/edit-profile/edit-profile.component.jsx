@@ -75,7 +75,7 @@ class EditProfilePage extends Component {
 
 		defaultLinks.forEach(defaultLink => {
 			const linkFoundInUser = userLinks.find(
-				userLink => userLink.type === defaultLink.type
+				userLink => userLink.name === defaultLink.name
 			)
 			if (!linkFoundInUser) {
 				links = [...links, { ...defaultLink }]
@@ -84,12 +84,12 @@ class EditProfilePage extends Component {
 		this.setState({ loadingLinks: false, links })
 	}
 
-	updateLink = (type, link) => {
+	updateLink = (name, link) => {
 		const { links } = this.state
-		const i = links.findIndex(link => link.type === type)
+		const i = links.findIndex(link => link.name === name)
 		if (i === -1) return
 		const updatedLinks = [...links]
-		updatedLinks[i].link = link
+		updatedLinks[i].data = link
 		this.setState({
 			links: updatedLinks,
 		})
@@ -159,9 +159,8 @@ class EditProfilePage extends Component {
 
 						{links.map(item => (
 							<InlineLinkEditor
-								key={item.type}
-								type={item.type}
-								link={item.link}
+								key={item.name}
+								name={item.name}
 								updateLink={this.updateLink}
 							/>
 						))}

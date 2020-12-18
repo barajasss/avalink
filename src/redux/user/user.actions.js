@@ -34,14 +34,22 @@ const updateUserAsync = (name, value) => async dispatch => {
 		try {
 			// udpate user display name as well as firebase data name
 			await updateUserFirebase(firebaseUpdateProp, value)
-			await updateDataFirebase(await getCurrentUser(), name, value)
+			await updateDataFirebase(
+				await getCurrentUser(),
+				'details.' + name,
+				value
+			)
 			dispatch(updateUser(name, value))
 		} catch (err) {
 			throw err
 		}
 	} else {
 		try {
-			await updateDataFirebase(await getCurrentUser(), name, value)
+			await updateDataFirebase(
+				await getCurrentUser(),
+				'details.' + name,
+				value
+			)
 			dispatch(updateUser(name, value))
 		} catch (err) {
 			throw err
@@ -70,13 +78,23 @@ const loginUser = (user, avoidLogin) => async dispatch => {
 			loggedUser = await loginUserFirebase(user)
 		}
 		console.log(user)
-		const name = await fetchDataFirebase(await getCurrentUser(), 'name')
-		const about = await fetchDataFirebase(await getCurrentUser(), 'about')
-		const email = await fetchDataFirebase(
+		const name = await fetchDataFirebase(
+			'details',
 			await getCurrentUser(),
-			'emailAddress'
+			'name'
+		)
+		const about = await fetchDataFirebase(
+			'details',
+			await getCurrentUser(),
+			'about'
+		)
+		const email = await fetchDataFirebase(
+			'details',
+			await getCurrentUser(),
+			'email'
 		)
 		const imageUrl = await fetchDataFirebase(
+			'details',
 			await getCurrentUser(),
 			'imageUrl'
 		)
@@ -97,7 +115,7 @@ const loginUser = (user, avoidLogin) => async dispatch => {
 const loadUserFromId = id => async dispatch => {
 	// used for loading profile data from url ID even if the user is not logged in.
 	try {
-		const user = await getUserDetailsById(id)
+		const { details: user } = await getUserDetailsById(id)
 		if (user) {
 			dispatch(
 				setUser({

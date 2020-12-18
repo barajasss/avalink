@@ -3,19 +3,23 @@ import { updateLink } from '../../redux/links/links.actions'
 import { connect } from 'react-redux'
 
 const LinkEditor = ({
-	type,
 	closeLinkEditor,
 	closeModal,
 	updateLink,
-	getLinkFromType,
+	name,
+	getUserLink,
+	getLinkMeta,
 	profilePage,
 }) => {
-	const [link, setLink] = useState(getLinkFromType(type) || '')
-
+	const [link, setLink] = useState(
+		(getUserLink(name) && getUserLink(name).data) || ''
+	)
+	const linkMeta = getLinkMeta(name)
 	const saveLink = async e => {
 		e.preventDefault()
 		try {
-			await updateLink(type, link)
+			console.log(link)
+			await updateLink(name, link)
 			closeModal()
 		} catch (err) {
 			console.log(err)
@@ -34,14 +38,17 @@ const LinkEditor = ({
 					<br />
 				</>
 			)}
-			<h4 className='text-capitalize pb-2 pb-md-4'>{type}</h4>
+			<h4 className='text-capitalize pb-2 pb-md-4'>{name}</h4>
 			<form onSubmit={saveLink}>
 				<div className='form-group'>
 					{profilePage ? (
 						<input
 							type='text'
 							className='form-control'
-							placeholder={`paste your ${type} profile link here`}
+							placeholder={
+								linkMeta.placeholder ||
+								`paste your ${name} profile link here`
+							}
 							onChange={e => setLink(e.target.value)}
 							defaultValue={link}
 							readOnly
@@ -51,7 +58,10 @@ const LinkEditor = ({
 						<input
 							type='text'
 							className='form-control'
-							placeholder={`paste your ${type} profile link here`}
+							placeholder={
+								linkMeta.placeholder ||
+								`paste your ${name} profile link here`
+							}
 							onChange={e => setLink(e.target.value)}
 							defaultValue={link}
 							required
@@ -102,16 +112,13 @@ const LinkEditor = ({
 
 const mapStateToProps = state => ({
 	links: state.links.userLinks,
-	getLinkFromType: type => {
-		const found = state.links.userLinks.find(link => link.type === type)
-		if (found) {
-			return found.link
-		}
-	},
+	getUserLink: name => state.links.userLinks.find(link => link.name === name),
+	getLinkMeta: name =>
+		state.links.defaultLinks.find(link => link.name === name),
 })
 
 const mapDispatchToProps = dispatch => ({
-	updateLink: (type, link) => dispatch(updateLink(type, link)),
+	updateLink: (name, link) => dispatch(updateLink(name, link)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LinkEditor)

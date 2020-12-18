@@ -1,40 +1,15 @@
 import firebase from '../firebase'
 
+import defaultLinks from './defaultLinks'
+import userDefaults from './userDefaults'
+
 import shortId from 'shortid'
 const db = firebase.firestore()
 
 const createUserDefaults = async () => {
 	const user = firebase.auth().currentUser
 	try {
-		await db.collection('users').doc(user.uid).set({
-			name: user.displayName,
-			emailAddress: user.email,
-			id: shortId.generate(),
-			totalProfileLinks: 0,
-			quickLink: false,
-			imageUrl: '',
-			about: '',
-			instagram: '',
-			snapchat: '',
-			twitter: '',
-			facebook: '',
-			linkedin: '',
-			text: '',
-			email: '',
-			youtube: '',
-			tiktok: '',
-			soundcloud: '',
-			spotify: '',
-			apple: '',
-			venmo: '',
-			cashapp: '',
-			paypal: '',
-			whatsapp: '',
-			twitch: '',
-			customlink: '',
-			website: '',
-			address: '',
-		})
+		await db.collection('users').doc(user.uid).set(userDefaults(user))
 	} catch (err) {
 		throw err
 	}
@@ -82,6 +57,7 @@ const getId = async () => {
 }
 
 const updateData = async (user, name, value) => {
+	// will not work now...
 	user = firebase.auth().currentUser
 	try {
 		db.collection('users')
@@ -98,6 +74,7 @@ const updateData = async (user, name, value) => {
 }
 
 const updateBulkData = async (user, data) => {
+	// will also not work now...
 	user = firebase.auth().currentUser
 	try {
 		db.collection('users')
@@ -113,7 +90,7 @@ const updateBulkData = async (user, data) => {
 	}
 }
 
-const fetchData = async (type, name, useId) => {
+const fetchData = async (parent, type, name, useId) => {
 	try {
 		if (useId) {
 			const snapshot = await db
@@ -123,6 +100,9 @@ const fetchData = async (type, name, useId) => {
 			if (snapshot.docs[0]) {
 				const data = await snapshot.docs[0].data()
 				if (data) {
+					if (parent) {
+						return data[parent][name]
+					}
 					return data[name]
 				}
 			} else {
@@ -134,6 +114,9 @@ const fetchData = async (type, name, useId) => {
 				const doc = await db.collection('users').doc(user.uid).get()
 				const data = doc.data()
 				if (data) {
+					if (parent) {
+						return data[parent][name]
+					}
 					return data[name]
 				}
 			}
@@ -145,6 +128,7 @@ const fetchData = async (type, name, useId) => {
 
 const transformLinksForApp = data => {
 	// map links data properly for the redux store...
+	// transformation probably not required anymore
 	let links = []
 	Object.keys(data).forEach(link => {
 		if (
@@ -157,7 +141,7 @@ const transformLinksForApp = data => {
 			link !== 'emailAddress' &&
 			link !== 'totalProfileLinks'
 		) {
-			links = [...links, { type: link, link: data[link] }]
+			links = [...links, { name: link, link: data[link] }]
 		}
 	})
 	return links
@@ -165,7 +149,6 @@ const transformLinksForApp = data => {
 
 const fetchLinks = async (type, useId) => {
 	try {
-		let links = []
 		let doc
 		let data
 		if (useId) {
@@ -174,36 +157,23 @@ const fetchLinks = async (type, useId) => {
 				.where('id', '==', type)
 				.get()
 			if (snapshot.docs[0]) {
-				data = await snapshot.docs[0].data()
+				data = await snapshot.docs[0].data().links
 			} else {
 				return
 			}
 		}
 		if (type.uid) {
 			doc = await db.collection('users').doc(type.uid).get()
-			data = doc.data()
+			data = doc.data().links
 		}
-		links = transformLinksForApp(data)
-		return links
+		return data
 	} catch (err) {
 		throw err
 	}
 }
 
-const fetchDefaultLinks = async () => {
-	try {
-		let links = []
-		const doc = await db.collection('defaults').doc('links').get()
-		const data = doc.data()
-		if (data) {
-			Object.keys(data).forEach(link => {
-				links = [...links, { type: link, link: data[link] }]
-			})
-		}
-		return links
-	} catch (err) {
-		throw err
-	}
+const fetchDefaultLinks = () => {
+	return defaultLinks
 }
 
 const incrementTotalProfileLinks = async id => {
@@ -217,7 +187,7 @@ const incrementTotalProfileLinks = async id => {
 		if (doc) {
 			await doc.ref.set(
 				{
-					totalProfileLinks: firebase.firestore.FieldValue.increment(
+					'details.totalProfileLinks': firebase.firestore.FieldValue.increment(
 						1
 					),
 				},

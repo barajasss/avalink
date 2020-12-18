@@ -8,9 +8,9 @@ import './dashboard-link-item.styles.scss'
 
 class DashboardLinkItem extends Component {
 	removeHandler = async () => {
-		const { type, removeLink } = this.props
+		const { name, removeLink } = this.props
 		try {
-			await removeLink(type)
+			await removeLink(name)
 		} catch (err) {
 			console.log(err)
 		}
@@ -23,11 +23,11 @@ class DashboardLinkItem extends Component {
 			showModal,
 			onClick,
 			noIcon,
-			type,
+			name,
 			removeMode,
 			profilePage,
 			quickLink,
-			getLinkFromType,
+			getUserLink,
 		} = this.props
 
 		if (profilePage && quickLink) {
@@ -40,14 +40,14 @@ class DashboardLinkItem extends Component {
 						}
 					}}>
 					{!noIcon && (
-						<a href={getLinkFromType(type)} target='_blank'>
+						<a href={getUserLink(name).data} target='_blank'>
 							<img
-								src={`/icons/${type}.png`}
+								src={`/icons/${name}.png`}
 								className='icon-img img-fluid'
 							/>
 						</a>
 					)}
-					<p className='link-title text-center m-0 pt-1'>{type}</p>
+					<p className='link-title text-center m-0 pt-1'>{name}</p>
 				</div>
 			)
 		}
@@ -68,7 +68,7 @@ class DashboardLinkItem extends Component {
 					} else if (linkBtn) {
 						showModal(true, {
 							displayLinkEditor: true,
-							linkEditorType: type,
+							linkEditorType: name,
 						})
 					}
 					// run any custom onclick prop
@@ -79,7 +79,7 @@ class DashboardLinkItem extends Component {
 				{this.props.children}
 				{!noIcon && (
 					<img
-						src={`/icons/${type}.png`}
+						src={`/icons/${name}.png`}
 						className='icon-img img-fluid'
 					/>
 				)}
@@ -90,21 +90,16 @@ class DashboardLinkItem extends Component {
 					/>
 				)}
 				{checked && <i className='fas fa-check check-icon' />}
-				<p className='link-title text-center m-0 pt-1'>{type}</p>
+				<p className='link-title text-center m-0 pt-1'>{name}</p>
 			</div>
 		)
 	}
 }
 const mapStateToProps = state => ({
-	getLinkFromType: type => {
-		const found = state.links.userLinks.find(link => link.type === type)
-		if (found) {
-			return found.link
-		}
-	},
+	getUserLink: name => state.links.userLinks.find(link => link.name === name),
 })
 const mapDispatchToProps = dispatch => ({
-	removeLink: type => dispatch(removeLink(type)),
+	removeLink: name => dispatch(removeLink(name)),
 })
 export default connect(
 	mapStateToProps,

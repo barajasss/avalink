@@ -3,22 +3,23 @@ import { connect } from 'react-redux'
 
 class InlineLinkEditor extends React.Component {
 	render() {
-		const { type, link, updateLink } = this.props
+		const { name, updateLink, getUserLink } = this.props
+		const { data } = getUserLink(name)
 		return (
 			<div className='inline-link-editor'>
-				<img src={`/icons/${type}.png`} className='icon' />
+				<img src={`/icons/${name}.png`} className='icon' />
 				<div className='form-group'>
 					<input
 						className='form-control'
 						type='text'
-						placeholder={`${type} profile link`}
-						onChange={e => updateLink(type, e.target.value)}
-						value={link}
+						placeholder={`${name} profile link`}
+						onChange={e => updateLink(name, e.target.value)}
+						value={data}
 					/>
 				</div>
 				<i
 					className='fas fa-times text-danger fa-2x p-1 ml-3 clear-icon'
-					onClick={() => updateLink(type, '')}
+					onClick={() => updateLink(name, '')}
 				/>
 			</div>
 		)
@@ -26,12 +27,7 @@ class InlineLinkEditor extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	getLinkFromType: type => {
-		const found = state.links.userLinks.find(link => link.type === type)
-		if (found) {
-			return found.link
-		}
-	},
+	getUserLink: name => state.links.userLinks.find(link => link.name === name),
 })
 
 export default connect(mapStateToProps)(InlineLinkEditor)

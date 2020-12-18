@@ -221,3 +221,5 @@ const defaultLinks = [
 		prefixSign: '',
 	},
 ]
+
+export default defaultLinks
