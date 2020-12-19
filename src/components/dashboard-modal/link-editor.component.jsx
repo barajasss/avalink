@@ -39,7 +39,7 @@ const LinkEditor = ({
 					<br />
 				</>
 			)}
-			<h4 className='text-capitalize pb-2 pb-md-4'>{name}</h4>
+			<h4 className='pb-2 pb-md-4'>Add {linkMeta.placeholder}.</h4>
 			<form onSubmit={saveLink}>
 				<div className='form-group'>
 					{profilePage ? (

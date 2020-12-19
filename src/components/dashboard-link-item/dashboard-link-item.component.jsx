@@ -73,8 +73,8 @@ class DashboardLinkItem extends Component {
 			generateVCard,
 			updateLink,
 		} = this.props
+		const linkMeta = getLinkMeta(name)
 		if (profilePage) {
-			const linkMeta = getLinkMeta(name)
 			return (
 				<div
 					className='dashboard-link-item'
@@ -106,7 +106,9 @@ class DashboardLinkItem extends Component {
 							/>
 						</a>
 					)}
-					<p className='link-title text-center m-0 pt-1'>{name}</p>
+					<p className='link-title text-center m-0 pt-1'>
+						{(linkMeta && linkMeta.displayName) || name}
+					</p>
 				</div>
 			)
 		}
@@ -133,7 +135,9 @@ class DashboardLinkItem extends Component {
 					/>
 				)}
 				{checked && <i className='fas fa-check check-icon' />}
-				<p className='link-title text-center m-0 pt-1'>{name}</p>
+				<p className='link-title text-center m-0 pt-1'>
+					{(linkMeta && linkMeta.displayName) || name}
+				</p>
 			</div>
 		)
 	}
