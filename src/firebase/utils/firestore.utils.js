@@ -206,14 +206,11 @@ const incrementTotalProfileLinks = async id => {
 			.get()
 		const doc = await snapshot.docs[0]
 		if (doc) {
-			await doc.ref.set(
-				{
-					'details.totalProfileLinks': firebase.firestore.FieldValue.increment(
-						1
-					),
-				},
-				{ merge: true }
-			)
+			await doc.ref.update({
+				'details.totalProfileLinks': firebase.firestore.FieldValue.increment(
+					1
+				),
+			})
 		}
 	} catch (err) {
 		throw err

@@ -40,7 +40,8 @@ class LoginPage extends Component {
 				password,
 			})
 			toast.success('Login Successful', { hideProgressBar: true })
-			return setTimeout(() => history.push('/dashboard'), 1100)
+			this.timeout = setTimeout(() => history.push('/dashboard'), 1100)
+			return
 		} catch (err) {
 			console.log(err)
 			if (err.code === 'auth/user-not-found') {
@@ -57,6 +58,9 @@ class LoginPage extends Component {
 		this.setState({
 			logging: false,
 		})
+	}
+	componentWillUnmount() {
+		clearTimeout(this.timeout)
 	}
 	render() {
 		const { logging, email, password } = this.state

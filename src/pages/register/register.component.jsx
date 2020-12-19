@@ -48,9 +48,6 @@ class RegisterPage extends Component {
 			},
 		}
 	}
-	componentWillUnmount() {
-		clearTimeout(this.timeout)
-	}
 	handleChange = async e => {
 		const { usernameModified, passwordModified, emailModified } = this.state
 		this.setState({
@@ -294,6 +291,9 @@ class RegisterPage extends Component {
 		this.setState({
 			registering: false,
 		})
+	}
+	componentWillUnmount() {
+		clearTimeout(this.timeout)
 	}
 	render() {
 		const {

@@ -35,12 +35,15 @@ class ChangePassword extends Component {
 		}
 		this.setState({ saving: true })
 		if (newPassword !== confirmPassword) {
-			toast.error('New password match the confirm password.')
+			toast.error('New password must match the confirm password.')
+			this.setState({ saving: false })
+			return
 		}
 		try {
 			await updatePassword(oldPassword, newPassword)
 			toast.success('Password updated successfully')
-			return setTimeout(() => history.push('/dashboard'), 1100)
+			this.timeout = setTimeout(() => history.push('/dashboard'), 1100)
+			return
 		} catch (err) {
 			if (err.code === 'auth/wrong-password') {
 				toast.error('Old password is incorrect')
@@ -49,6 +52,9 @@ class ChangePassword extends Component {
 			}
 		}
 		this.setState({ saving: false })
+	}
+	componentWillUnmount() {
+		clearTimeout(this.timeout)
 	}
 	render() {
 		const { isLoggedIn } = this.props
@@ -81,6 +87,7 @@ class ChangePassword extends Component {
 								type='password'
 								onChange={this.handleChange}
 								value={oldPassword}
+								showPasswordToggleEye
 							/>
 							<Input
 								name='newPassword'
@@ -88,6 +95,7 @@ class ChangePassword extends Component {
 								type='password'
 								onChange={this.handleChange}
 								value={newPassword}
+								showPasswordToggleEye
 							/>
 							<Input
 								name='confirmPassword'
@@ -95,6 +103,7 @@ class ChangePassword extends Component {
 								type='password'
 								onChange={this.handleChange}
 								value={confirmPassword}
+								showPasswordToggleEye
 							/>
 							<button
 								className={`btn btn-dark btn-block ${

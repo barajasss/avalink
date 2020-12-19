@@ -120,7 +120,9 @@ class EditProfilePage extends Component {
 				const imageUrl = await saveProfileImage(file.data, file.type)
 				await updateUserAsync('imageUrl', imageUrl)
 			}
-			toast.success('Profile updated successfully')
+			toast.success('Profile updated successfully', {
+				autoClose: 2000,
+			})
 		} catch (err) {
 			console.log(err)
 			toast.error('Could not update your details. Try again later.')

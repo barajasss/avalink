@@ -10,7 +10,14 @@ export default class Input extends Component {
 		}
 	}
 	render() {
-		const { text, name, placeholder, onChange, value } = this.props
+		const {
+			text,
+			name,
+			placeholder,
+			onChange,
+			value,
+			showPasswordToggleEye,
+		} = this.props
 		const { type, showPassword } = this.state
 		return (
 			<div className='form-group'>
@@ -29,7 +36,7 @@ export default class Input extends Component {
 					<div
 						className='input-group-append'
 						style={{ background: 'none' }}>
-						{name === 'password' && (
+						{(showPasswordToggleEye || name === 'password') && (
 							<span
 								className='input-group-text text-center'
 								style={{ width: 50 }}

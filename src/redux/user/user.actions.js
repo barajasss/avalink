@@ -136,13 +136,13 @@ const loadUserFromId = id => async dispatch => {
 	// used for loading profile data from url ID even if the user is not logged in.
 	try {
 		const details = await getUserDetailsById(id)
-		const { user, username } = details
+		const { details: user, username } = details
 		if (user) {
 			dispatch(
 				setUser({
 					name: user.name,
 					about: user.about,
-					email: user.emailAddress,
+					email: user.email,
 					imageUrl: user.imageUrl,
 					username,
 				})
