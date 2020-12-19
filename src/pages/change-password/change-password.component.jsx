@@ -52,7 +52,7 @@ class ChangePassword extends Component {
 	}
 	render() {
 		const { isLoggedIn } = this.props
-		const { saving } = this.state
+		const { saving, oldPassword, newPassword, confirmPassword } = this.state
 		if (!isLoggedIn) {
 			return <Redirect to='/' />
 		}
@@ -80,18 +80,21 @@ class ChangePassword extends Component {
 								placeholder='Old Password'
 								type='password'
 								onChange={this.handleChange}
+								value={oldPassword}
 							/>
 							<Input
 								name='newPassword'
 								placeholder='New Password'
 								type='password'
 								onChange={this.handleChange}
+								value={newPassword}
 							/>
 							<Input
 								name='confirmPassword'
 								placeholder='Confirm Password'
 								type='password'
 								onChange={this.handleChange}
+								value={confirmPassword}
 							/>
 							<button
 								className={`btn btn-dark btn-block ${

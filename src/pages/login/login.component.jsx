@@ -59,7 +59,7 @@ class LoginPage extends Component {
 		})
 	}
 	render() {
-		const { logging } = this.state
+		const { logging, email, password } = this.state
 		return (
 			<div className='container py-5'>
 				<Helmet>
@@ -83,12 +83,14 @@ class LoginPage extends Component {
 								placeholder='Email address'
 								type='email'
 								onChange={this.handleChange}
+								value={email}
 							/>
 							<Input
 								name='password'
 								placeholder='Password'
 								type='password'
 								onChange={this.handleChange}
+								value={password}
 							/>
 							<div className='row'>
 								<div className='col-md-6 pb-3'>

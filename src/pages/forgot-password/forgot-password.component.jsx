@@ -43,7 +43,7 @@ class ForgotPasswordPage extends Component {
 		this.setState({ sending: false })
 	}
 	render() {
-		const { sending } = this.state
+		const { sending, email } = this.state
 		return (
 			<div className='container py-5'>
 				<Helmet>
@@ -63,6 +63,7 @@ class ForgotPasswordPage extends Component {
 								type='email'
 								placeholder='Registered Email address'
 								onChange={this.handleChange}
+								value={email}
 							/>
 							<button
 								className={`btn btn-dark btn-block ${

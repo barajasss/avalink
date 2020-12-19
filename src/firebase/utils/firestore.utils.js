@@ -15,6 +15,31 @@ const createUserDefaults = async () => {
 	}
 }
 
+const checkUsernameExists = async username => {
+	const snapshot = await db
+		.collection('users')
+		.where('username', '==', username)
+		.get()
+	return !snapshot.empty
+}
+
+const generateUniqueUsername = async name => {
+	if (!name) return ''
+	let username = name.replace(/[ ]/g, '.')
+	username = username.replace(/[^a-zA-Z0-9.]/, '')
+	try {
+		if (await checkUsernameExists(username)) {
+			// if username exists, then generate another using short id
+			return username + shortId.generate()
+		} else {
+			// else return the simple username
+			return username
+		}
+	} catch (err) {
+		throw err
+	}
+}
+
 const getUserDetailsById = async id => {
 	try {
 		const snapshot = await db
@@ -207,4 +232,6 @@ export {
 	fetchData,
 	updateBulkData,
 	transformLinksForApp,
+	generateUniqueUsername,
+	checkUsernameExists,
 }
