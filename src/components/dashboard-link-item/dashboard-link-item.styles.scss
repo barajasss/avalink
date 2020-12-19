@@ -60,3 +60,16 @@
 		font-size: 0.9em;
 	}
 }
+
+@media screen and (max-width: 768px) {
+	.dashboard-link-item {
+		.remove-icon {
+			right: -25px;
+			top: -15px;
+			height: 35px;
+			width: 35px;
+			font-size: 1.3em;
+			line-height: 1.2;
+		}
+	}
+}

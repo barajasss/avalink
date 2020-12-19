@@ -233,6 +233,7 @@ class DashboardLinks extends Component {
 				)}
 
 				{/* LINKS */}
+				<br />
 				<div className={`${removeMode ? '' : 'link-grid'}`}>
 					{!removeMode && (
 						<>
