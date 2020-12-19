@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 const createProflieUrl = id =>
 	window.location.origin + process.env.REACT_APP_PROFILE_URL + id
 
-const QrView = ({ id }) => {
+const QrView = ({ id, profilePage }) => {
 	const imageContainerRef = createRef()
 	useEffect(() => {
 		const typeNumber = 4
@@ -21,7 +21,12 @@ const QrView = ({ id }) => {
 	}, [])
 	return (
 		<div>
-			<h4 className='text-center'>Share your profile link</h4>
+			<h4 className='text-center'>
+				{profilePage
+					? 'Scan this profile link'
+					: 'Share your profile link'}
+			</h4>
+
 			<hr />
 			<div className='qr-container' ref={imageContainerRef}></div>
 			<p className='text-center'>
@@ -120,7 +125,16 @@ class ProfileDetails extends Component {
 					{!profilePage && <p className='profile-email'>{email}</p>}
 					<p className='profile-about'>{about}</p>
 				</div>
-				{!profilePage && (
+				{profilePage ? (
+					<div className='col-sm-2 qr-and-link-contianer'>
+						<img
+							className='qr-icon'
+							src={'/icons/qrcode.png'}
+							alt='QR icon'
+							onClick={this.viewQr}
+						/>
+					</div>
+				) : (
 					<div className='col-sm-2 qr-and-link-contianer'>
 						<img
 							className='qr-icon'
@@ -135,7 +149,11 @@ class ProfileDetails extends Component {
 					</div>
 				)}
 				<DashboardModal show={show} showModal={this.showModal} custom>
-					{displayQr ? <QrView id={id} /> : <LinkView id={id} />}
+					{displayQr ? (
+						<QrView id={id} profilePage />
+					) : (
+						<LinkView id={id} />
+					)}
 				</DashboardModal>
 			</div>
 		)

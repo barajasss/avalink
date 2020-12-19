@@ -26,6 +26,7 @@ class DashboardLinks extends Component {
 			removeMode: false,
 			sortedLinks: [],
 			linksToDelete: [],
+			vCardDownloaded: false,
 		}
 		this.vCardDownloadBtn = createRef()
 		this.imgRef = createRef()
@@ -33,12 +34,17 @@ class DashboardLinks extends Component {
 	}
 
 	async componentDidMount() {
-		const { fetchLinks } = this.props
+		const { fetchLinks, quickLink } = this.props
 		try {
 			const links = await fetchLinks()
 			this.setState({ sortedLinks: links.filter(link => link.data) })
 		} catch (err) {
 			console.log(err)
+		}
+		if (quickLink) {
+			console.log('quickLink', quickLink)
+			this.generateVCard()
+			this.setState({ vCardDownloaded: true })
 		}
 	}
 	showModal = (show, opts) => {
@@ -134,6 +140,7 @@ class DashboardLinks extends Component {
 			linkEditorType,
 			displayLinkEditor,
 			sortedLinks,
+			vCardDownloaded,
 		} = this.state
 		const {
 			links,
@@ -141,6 +148,25 @@ class DashboardLinks extends Component {
 			profilePage,
 			user: { name, imageUrl },
 		} = this.props
+
+		if (profilePage && quickLink) {
+			return (
+				<div>
+					<h4 className='text-center m-5'>
+						{vCardDownloaded
+							? 'VCard downloaded. You can now close this window.'
+							: 'Please wait for the VCard to Download.'}
+					</h4>
+					<a
+						className='d-none'
+						ref={this.vCardDownloadBtn}
+						href='#'
+						download={`${name}.vcf`}
+					/>
+				</div>
+			)
+		}
+
 		return (
 			<div className='dashboard-links'>
 				{/* CONTROLS */}
@@ -222,10 +248,6 @@ class DashboardLinks extends Component {
 								href='#'
 								download={`${name}.vcf`}
 							/>
-							{/* <DashboardLinkItem
-								onClick={this.generateVCard}
-								name={'contact'}
-							/> */}
 						</>
 					)}
 					{removeMode ? (
