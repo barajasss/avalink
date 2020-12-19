@@ -1,5 +1,15 @@
 const defaultLinks = [
 	{
+		displayName: 'Contact Card',
+		name: 'contact',
+		type: 'card',
+		placeholder: '',
+		linkPrefix: '',
+		linkInfo: '',
+		order: 0,
+		prefixSign: '',
+	},
+	{
 		displayName: 'Instagram',
 		name: 'instagram',
 		type: 'sublink',

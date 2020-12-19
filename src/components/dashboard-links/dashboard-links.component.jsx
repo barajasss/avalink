@@ -25,6 +25,7 @@ class DashboardLinks extends Component {
 			displayLinkEditor: false,
 			removeMode: false,
 			sortedLinks: [],
+			linksToDelete: [],
 		}
 		this.vCardDownloadBtn = createRef()
 		this.imgRef = createRef()
@@ -40,7 +41,6 @@ class DashboardLinks extends Component {
 			console.log(err)
 		}
 	}
-
 	showModal = (show, opts) => {
 		if (opts) {
 			this.setState({
@@ -66,14 +66,15 @@ class DashboardLinks extends Component {
 			console.log(err)
 		}
 	}
-	saveOrder = async orderedLinks => {
+	saveEdits = async orderedLinks => {
 		const { links, updateMultipleLinks } = this.props
+		const { linksToDelete } = this.state
 		// update the position orders of the links
 		orderedLinks.map((item, index) => {
-			item.order = index + 1
+			item.order = index
 			return item
 		})
-		const processedLinks = links.map((item, index) => {
+		let processedLinks = links.map((item, index) => {
 			// update item if any ordered Link is found
 			const orderedItem = orderedLinks.find(
 				orderedLink => orderedLink.name === item.name
@@ -83,8 +84,16 @@ class DashboardLinks extends Component {
 			}
 			return item
 		})
+		// remove links
+		processedLinks = processedLinks.filter(link => {
+			if (linksToDelete.find(name => name === link.name)) {
+				link.data = ''
+			}
+			return true
+		})
 		try {
 			await updateMultipleLinks(processedLinks)
+			this.setState({ linksToDelete: [], sortedLinks: links })
 		} catch (err) {
 			console.log(err)
 		}
@@ -110,6 +119,13 @@ class DashboardLinks extends Component {
 		})
 		this.vCardDownloadBtn.current.href = URL.createObjectURL(blob)
 		this.vCardDownloadBtn.current.click()
+	}
+	removeSortedLink = name => {
+		// edit sorted link
+		this.setState(state => ({
+			sortedLinks: state.sortedLinks.filter(link => link.name !== name),
+			linksToDelete: [...state.linksToDelete, name],
+		}))
 	}
 	render() {
 		const {
@@ -138,9 +154,16 @@ class DashboardLinks extends Component {
 								} mt-2 btn-block`}
 								onClick={async () => {
 									if (removeMode) {
-										await this.saveOrder(sortedLinks)
+										await this.saveEdits(sortedLinks)
 										this.saveButton.current.textContent =
 											'Saving...'
+									} else {
+										// fetch the latest links data
+										this.setState(state => ({
+											sortedLinks: this.props.links.filter(
+												link => link.data
+											),
+										}))
 									}
 									// restore state
 									this.setState(state => ({
@@ -151,18 +174,35 @@ class DashboardLinks extends Component {
 							</button>
 						</div>
 						<div className='col-6 col-md-4'>
-							<button
-								className='dashboard-button btn btn-outline-dark mt-2 btn-block'
-								onClick={this.toggleQuickLink}>
-								{quickLink ? (
-									<span>
-										<i className='fas fa-check-square mr-2' />
-										Quick Link On
-									</span>
-								) : (
-									'Quick Link Off'
-								)}
-							</button>
+							{removeMode ? (
+								<button
+									className='dashboard-button btn btn-info mt-2 btn-block'
+									onClick={() => {
+										// reset sortedLinks state
+										this.setState({
+											sortedLinks: this.props.links.filter(
+												link => link.data
+											),
+											linksToDelete: [],
+											removeMode: false,
+										})
+									}}>
+									Cancel
+								</button>
+							) : (
+								<button
+									className='dashboard-button btn btn-outline-dark mt-2 btn-block'
+									onClick={this.toggleQuickLink}>
+									{quickLink ? (
+										<span>
+											<i className='fas fa-check-square mr-2' />
+											Quick Link On
+										</span>
+									) : (
+										'Quick Link Off'
+									)}
+								</button>
+							)}
 						</div>
 					</div>
 				)}
@@ -182,10 +222,10 @@ class DashboardLinks extends Component {
 								href='#'
 								download={`${name}.vcf`}
 							/>
-							<DashboardLinkItem
+							{/* <DashboardLinkItem
 								onClick={this.generateVCard}
 								name={'contact'}
-							/>
+							/> */}
 						</>
 					)}
 					{removeMode ? (
@@ -203,6 +243,7 @@ class DashboardLinks extends Component {
 									linkBtn
 									name={link.name}
 									removeMode={removeMode}
+									removeFunc={this.removeSortedLink}
 									profilePage={profilePage}
 									quickLink={quickLink}
 								/>
@@ -220,6 +261,7 @@ class DashboardLinks extends Component {
 										removeMode={removeMode}
 										profilePage={profilePage}
 										quickLink={quickLink}
+										generateVCard={this.generateVCard}
 									/>
 								)
 						)

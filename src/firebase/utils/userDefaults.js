@@ -13,6 +13,11 @@ const userDefaults = user => ({
 	},
 	links: [
 		{
+			data: user.displayName,
+			order: 0,
+			name: 'contact',
+		},
+		{
 			data: '',
 			order: 1,
 			name: 'instagram',
