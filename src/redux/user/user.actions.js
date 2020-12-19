@@ -98,6 +98,11 @@ const loginUser = (user, avoidLogin) => async dispatch => {
 			await getCurrentUser(),
 			'imageUrl'
 		)
+		const username = await fetchDataFirebase(
+			null,
+			await getCurrentUser(),
+			'username'
+		)
 		dispatch(
 			setUser({
 				...user,
@@ -105,6 +110,7 @@ const loginUser = (user, avoidLogin) => async dispatch => {
 				name: name || user.name,
 				imageUrl,
 				email,
+				username,
 			})
 		)
 	} catch (err) {
@@ -116,7 +122,7 @@ const loadUserFromId = id => async dispatch => {
 	// used for loading profile data from url ID even if the user is not logged in.
 	try {
 		const details = await getUserDetailsById(id)
-		const { user } = details
+		const { user, username } = details
 		if (user) {
 			dispatch(
 				setUser({
@@ -124,6 +130,7 @@ const loadUserFromId = id => async dispatch => {
 					about: user.about,
 					email: user.emailAddress,
 					imageUrl: user.imageUrl,
+					username,
 				})
 			)
 		}

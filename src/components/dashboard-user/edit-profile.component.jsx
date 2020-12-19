@@ -1,7 +1,10 @@
 import './edit-profile.styles.scss'
 import { createRef } from 'react'
 
+import { connect } from 'react-redux'
+
 const EditProfile = ({
+	username,
 	name,
 	about,
 	imageUrl,
@@ -75,10 +78,32 @@ const EditProfile = ({
 								onChange={e => updateAbout(e.target.value)}
 							/>
 						</div>
+						<div className='form-group'>
+							<label>Your Profile URL</label>
+							<p
+								className='p-2'
+								style={{
+									background: '#dde',
+									borderRadius: 5,
+									color: '#777',
+									cursor: 'not-allowed',
+								}}>
+								{window.location.origin +
+									process.env.REACT_APP_PROFILE_URL +
+									username}
+							</p>
+						</div>
 					</form>
 				</div>
 			</div>
 		</div>
 	)
 }
-export default EditProfile
+
+const mapStateToProps = state => ({
+	username: state.user.username,
+})
+
+const mapDispatchToProps = {}
+
+export default connect(mapStateToProps)(EditProfile)
