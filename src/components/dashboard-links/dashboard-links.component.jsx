@@ -42,7 +42,6 @@ class DashboardLinks extends Component {
 			console.log(err)
 		}
 		if (quickLink) {
-			console.log('quickLink', quickLink)
 			this.generateVCard()
 			this.setState({ vCardDownloaded: true })
 		}
