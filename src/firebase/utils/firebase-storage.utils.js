@@ -11,7 +11,7 @@ const saveProfileImage = async (file, fileType) => {
 		.get()
 	const data = doc.data()
 
-	let filename = data.id
+	let filename = data.username
 	let type = fileType.slice(fileType.indexOf('/') + 1)
 
 	// PREV IMAGE CLEANUP IF FORMAT IS DIFFERENT BUT NEED TO CHECK IF IMAGE EXISTS FIRST

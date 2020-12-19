@@ -20,12 +20,12 @@
 	.profile-about {
 		text-align: justify;
 	}
-	.display-image {
+	.display-image-container {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 
-		img {
+		img.display-image {
 			object-fit: cover;
 			max-width: 100%;
 			height: 120px;

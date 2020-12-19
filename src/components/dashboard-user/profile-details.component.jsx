@@ -21,7 +21,6 @@ const QrView = ({ id, name, profilePage }) => {
 		qr.make()
 		let dataURL = qr.createDataURL(10)
 		dataURL = dataURL.replace('gif', 'png')
-		console.log(dataURL)
 		qrDownloadBtn.current.href = dataURL
 		qrDownloadBtn.current.click()
 	}
@@ -131,8 +130,9 @@ class ProfileDetails extends Component {
 		const { id, show, displayQr } = this.state
 		return (
 			<div className='row'>
-				<div className='col-sm-4 display-image'>
+				<div className='col-sm-4 display-image-container'>
 					<img
+						className='display-image'
 						src={imageUrl ? imageUrl : '/user.png'}
 						alt='user display'
 						onError={e => {

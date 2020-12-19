@@ -5,12 +5,12 @@
 		align-items: center;
 		margin-bottom: 10px;
 
-		.display-image {
+		.display-image-container {
 			position: relative;
 			max-width: 150px;
 			max-height: 150px;
 			margin-bottom: 15px;
-			img {
+			img.display-image {
 				object-fit: cover;
 				min-height: 130px;
 				min-width: 130px;

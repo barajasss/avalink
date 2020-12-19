@@ -1,7 +1,8 @@
 import './edit-profile.styles.scss'
-import { createRef } from 'react'
-
+import { useState, createRef } from 'react'
 import { connect } from 'react-redux'
+
+import ImageCropper from '../image-cropper/image-cropper.component'
 
 const EditProfile = ({
 	username,
@@ -14,16 +15,28 @@ const EditProfile = ({
 }) => {
 	const fileRef = createRef()
 	const imageRef = createRef()
+	const [fileType, setFileType] = useState('')
+	const [showCropper, setShowCropper] = useState(false)
+	const [dataUrl, setDataUrl] = useState('')
 
 	const openFilePicker = () => {
 		fileRef.current.click()
+	}
+	const cropImage = dataUrl => {
+		setShowCropper(false)
+		imageRef.current.src = dataUrl
+		updateFile(dataUrl, fileType)
 	}
 	const uploadFile = e => {
 		const file = e.target.files[0]
 		if (file) {
 			const reader = new FileReader()
 			reader.onload = () => {
+				console.log('reader load')
 				imageRef.current.src = reader.result
+				setShowCropper(true)
+				setDataUrl(reader.result)
+				setFileType(file.type)
 				updateFile(reader.result, file.type)
 			}
 			reader.readAsDataURL(file)
@@ -34,8 +47,9 @@ const EditProfile = ({
 		<div className='px-3 edit-profile-dashboard'>
 			<div className='row'>
 				<div className='col-md-4 image-container'>
-					<div className='display-image'>
+					<div className='display-image-container'>
 						<img
+							className='display-image'
 							ref={imageRef}
 							src={imageUrl ? imageUrl : '/user.png'}
 							alt='user display'
@@ -55,7 +69,16 @@ const EditProfile = ({
 							accept='image/*'
 							className='d-none'
 							onChange={uploadFile}
+							onClick={e => (e.target.value = null)}
 						/>
+						{showCropper && (
+							<ImageCropper
+								key={dataUrl}
+								dataUrl={dataUrl}
+								cropImage={cropImage}
+								cancelCrop={() => setShowCropper(false)}
+							/>
+						)}
 					</div>
 				</div>
 				<div className='col-md-8 edit-profile-input-container'>
