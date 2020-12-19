@@ -26,8 +26,11 @@ class DashboardLinkItem extends Component {
 			onClick,
 			modalBtn,
 			linkBtn,
+			profilePage,
 		} = this.props
+
 		if (removeMode) return
+
 		if (name === 'contact') {
 			if (generateVCard) {
 				generateVCard()
@@ -35,6 +38,7 @@ class DashboardLinkItem extends Component {
 			await updateLink(name, 'card')
 			return
 		}
+
 		if (modalBtn && showModal) {
 			showModal(true, {
 				displayLinkEditor: false,
@@ -78,7 +82,7 @@ class DashboardLinkItem extends Component {
 						if (onClick) {
 							onClick()
 						}
-						if (name === 'contact') {
+						if (name === 'contact' && !profilePage) {
 							if (generateVCard) {
 								generateVCard()
 							}

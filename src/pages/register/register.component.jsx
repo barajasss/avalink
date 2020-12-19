@@ -8,8 +8,11 @@ import { withRouter } from 'react-router-dom'
 import { registerUser } from '../../redux/user/user.actions'
 import { connect } from 'react-redux'
 
+import * as EmailValidator from 'email-validator'
+
 import {
 	checkUsernameExists,
+	checkEmailExists,
 	generateUniqueUsername,
 } from '../../firebase/utils/firestore.utils'
 
@@ -23,10 +26,14 @@ class RegisterPage extends Component {
 			username: '',
 			email: '',
 			password: '',
+
 			passwordModified: false,
-			registering: false,
 			usernameModified: false,
+			emailModified: false,
+
+			registering: false,
 			generatingUsername: false,
+
 			usernameText: {
 				error: false,
 				message: '',
@@ -35,11 +42,15 @@ class RegisterPage extends Component {
 				error: false,
 				message: '',
 			},
+			emailText: {
+				error: false,
+				message: '',
+			},
 		}
 	}
 
 	handleChange = async e => {
-		const { usernameModified, passwordModified } = this.state
+		const { usernameModified, passwordModified, emailModified } = this.state
 		this.setState({
 			[e.target.name]: e.target.value,
 		})
@@ -112,6 +123,45 @@ class RegisterPage extends Component {
 					})
 				}
 			}
+			if (e.target.name === 'email') {
+				if (e.target.value === '') {
+					this.setState({
+						emailText: {
+							error: false,
+							message: '',
+						},
+					})
+				}
+				// will run evreytime username is changed
+				if (!emailModified) {
+					this.setState({
+						emailModified: true,
+					})
+				}
+				this.setState({
+					emailText: {
+						processing: true,
+						error: false,
+						message: 'Checking email...',
+					},
+				})
+				const emailValidation = await this.validateEmail(e.target.value)
+				if (emailValidation.valid) {
+					this.setState({
+						emailText: {
+							error: false,
+							message: emailValidation.message,
+						},
+					})
+				} else {
+					this.setState({
+						emailText: {
+							error: true,
+							message: emailValidation.message,
+						},
+					})
+				}
+			}
 		}, 1000)
 
 		if (e.target.name === 'password') {
@@ -143,7 +193,7 @@ class RegisterPage extends Component {
 		if (username.match(/[^a-zA-Z0-9.]/)) {
 			return {
 				valid: false,
-				message: 'Only letters and numbers are allowed.',
+				message: 'Only letters and numbers are allowed in username.',
 			}
 		}
 		// then check if username exists
@@ -171,10 +221,37 @@ class RegisterPage extends Component {
 			message: 'Password is valid.',
 		}
 	}
+	validateEmail = async email => {
+		if (!EmailValidator.validate(email)) {
+			return {
+				valid: false,
+				message: 'Email address is not valid',
+			}
+		}
+		if (await checkEmailExists(email)) {
+			return {
+				valid: false,
+				message: 'Email already exists',
+			}
+		}
+		return {
+			valid: true,
+			message: 'Email address is valid',
+		}
+	}
 	handleSubmit = async e => {
 		e.preventDefault()
 		const { registerUser, history } = this.props
-		const { name, email, password, registering } = this.state
+		const {
+			name,
+			email,
+			username,
+			password,
+			registering,
+			emailText,
+			usernameText,
+			passwordText,
+		} = this.state
 		if (registering) {
 			return
 		}
@@ -182,9 +259,20 @@ class RegisterPage extends Component {
 			this.setState({
 				registering: true,
 			})
+			// check if every field is verified...
+			if (emailText.error) {
+				throw emailText
+			}
+			if (usernameText.error) {
+				throw usernameText
+			}
+			if (passwordText.error) {
+				throw passwordText
+			}
 			await registerUser({
 				name,
 				email,
+				username,
 				password,
 			})
 			toast.success(
@@ -215,6 +303,7 @@ class RegisterPage extends Component {
 			generatingUsername,
 			usernameText,
 			passwordText,
+			emailText,
 		} = this.state
 		return (
 			<div className='container py-5'>
@@ -260,6 +349,7 @@ class RegisterPage extends Component {
 								placeholder='Email address'
 								onChange={this.handleChange}
 								value={email}
+								text={emailText}
 							/>
 							<Input
 								name='password'

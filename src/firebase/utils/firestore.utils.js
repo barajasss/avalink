@@ -23,6 +23,14 @@ const checkUsernameExists = async username => {
 	return !snapshot.empty
 }
 
+const checkEmailExists = async email => {
+	const snapshot = await db
+		.collection('users')
+		.where('details.email', '==', email)
+		.get()
+	return !snapshot.empty
+}
+
 const generateUniqueUsername = async name => {
 	if (!name) return ''
 	let username = name.replace(/[ ]/g, '.')
@@ -44,7 +52,7 @@ const getUserDetailsById = async id => {
 	try {
 		const snapshot = await db
 			.collection('users')
-			.where('id', '==', id)
+			.where('username', '==', id)
 			.get()
 		if (snapshot.docs[0]) {
 			const data = await snapshot.docs[0].data()
@@ -62,15 +70,15 @@ const getId = async () => {
 	const user = firebase.auth().currentUser
 	try {
 		const doc = await db.collection('users').doc(user.uid).get()
-		const id = doc.data().id
-		if (id) {
-			return id
+		const username = doc.data().username
+		if (username) {
+			return username
 		} else {
 			// create new id and store it if it does not exist
 			const newId = shortId.generate()
 			await db.collection('users').doc(user.uid).set(
 				{
-					id: newId,
+					username: newId,
 				},
 				{ merge: true }
 			)
@@ -117,7 +125,7 @@ const fetchData = async (parent, type, name, useId) => {
 		if (useId) {
 			const snapshot = await db
 				.collection('users')
-				.where('id', '==', type)
+				.where('username', '==', type)
 				.get()
 			if (snapshot.docs[0]) {
 				const data = await snapshot.docs[0].data()
@@ -148,27 +156,6 @@ const fetchData = async (parent, type, name, useId) => {
 	}
 }
 
-const transformLinksForApp = data => {
-	// map links data properly for the redux store...
-	// transformation probably not required anymore
-	let links = []
-	Object.keys(data).forEach(link => {
-		if (
-			data[link] &&
-			link !== 'id' &&
-			link !== 'name' &&
-			link !== 'about' &&
-			link !== 'quickLink' &&
-			link !== 'imageUrl' &&
-			link !== 'emailAddress' &&
-			link !== 'totalProfileLinks'
-		) {
-			links = [...links, { name: link, link: data[link] }]
-		}
-	})
-	return links
-}
-
 const fetchLinks = async (type, useId) => {
 	try {
 		let doc
@@ -176,7 +163,7 @@ const fetchLinks = async (type, useId) => {
 		if (useId) {
 			const snapshot = await db
 				.collection('users')
-				.where('id', '==', type)
+				.where('username', '==', type)
 				.get()
 			if (snapshot.docs[0]) {
 				data = await snapshot.docs[0].data().links
@@ -203,7 +190,7 @@ const incrementTotalProfileLinks = async id => {
 		// get document from user Id
 		const snapshot = await db
 			.collection('users')
-			.where('id', '==', id)
+			.where('username', '==', id)
 			.get()
 		const doc = await snapshot.docs[0]
 		if (doc) {
@@ -231,7 +218,7 @@ export {
 	fetchDefaultLinks,
 	fetchData,
 	updateBulkData,
-	transformLinksForApp,
 	generateUniqueUsername,
 	checkUsernameExists,
+	checkEmailExists,
 }

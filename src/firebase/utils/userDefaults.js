@@ -1,8 +1,5 @@
-import shortId from 'shortid'
-
 const userDefaults = user => ({
-	id: shortId.generate(),
-	username: 'unique username',
+	username: user.username,
 	details: {
 		name: user.displayName,
 		email: user.email,
