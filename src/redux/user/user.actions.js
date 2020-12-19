@@ -10,7 +10,10 @@ import {
 	fetchData as fetchDataFirebase,
 	updateData as updateDataFirebase,
 	getUserDetailsById,
+	getEmailFromUsername,
 } from '../../firebase/utils/firestore.utils'
+
+import * as EmailValidator from 'email-validator'
 
 const setUser = user => ({
 	type: UserActionTypes.SET_USER,
@@ -71,13 +74,24 @@ const resolveAuthState = () => ({
 })
 
 const loginUser = (user, avoidLogin) => async dispatch => {
+	let data = user.email
+	let password = user.password
 	try {
 		let loggedUser = {}
+		if (!EmailValidator.validate(data)) {
+			console.log('not email')
+			data = await getEmailFromUsername(data)
+			if (!data) {
+				throw { message: 'Username does not exist' }
+			}
+		}
 		if (!avoidLogin) {
 			// avoid login is used by app on auth state changed
-			loggedUser = await loginUserFirebase(user)
+			loggedUser = await loginUserFirebase({
+				email: data,
+				password,
+			})
 		}
-		console.log(user)
 		const name = await fetchDataFirebase(
 			'details',
 			await getCurrentUser(),

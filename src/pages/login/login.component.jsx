@@ -80,8 +80,8 @@ class LoginPage extends Component {
 						<form onSubmit={this.handleSubmit}>
 							<Input
 								name='email'
-								placeholder='Email address'
-								type='email'
+								placeholder='Email address or username'
+								type='text'
 								onChange={this.handleChange}
 								value={email}
 							/>

@@ -31,6 +31,18 @@ const checkEmailExists = async email => {
 	return !snapshot.empty
 }
 
+const getEmailFromUsername = async username => {
+	const snapshot = await db
+		.collection('users')
+		.where('username', '==', username)
+		.get()
+	console.log(snapshot)
+	if (!snapshot.empty) {
+		return snapshot.docs[0].data().details.email
+	}
+	return null
+}
+
 const generateUniqueUsername = async name => {
 	if (!name) return ''
 	let username = name.replace(/[ ]/g, '.')
@@ -221,4 +233,5 @@ export {
 	generateUniqueUsername,
 	checkUsernameExists,
 	checkEmailExists,
+	getEmailFromUsername,
 }

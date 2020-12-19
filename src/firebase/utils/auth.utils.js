@@ -10,9 +10,9 @@ const registerUser = async ({ name, email, username, password }) => {
 		await user.updateProfile({
 			displayName: name,
 		})
-
+		user.username = username
 		// don't log user after registering...
-		await createUserDefaults({ ...user, username })
+		await createUserDefaults(user)
 		await firebase.auth().signOut()
 	} catch (err) {
 		console.log(err)
