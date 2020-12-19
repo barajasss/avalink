@@ -69,7 +69,7 @@ class DashboardLinkItem extends Component {
 			generateVCard,
 			updateLink,
 		} = this.props
-		if (profilePage && quickLink) {
+		if (profilePage) {
 			const linkMeta = getLinkMeta(name)
 			return (
 				<div

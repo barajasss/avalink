@@ -68,9 +68,8 @@ class EditProfilePage extends Component {
 		// create links by merging user links and default links
 
 		let links = []
-
 		userLinks.forEach(userLink => {
-			if (userLink.data !== '') links = [...links, { ...userLink }]
+			if (userLink.data) links = [...links, { ...userLink }]
 		})
 
 		defaultLinks.forEach(defaultLink => {

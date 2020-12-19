@@ -12,8 +12,10 @@ class InlineLinkEditor extends React.Component {
 				<img src={`/icons/${name}.png`} className='icon' />
 				<div className='input-group h-100'>
 					{linkMeta.prefixSign && (
-						<div class='input-group-prepend'>
-							<span class='input-group-text' id='basic-addon1'>
+						<div className='input-group-prepend'>
+							<span
+								className='input-group-text'
+								id='basic-addon1'>
 								{linkMeta.prefixSign}
 							</span>
 						</div>

@@ -43,18 +43,7 @@ const LinkEditor = ({
 			<form onSubmit={saveLink}>
 				<div className='form-group'>
 					{profilePage ? (
-						<input
-							type='text'
-							className='form-control'
-							placeholder={
-								linkMeta.placeholder ||
-								`paste your ${name} profile link here`
-							}
-							onChange={e => setLink(e.target.value)}
-							defaultValue={link}
-							readOnly
-							required
-						/>
+						<></>
 					) : (
 						<div className='d-flex flex-row'>
 							<div className='input-group h-100'>
