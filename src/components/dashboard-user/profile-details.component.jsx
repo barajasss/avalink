@@ -81,14 +81,14 @@ const LinkView = ({ id }) => {
 				<div className='col-6 col-md-4 offset-md-2'>
 					<a
 						href={link}
-						className='btn btn-dark btn-block'
+						className='btn btn-dark btn-block h-100'
 						target='_blank'>
 						Open in new tab
 					</a>
 				</div>
 				<div className='col-6 col-md-4'>
 					<button
-						className='btn btn-dark btn-block'
+						className='btn btn-dark btn-block h-100'
 						onClick={copyLink}>
 						Copy Link
 					</button>
