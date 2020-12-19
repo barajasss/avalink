@@ -9,8 +9,22 @@ import { toast } from 'react-toastify'
 const createProflieUrl = id =>
 	window.location.origin + process.env.REACT_APP_PROFILE_URL + id
 
-const QrView = ({ id, profilePage }) => {
+const QrView = ({ id, name, profilePage }) => {
 	const imageContainerRef = createRef()
+	const qrDownloadBtn = createRef()
+
+	const downloadQr = () => {
+		const typeNumber = 4
+		const errorCorrectionLevel = 'L'
+		const qr = window.qrcode(typeNumber, errorCorrectionLevel)
+		qr.addData(createProflieUrl(id))
+		qr.make()
+		let dataURL = qr.createDataURL(10)
+		dataURL = dataURL.replace('gif', 'png')
+		console.log(dataURL)
+		qrDownloadBtn.current.href = dataURL
+		qrDownloadBtn.current.click()
+	}
 	useEffect(() => {
 		const typeNumber = 4
 		const errorCorrectionLevel = 'L'
@@ -32,6 +46,15 @@ const QrView = ({ id, profilePage }) => {
 			<p className='text-center'>
 				Scan this QR code using any QR scanner app/camera.
 			</p>
+			<div className='text-center' onClick={downloadQr}>
+				<button className='btn btn-dark'>Download QR</button>
+			</div>
+			<a
+				ref={qrDownloadBtn}
+				href='#'
+				className='d-none'
+				download={`${name} QR code`}
+			/>
 		</div>
 	)
 }
@@ -150,7 +173,7 @@ class ProfileDetails extends Component {
 				)}
 				<DashboardModal show={show} showModal={this.showModal} custom>
 					{displayQr ? (
-						<QrView id={id} profilePage />
+						<QrView id={id} name={name} profilePage />
 					) : (
 						<LinkView id={id} />
 					)}
