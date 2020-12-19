@@ -78,7 +78,7 @@ class Dashboard extends Component {
 		if (!isLoggedIn && !profilePage) {
 			return <Redirect to='/' />
 		}
-		if (quickLink) {
+		if (quickLink && profilePage) {
 			return <DashboardLinks profilePage={profilePage} />
 		}
 		return (

@@ -84,10 +84,18 @@ class DashboardLinkItem extends Component {
 							}
 						}
 					}}>
-					{!noIcon && (
+					{!noIcon && name !== 'contact' && (
 						<a
 							href={linkMeta.linkPrefix + getUserLink(name).data}
 							target='_blank'>
+							<img
+								src={`/icons/${name}.png`}
+								className='icon-img img-fluid'
+							/>
+						</a>
+					)}
+					{name === 'contact' && (
+						<a href='#' onClick={generateVCard}>
 							<img
 								src={`/icons/${name}.png`}
 								className='icon-img img-fluid'
