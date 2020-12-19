@@ -24,7 +24,7 @@ class Dashboard extends Component {
 		super(props)
 		this.state = {
 			userExists: false,
-			loading: false,
+			loading: true,
 		}
 	}
 	async componentDidMount() {
@@ -64,10 +64,8 @@ class Dashboard extends Component {
 				this.setState({ userExists: false })
 				return history.push('/register')
 			}
-			this.setState({ loading: false })
-		} else {
-			// the app component loads all the data if the user is logged in.
 		}
+		this.setState({ loading: false })
 	}
 	render() {
 		const { isLoggedIn, profilePage, quickLink } = this.props
