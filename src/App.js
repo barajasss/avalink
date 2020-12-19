@@ -27,7 +27,8 @@ class App extends React.Component {
 		} = this.props
 		this.unsubscribe = firebase.auth().onAuthStateChanged(async user => {
 			console.log(user, location)
-			if (user) {
+
+			if (user && !location.pathname.startsWith('/u')) {
 				if (location.state && location.state.from === 'register') {
 					return
 				}

@@ -29,6 +29,7 @@ class ForgotPasswordPage extends Component {
 		try {
 			await sendResetPassword(email)
 			toast.success('Password reset link sent to your email.')
+			this.setState({ email: '' })
 		} catch (err) {
 			if (err.code === 'auth/user-not-found') {
 				toast.error('Please enter your registered email address.')

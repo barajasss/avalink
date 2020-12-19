@@ -34,12 +34,14 @@ class DashboardLinks extends Component {
 	}
 
 	async componentDidMount() {
-		const { fetchLinks, quickLink } = this.props
-		try {
-			const links = await fetchLinks()
-			this.setState({ sortedLinks: links.filter(link => link.data) })
-		} catch (err) {
-			console.log(err)
+		const { fetchLinks, quickLink, profilePage } = this.props
+		if (!profilePage) {
+			try {
+				const links = await fetchLinks()
+				this.setState({ sortedLinks: links.filter(link => link.data) })
+			} catch (err) {
+				console.log(err)
+			}
 		}
 		if (quickLink) {
 			this.generateVCard()
