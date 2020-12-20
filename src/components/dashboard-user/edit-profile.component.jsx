@@ -27,17 +27,22 @@ const EditProfile = ({
 		imageRef.current.src = dataUrl
 		updateFile(dataUrl, fileType)
 	}
+	const cancelCrop = () => {
+		setShowCropper(false)
+		setDataUrl('')
+		setFileType('')
+	}
 	const uploadFile = e => {
 		const file = e.target.files[0]
 		if (file) {
 			const reader = new FileReader()
 			reader.onload = () => {
 				console.log('reader load')
-				imageRef.current.src = reader.result
+				// imageRef.current.src = reader.result
 				setShowCropper(true)
 				setDataUrl(reader.result)
 				setFileType(file.type)
-				updateFile(reader.result, file.type)
+				// updateFile(reader.result, file.type)
 			}
 			reader.readAsDataURL(file)
 		}
@@ -76,7 +81,7 @@ const EditProfile = ({
 								key={dataUrl}
 								dataUrl={dataUrl}
 								cropImage={cropImage}
-								cancelCrop={() => setShowCropper(false)}
+								cancelCrop={cancelCrop}
 							/>
 						)}
 					</div>
