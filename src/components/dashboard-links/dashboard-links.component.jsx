@@ -124,7 +124,10 @@ class DashboardLinks extends Component {
 		}
 	}
 	generateVCard = async () => {
-		this.vCardDownloadBtn.current.href = createVCardDataUrl(this.props.user)
+		this.vCardDownloadBtn.current.href = createVCardDataUrl(
+			this.props.user,
+			this.props.links
+		)
 		this.vCardDownloadBtn.current.click()
 	}
 	removeSortedLink = name => {

@@ -136,7 +136,10 @@ class ProfileDetails extends Component {
 	}
 
 	generateVCard = async () => {
-		this.vCardDownloadBtn.current.href = createVCardDataUrl(this.props)
+		this.vCardDownloadBtn.current.href = createVCardDataUrl(
+			this.props,
+			this.props.links
+		)
 		this.vCardDownloadBtn.current.download = this.props.name + '.vcf'
 		this.vCardDownloadBtn.current.click()
 	}
@@ -211,6 +214,7 @@ class ProfileDetails extends Component {
 
 const mapStateToProps = state => ({
 	username: state.user.username,
+	links: state.links.userLinks,
 })
 
 export default connect(mapStateToProps)(ProfileDetails)

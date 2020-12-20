@@ -65,7 +65,6 @@ const LinkEditor = ({
 									}
 									onChange={e => setLink(e.target.value)}
 									value={link}
-									required
 								/>
 							</div>
 							<i
