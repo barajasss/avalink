@@ -16,6 +16,7 @@ import {
 	fetchDefaultLinks,
 } from '../../redux/links/links.actions'
 import { incrementTotalProfileLinks } from '../../firebase/utils/firestore.utils'
+import store from '../../redux/store'
 
 import './dashboard.styles.scss'
 
@@ -34,16 +35,11 @@ class Dashboard extends Component {
 			loadUserFromId,
 			fetchLinksById,
 			fetchDefaultLinks,
-			isLoggedIn,
 			history,
+			authStateResolved,
 		} = this.props
 
 		const id = match.params.id
-
-		console.log(isLoggedIn)
-		if (!isLoggedIn && profilePage) {
-			await incrementTotalProfileLinks(id)
-		}
 
 		if (profilePage) {
 			// load and fetch all the user details if the user is not logged in.
@@ -58,6 +54,11 @@ class Dashboard extends Component {
 				} else {
 					// user does not exist
 					return history.push('/register')
+				}
+				console.log(store.getState().user.isLoggedIn)
+				if (!store.getState().user.isLoggedIn) {
+					console.log('running')
+					await incrementTotalProfileLinks(id)
 				}
 			} catch (err) {
 				// some other error
@@ -112,6 +113,7 @@ const mapStateToProps = state => ({
 	isLoggedIn: state.user.isLoggedIn,
 	quickLink: state.links.quickLink,
 	links: state.links.userLinks,
+	authStateResolved: state.user.authStateResolved,
 })
 const mapDispatchToProps = dispatch => ({
 	loadUserFromId: id => dispatch(loadUserFromId(id)),

@@ -117,6 +117,7 @@ const loginUser = (user, avoidLogin) => async dispatch => {
 			await getCurrentUser(),
 			'username'
 		)
+		const isLoggedIn = !!(await getCurrentUser())
 		dispatch(
 			setUser({
 				...user,
@@ -125,6 +126,7 @@ const loginUser = (user, avoidLogin) => async dispatch => {
 				imageUrl,
 				email,
 				username,
+				isLoggedIn,
 			})
 		)
 	} catch (err) {
@@ -137,6 +139,7 @@ const loadUserFromId = id => async dispatch => {
 	try {
 		const details = await getUserDetailsById(id)
 		const { details: user, username } = details
+		const isLoggedIn = !!(await getCurrentUser())
 		if (user) {
 			dispatch(
 				setUser({
@@ -145,6 +148,7 @@ const loadUserFromId = id => async dispatch => {
 					email: user.email,
 					imageUrl: user.imageUrl,
 					username,
+					isLoggedIn,
 				})
 			)
 		}

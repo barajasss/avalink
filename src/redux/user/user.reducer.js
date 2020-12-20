@@ -13,7 +13,14 @@ const initialUserState = {
 const userReducer = (state = initialUserState, action) => {
 	switch (action.type) {
 		case UserActionTypes.SET_USER: {
-			const { name, email, about, imageUrl, username } = action.payload
+			const {
+				name,
+				email,
+				about,
+				imageUrl,
+				username,
+				isLoggedIn,
+			} = action.payload
 			return {
 				...state,
 				name,
@@ -21,7 +28,7 @@ const userReducer = (state = initialUserState, action) => {
 				about,
 				imageUrl,
 				username,
-				isLoggedIn: true,
+				isLoggedIn: isLoggedIn || false,
 			}
 		}
 		case UserActionTypes.UNSET_USER: {

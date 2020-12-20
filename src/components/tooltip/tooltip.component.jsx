@@ -44,7 +44,7 @@ export default class Tooltip extends Component {
 							`<p style='width: 200px; font-size: 1.1em'>${data}</p>` ||
 							''
 						}
-						style={{ fontSize: '1.4em', marginLeft: 5 }}
+						style={{ fontSize: '1.4em', marginLeft: 10 }}
 					/>
 				)}
 			</div>
