@@ -14,6 +14,8 @@ const createProflieUrl = id =>
 const QrView = ({ id, name, profilePage }) => {
 	const imageContainerRef = createRef()
 	const qrDownloadBtn = createRef()
+	// const [id, setId] = useState('')
+	console.log(id, name, profilePage)
 
 	const downloadQr = () => {
 		const typeNumber = 4
@@ -26,10 +28,12 @@ const QrView = ({ id, name, profilePage }) => {
 		qrDownloadBtn.current.href = dataURL
 		qrDownloadBtn.current.click()
 	}
-	useEffect(() => {
+	useEffect(async () => {
 		const typeNumber = 4
 		const errorCorrectionLevel = 'L'
 		const qr = window.qrcode(typeNumber, errorCorrectionLevel)
+		// const updatedId = await getId()
+		// setId(updatedId)
 		qr.addData(createProflieUrl(id))
 		qr.make()
 		imageContainerRef.current.innerHTML = qr.createSvgTag()
@@ -108,7 +112,7 @@ class ProfileDetails extends Component {
 		this.state = {
 			show: false,
 			displayQr: false,
-			id: '',
+			id: props.username || '',
 		}
 		this.vCardDownloadBtn = createRef()
 	}

@@ -25,7 +25,7 @@ const defaultLinks = [
 		name: 'snapchat',
 		type: 'sublink',
 		placeholder: 'Snapchat username',
-		linkPrefix: 'https://snapchat.com/add',
+		linkPrefix: 'https://snapchat.com/add/',
 		linkInfo:
 			'Step 1: Open the Snapchat app. Step 2: Tap your profile picture in the top left corner. Step 3: Your username will be below your snapchat name.',
 		order: 2,
