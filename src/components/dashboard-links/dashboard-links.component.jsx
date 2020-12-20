@@ -187,13 +187,13 @@ class DashboardLinks extends Component {
 			<div className='dashboard-links'>
 				{/* CONTROLS */}
 				{!profilePage && (
-					<div className='mx-2 mx-sm-0 px-0 row mb-4'>
+					<div className='mx-2 mx-sm-0 px-0 row mb-4 pt-3'>
 						<div className='col-6 col-md-4 offset-md-2'>
 							<button
 								ref={this.saveButton}
 								className={`dashboard-button btn ${
 									removeMode ? 'btn-dark' : 'btn-outline-dark'
-								} mt-2 btn-block`}
+								} btn-block`}
 								onClick={async () => {
 									if (removeMode) {
 										await this.saveEdits(sortedLinks)
@@ -218,7 +218,7 @@ class DashboardLinks extends Component {
 						{removeMode ? (
 							<div className='col-6 col-md-4'>
 								<button
-									className='dashboard-button btn btn-info mt-2 btn-block'
+									className='dashboard-button btn btn-info btn-block'
 									onClick={() => {
 										// reset sortedLinks state
 										this.setState({
@@ -234,7 +234,7 @@ class DashboardLinks extends Component {
 							</div>
 						) : (
 							<div
-								className='col-6 col-md-4 mt-2'
+								className='col-6 col-md-4 pt-0 dashboard-button-container'
 								style={{
 									display: 'flex',
 									justifyContent: 'center',

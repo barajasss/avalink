@@ -7,15 +7,19 @@
 	margin-bottom: 30px;
 }
 button.dashboard-button {
-	padding: 5px;
+	// padding: 5px;
 	margin: 0;
 }
 
 @media screen and (max-width: 476px) {
 	button.dashboard-button {
-		padding: 5px;
-		margin: 0;
+		// padding: 5px;
+		// margin: 0;
 		height: 100%;
+	}
+	.dashboard-button-container {
+		min-height: 100% !important;
+		height: 100% !important;
 	}
 	.link-grid {
 		grid-template-columns: 1fr 1fr;
