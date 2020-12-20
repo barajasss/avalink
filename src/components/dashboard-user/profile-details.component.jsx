@@ -159,7 +159,7 @@ class ProfileDetails extends Component {
 					{!profilePage && <p className='profile-email'>{email}</p>}
 					<p className='profile-about'>{about}</p>
 					{profilePage && (
-						<>
+						<div className='text-center text-md-left mb-3'>
 							<button
 								className='btn btn-outline-dark btn-sm'
 								onClick={this.generateVCard}>
@@ -167,7 +167,7 @@ class ProfileDetails extends Component {
 								<i className='fas fa-download ml-1' />
 							</button>
 							<a className='d-none' ref={this.vCardDownloadBtn} />
-						</>
+						</div>
 					)}
 				</div>
 				{profilePage ? (

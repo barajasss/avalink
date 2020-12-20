@@ -40,6 +40,7 @@ class Dashboard extends Component {
 
 		const id = match.params.id
 
+		console.log(isLoggedIn)
 		if (!isLoggedIn && profilePage) {
 			await incrementTotalProfileLinks(id)
 		}

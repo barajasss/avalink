@@ -5,6 +5,8 @@ import DashboardModal from '../dashboard-modal/dashboard-modal.component'
 import { createVCardDataUrl } from '../../utils/vcard-generator'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import Tooltip from '../tooltip/tooltip.component'
+
 import {
 	fetchLinks,
 	setQuickLinkAsync,
@@ -213,8 +215,8 @@ class DashboardLinks extends Component {
 								{removeMode ? 'Save' : 'Shift'}
 							</button>
 						</div>
-						<div className='col-6 col-md-4'>
-							{removeMode ? (
+						{removeMode ? (
+							<div className='col-6 col-md-4'>
 								<button
 									className='dashboard-button btn btn-info mt-2 btn-block'
 									onClick={() => {
@@ -229,9 +231,17 @@ class DashboardLinks extends Component {
 									}}>
 									Cancel
 								</button>
-							) : (
+							</div>
+						) : (
+							<div
+								className='col-6 col-md-4 mt-2'
+								style={{
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+								}}>
 								<button
-									className='dashboard-button btn btn-outline-dark mt-2 btn-block'
+									className='dashboard-button btn btn-outline-dark btn-block'
 									onClick={this.toggleQuickLink}>
 									{quickLink ? (
 										<span>
@@ -242,8 +252,12 @@ class DashboardLinks extends Component {
 										'Quick Link Off'
 									)}
 								</button>
-							)}
-						</div>
+								<Tooltip
+									onlyIcon
+									data='Quick Link allows you to bypass your contact card by taking you to a social network instantly.'
+								/>
+							</div>
+						)}
 					</div>
 				)}
 
