@@ -5,6 +5,8 @@ import './profile-details.styles.scss'
 import { getId } from '../../firebase/utils/firestore.utils'
 
 import { toast } from 'react-toastify'
+import { createVCardDataUrl } from '../../utils/vcard-generator'
+import { connect } from 'react-redux'
 
 const createProflieUrl = id =>
 	window.location.origin + process.env.REACT_APP_PROFILE_URL + id
@@ -108,6 +110,7 @@ class ProfileDetails extends Component {
 			displayQr: false,
 			id: '',
 		}
+		this.vCardDownloadBtn = createRef()
 	}
 	async componentDidMount() {
 		const { profilePage } = this.props
@@ -126,6 +129,12 @@ class ProfileDetails extends Component {
 	viewLink = () => {
 		this.showModal(true)
 		this.setState({ displayQr: false })
+	}
+
+	generateVCard = async () => {
+		this.vCardDownloadBtn.current.href = createVCardDataUrl(this.props)
+		this.vCardDownloadBtn.current.download = this.props.name + '.vcf'
+		this.vCardDownloadBtn.current.click()
 	}
 	render() {
 		const { name, about, imageUrl, email, profilePage } = this.props
@@ -149,6 +158,17 @@ class ProfileDetails extends Component {
 					</h3>
 					{!profilePage && <p className='profile-email'>{email}</p>}
 					<p className='profile-about'>{about}</p>
+					{profilePage && (
+						<>
+							<button
+								className='btn btn-outline-dark btn-sm'
+								onClick={this.generateVCard}>
+								Add to Contacts{' '}
+								<i className='fas fa-download ml-1' />
+							</button>
+							<a className='d-none' ref={this.vCardDownloadBtn} />
+						</>
+					)}
 				</div>
 				{profilePage ? (
 					<div className='col-sm-2 qr-and-link-contianer'>
@@ -185,4 +205,8 @@ class ProfileDetails extends Component {
 	}
 }
 
-export default ProfileDetails
+const mapStateToProps = state => ({
+	username: state.user.username,
+})
+
+export default connect(mapStateToProps)(ProfileDetails)

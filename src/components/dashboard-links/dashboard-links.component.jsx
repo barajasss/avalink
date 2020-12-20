@@ -2,7 +2,7 @@ import React, { Component, createRef } from 'react'
 
 import DashboardLinkItem from '../dashboard-link-item/dashboard-link-item.component'
 import DashboardModal from '../dashboard-modal/dashboard-modal.component'
-import vCardsJS from 'vcards-js'
+import { createVCardDataUrl } from '../../utils/vcard-generator'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import {
@@ -122,25 +122,7 @@ class DashboardLinks extends Component {
 		}
 	}
 	generateVCard = async () => {
-		const { user, match } = this.props
-		const { name, imageUrl, about, email } = user
-
-		const id = match.params.id
-		const url =
-			window.location.origin + process.env.REACT_APP_PROFILE_URL + id
-
-		const vCard = vCardsJS()
-		vCard.formattedName = name
-		// vCard.photo.attachFromUrl(imageUrl, type.toUpperCase())
-		vCard.url = url
-		vCard.email = email
-		vCard.source = url
-		vCard.note = about
-
-		const blob = new Blob([vCard.getFormattedString()], {
-			type: 'text/vcard',
-		})
-		this.vCardDownloadBtn.current.href = URL.createObjectURL(blob)
+		this.vCardDownloadBtn.current.href = createVCardDataUrl(this.props.user)
 		this.vCardDownloadBtn.current.click()
 	}
 	removeSortedLink = name => {
