@@ -275,7 +275,7 @@ class DashboardLinks extends Component {
 						</ReactSortable>
 					) : (
 						links.map(
-							link =>
+							(link, i) =>
 								link.data && (
 									<DashboardLinkItem
 										key={link.name}
@@ -285,6 +285,7 @@ class DashboardLinks extends Component {
 										removeMode={removeMode}
 										profilePage={profilePage}
 										quickLink={quickLink}
+										index={i}
 										generateVCard={this.generateVCard}
 									/>
 								)

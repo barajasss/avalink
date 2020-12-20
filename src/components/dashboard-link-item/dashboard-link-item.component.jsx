@@ -27,9 +27,11 @@ class DashboardLinkItem extends Component {
 			modalBtn,
 			linkBtn,
 			profilePage,
+			quickLink,
+			index,
 		} = this.props
 
-		if (removeMode) return
+		if (removeMode || (quickLink && index && index !== 0)) return
 
 		if (name === 'contact') {
 			if (generateVCard) {
@@ -72,6 +74,7 @@ class DashboardLinkItem extends Component {
 			hide,
 			generateVCard,
 			updateLink,
+			index,
 		} = this.props
 		const linkMeta = getLinkMeta(name)
 		if (profilePage) {
@@ -116,7 +119,9 @@ class DashboardLinkItem extends Component {
 		return (
 			<div
 				className={`dashboard-link-item ${
-					removeMode ? 'remove-mode' : ''
+					removeMode || (quickLink && index && index !== 0)
+						? 'remove-mode'
+						: ''
 				}`}
 				data-toggle='modal'
 				data-target={`${modalBtn ? '#myModal' : '#addLinkModal'}`}
