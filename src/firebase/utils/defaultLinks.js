@@ -25,7 +25,7 @@ const defaultLinks = [
 		name: 'snapchat',
 		type: 'sublink',
 		placeholder: 'Snapchat username',
-		linkPrefix: 'https://snapchat.com/',
+		linkPrefix: 'https://snapchat.com/add',
 		linkInfo:
 			'Step 1: Open the Snapchat app. Step 2: Tap your profile picture in the top left corner. Step 3: Your username will be below your snapchat name.',
 		order: 2,
@@ -70,7 +70,7 @@ const defaultLinks = [
 		name: 'text',
 		type: 'sublink',
 		placeholder: 'SMS Text Message',
-		linkPrefix: 'tel:',
+		linkPrefix: 'sms:',
 		linkInfo:
 			'Step 1: Go to your Contact App. Step 2: Open your profile. Step 3: Paste your phone number with your country code.',
 		order: 6,
@@ -103,11 +103,11 @@ const defaultLinks = [
 		name: 'tiktok',
 		type: 'sublink',
 		placeholder: 'TikTok username',
-		linkPrefix: 'https://www.tiktok.com/',
+		linkPrefix: 'https://www.tiktok.com/@',
 		linkInfo:
 			'Step 1: Open the TikTok app. Step 2: Navigate to the "Me" tab. Step 3: Grab your TikTok username under your profile picture.',
 		order: 9,
-		prefixSign: '',
+		prefixSign: '@',
 	},
 	{
 		displayName: 'Sound Cloud',
@@ -191,7 +191,7 @@ const defaultLinks = [
 		name: 'twitch',
 		type: 'sublink',
 		placeholder: 'Twitch channel username',
-		linkPrefix: 'https://www.twtich.tv/',
+		linkPrefix: 'https://twitch.com/',
 		linkInfo:
 			'Step 1: Open the Twitch app. Step 2: Navigate to your account. Step 3: Copy and paste your username here.',
 		order: 17,

@@ -45,9 +45,11 @@ const QrView = ({ id, name, profilePage }) => {
 			<p className='text-center'>
 				Scan this QR code using any QR scanner app/camera.
 			</p>
-			<div className='text-center' onClick={downloadQr}>
-				<button className='btn btn-dark'>Download QR</button>
-			</div>
+			{!profilePage && (
+				<div className='text-center' onClick={downloadQr}>
+					<button className='btn btn-dark'>Download QR</button>
+				</div>
+			)}
 			<a
 				ref={qrDownloadBtn}
 				href='#'
@@ -173,7 +175,7 @@ class ProfileDetails extends Component {
 				)}
 				<DashboardModal show={show} showModal={this.showModal} custom>
 					{displayQr ? (
-						<QrView id={id} name={name} profilePage />
+						<QrView id={id} name={name} profilePage={profilePage} />
 					) : (
 						<LinkView id={id} />
 					)}
