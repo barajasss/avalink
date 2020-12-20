@@ -28,10 +28,11 @@ class DashboardLinkItem extends Component {
 			linkBtn,
 			profilePage,
 			quickLink,
-			index,
+			firstLink,
 		} = this.props
 
-		if (removeMode || (quickLink && index && index !== 0)) return
+		if (removeMode || (quickLink && firstLink && firstLink.name !== name))
+			return
 
 		if (name === 'contact') {
 			if (generateVCard) {
@@ -75,6 +76,7 @@ class DashboardLinkItem extends Component {
 			generateVCard,
 			updateLink,
 			index,
+			firstLink,
 		} = this.props
 		const linkMeta = getLinkMeta(name)
 		if (profilePage) {
@@ -119,7 +121,8 @@ class DashboardLinkItem extends Component {
 		return (
 			<div
 				className={`dashboard-link-item ${
-					removeMode || (quickLink && index && index !== 0)
+					removeMode ||
+					(quickLink && firstLink && firstLink.name !== name)
 						? 'remove-mode'
 						: ''
 				}`}
@@ -151,6 +154,7 @@ const mapStateToProps = state => ({
 	getUserLink: name => state.links.userLinks.find(link => link.name === name),
 	getLinkMeta: name =>
 		state.links.defaultLinks.find(link => link.name === name),
+	firstLink: state.links.userLinks.filter(link => link.data)[0],
 })
 const mapDispatchToProps = dispatch => ({
 	updateLink: (name, link) => dispatch(updateLink(name, link)),

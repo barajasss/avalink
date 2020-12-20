@@ -68,7 +68,7 @@ class Dashboard extends Component {
 		this.setState({ loading: false })
 	}
 	render() {
-		const { isLoggedIn, profilePage, quickLink } = this.props
+		const { isLoggedIn, profilePage, quickLink, links } = this.props
 		const { userExists, loading } = this.state
 		if (loading && profilePage) {
 			return <Loading />
@@ -77,7 +77,10 @@ class Dashboard extends Component {
 			return <Redirect to='/' />
 		}
 		if (quickLink && profilePage) {
-			return <DashboardLinks profilePage={profilePage} />
+			let filteredLinks = links.filter(link => link.data)
+			if (filteredLinks.length && filteredLinks[0].data) {
+				return <DashboardLinks profilePage={profilePage} />
+			}
 		}
 		return (
 			<div className='dashboard'>
@@ -107,6 +110,7 @@ class Dashboard extends Component {
 const mapStateToProps = state => ({
 	isLoggedIn: state.user.isLoggedIn,
 	quickLink: state.links.quickLink,
+	links: state.links.userLinks,
 })
 const mapDispatchToProps = dispatch => ({
 	loadUserFromId: id => dispatch(loadUserFromId(id)),

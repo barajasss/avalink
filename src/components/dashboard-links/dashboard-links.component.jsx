@@ -34,7 +34,13 @@ class DashboardLinks extends Component {
 	}
 
 	async componentDidMount() {
-		const { fetchLinks, quickLink, profilePage } = this.props
+		const {
+			links,
+			fetchLinks,
+			quickLink,
+			profilePage,
+			getLinkMeta,
+		} = this.props
 		if (!profilePage) {
 			try {
 				const links = await fetchLinks()
@@ -43,9 +49,19 @@ class DashboardLinks extends Component {
 				console.log(err)
 			}
 		}
-		if (quickLink) {
-			this.generateVCard()
-			this.setState({ vCardDownloaded: true })
+		if (quickLink && profilePage) {
+			let link, linkMeta
+			let filteredLinks = links.filter(link => link.data)
+			if (links.length) {
+				link = filteredLinks[0]
+				if (link.name !== 'contact' && link.data) {
+					linkMeta = getLinkMeta(link.name)
+					window.location.href = linkMeta.linkPrefix + link.data
+				} else if (link.name === 'contact') {
+					this.generateVCard()
+					this.setState({ vCardDownloaded: true })
+				}
+			}
 		}
 	}
 	showModal = (show, opts) => {
@@ -150,7 +166,13 @@ class DashboardLinks extends Component {
 			user: { name, imageUrl },
 		} = this.props
 
-		if (profilePage && quickLink) {
+		let filteredLinks = links.filter(link => link.data)
+		if (
+			profilePage &&
+			quickLink &&
+			filteredLinks.length &&
+			filteredLinks[0].name === 'contact'
+		) {
 			return (
 				<div>
 					<h4 className='text-center m-5'>
@@ -166,6 +188,15 @@ class DashboardLinks extends Component {
 					/>
 				</div>
 			)
+		}
+
+		if (
+			profilePage &&
+			quickLink &&
+			links.length &&
+			links[0].name !== 'contact'
+		) {
+			return <></>
 		}
 
 		return (
@@ -275,7 +306,7 @@ class DashboardLinks extends Component {
 						</ReactSortable>
 					) : (
 						links.map(
-							(link, i) =>
+							link =>
 								link.data && (
 									<DashboardLinkItem
 										key={link.name}
@@ -285,7 +316,6 @@ class DashboardLinks extends Component {
 										removeMode={removeMode}
 										profilePage={profilePage}
 										quickLink={quickLink}
-										index={i}
 										generateVCard={this.generateVCard}
 									/>
 								)
@@ -315,6 +345,8 @@ const mapStateToProps = state => ({
 	user: state.user,
 	links: state.links.userLinks,
 	quickLink: state.links.quickLink,
+	getLinkMeta: name =>
+		state.links.defaultLinks.find(link => link.name === name),
 })
 
 const mapDispatchToProps = dispatch => ({
